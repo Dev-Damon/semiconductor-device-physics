@@ -1,0 +1,43 @@
+/* =========================================================
+   소자물리 기초 트랙 전용 — style.css 위에 덧입힘
+   구분 테마: 앰버(amber) 프라이머리 + 수식/에너지밴드 헬퍼
+   ========================================================= */
+:root{
+  --accent:#f5a623;     /* device-physics primary = amber */
+  --accent2:#5b9cff;
+  --accent3:#5ee6a0;
+  --phys:#ff9d5c;
+}
+
+/* 수식 블록 */
+.eq{display:block;background:var(--code-bg);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:10px;padding:14px 18px;margin:10px 0;font-family:var(--mono);font-size:16px;color:#e8eef7;line-height:1.7;overflow-x:auto}
+.eq .sub{font-size:.72em;vertical-align:sub}
+.eq .sup{font-size:.72em;vertical-align:super}
+.eq .var{color:var(--accent)}
+.eqcap{font-size:13px;color:var(--dim);margin:-4px 0 14px}
+
+/* 에너지밴드 다이어그램 컨테이너 */
+.band{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:center}
+.band svg text{font-family:var(--mono)}
+
+/* 물리 직관 콜아웃(앰버) */
+.physnote{border:1px solid rgba(245,166,35,.4);background:linear-gradient(180deg,rgba(245,166,35,.10),rgba(245,166,35,.03));
+    border-radius:var(--radius);padding:18px 20px;position:relative}
+.physnote::before{content:"⚛️ 물리 직관";position:absolute;top:-12px;left:18px;background:var(--bg2);
+    border:1px solid rgba(245,166,35,.4);color:var(--accent);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* 핵심 정의 박스 */
+.keyq{border:1px solid rgba(94,230,160,.4);background:linear-gradient(180deg,rgba(94,230,160,.10),rgba(94,230,160,.03));
+    border-radius:var(--radius);padding:18px 20px;position:relative}
+.keyq::before{content:"📌 핵심 정의";position:absolute;top:-12px;left:18px;background:var(--bg2);
+    border:1px solid rgba(94,230,160,.4);color:var(--accent3);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* 배지 */
+.phys-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--accent);background:rgba(245,166,35,.12);
+    color:var(--accent);font-weight:800;letter-spacing:.1em;font-size:12px;padding:6px 13px;border-radius:30px}
+
+/* 트랙 전환 코너 링크 */
+.track-switch{position:fixed;top:14px;right:18px;z-index:41;display:flex;gap:8px}
+.track-switch a{color:var(--dim);text-decoration:none;font-size:12.5px;border:1px solid var(--line);background:var(--panel);padding:7px 12px;border-radius:10px;transition:.15s}
+.track-switch a:hover{color:var(--ink);border-color:var(--accent)}

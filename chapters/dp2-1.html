@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 2-1 · 다이오드 동작·소수캐리어</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 2 · 2-1 다이오드 동작·소수캐리어">
+<div class="deck">
+
+  <!-- 1. 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>다이오드는 왜 한쪽으로만 전류를 흘릴까</h1>
+    <p class="hook">pn 다이오드에 전압을 걸면 전류가 흐른다 — 그런데 그 전류의 정체는 <strong>"길 잃은 소수파 캐리어가 흩어지면서(확산하면서) 만드는 흐름"</strong>입니다. 이번 장은 그 그림을 머릿속에 또렷이 그리는 시간입니다.</p>
+    <p class="hint">화살표 <kbd>→</kbd> 로 넘기세요</p>
+  </section>
+
+  <!-- 2. 무엇을 -->
+  <section class="slide">
+    <span class="kicker">이번 장의 목표</span>
+    <h2>전류의 공식을 외우기 전에, "그림"부터</h2>
+    <p class="lead">앞으로 다이오드 전류식 I = I<span class="sub">s</span>(e<span class="sup">qV/kT</span> − 1) 을 유도할 텐데, 그 전에 반드시 알아야 할 세 가지가 있습니다.</p>
+    <div class="keyq">
+      <p style="margin:0"><strong>이 장에서 답할 질문</strong></p>
+      <ol style="margin:10px 0 0;line-height:1.9">
+        <li>다이오드를 풀 때 우리는 <span class="hl">어떤 단순화 가정</span> 위에 서 있는가?</li>
+        <li>순방향 전압이 걸리면 <span class="hl2">소수 캐리어</span>는 어디로, 얼마나 들어가는가?</li>
+        <li>그 캐리어 분포는 위치에 따라 <span class="hl3">왜 지수적으로 감소</span>하는가? (→ 확산 길이)</li>
+      </ol>
+    </div>
+    <p class="note">결론 미리보기: 다이오드 전류는 <strong>소수 캐리어의 확산</strong>으로 결정됩니다. 이 한 문장이 이번 장의 전부예요.</p>
+  </section>
+
+  <!-- 3. 복습: 바이어스와 밴드 -->
+  <section class="slide">
+    <span class="kicker">5초 복습</span>
+    <h2>전압을 걸면 밴드가 휜다 — 평형 → 순방향</h2>
+    <p>평형에서 pn 접합은 내부전위(built-in potential)가 만든 <strong>언덕</strong>을 가지고 있습니다. 전압을 걸면 이 언덕의 높이가 바뀝니다.</p>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <text x="20" y="18" fill="#9fb0c7" font-size="12">E (에너지) ↑</text>
+      <!-- 평형 E_F (수평) -->
+      <line x1="40" y1="120" x2="560" y2="120" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="46" y="114" fill="#5ee6a0" font-size="12">E_F (평형: 수평)</text>
+      <!-- E_c : p쪽 높고 n쪽 낮음, 접합부 휘어짐 -->
+      <path d="M40,70 L230,70 Q300,70 300,135 Q300,165 370,165 L560,165" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="50" y="62" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- E_v -->
+      <path d="M40,170 L230,170 Q300,170 300,135 Q300,200 370,200 L560,200" fill="none" stroke="#b388ff" stroke-width="2.5"/>
+      <text x="50" y="186" fill="#b388ff" font-size="12">E_v</text>
+      <text x="120" y="222" fill="#6c7c95" font-size="12">p형 (밴드 높음)</text>
+      <text x="430" y="222" fill="#6c7c95" font-size="12">n형 (밴드 낮음)</text>
+    </svg></div>
+    <ul>
+      <li><strong>순방향(forward)</strong>: p쪽에 +전압 → p쪽 밴드가 <span class="hl">아래로</span> 내려감 → 언덕(=장벽)이 <span class="hl">낮아짐</span> → 캐리어가 쉽게 넘어감 → 전류 흐름.</li>
+      <li><strong>역방향(reverse)</strong>: p쪽에 −전압 → 언덕이 <span class="dim">더 높아짐</span> → 거의 막힘.</li>
+    </ul>
+    <div class="physnote">밴드 방향 헷갈림 방지: 전자는 "밴드 다이어그램에서 아래로" 굴러가려 하고, 홀은 "위로 떠오르려" 합니다. 순방향에서 언덕이 낮아지면 양쪽 다 반대편으로 쉽게 굴러갑니다.</div>
+  </section>
+
+  <!-- 4. 핵심 가정 1: 전압은 전부 공핍층에 -->
+  <section class="slide">
+    <span class="kicker">해석 가정 ①</span>
+    <h2>"외부 전압은 전부 공핍층에만 걸린다"</h2>
+    <p class="lead">이게 모든 유도의 출발점입니다. 다이오드를 세 구역으로 나눠 보세요.</p>
+    <div class="flow" style="margin:18px 0">
+      <div class="box">p형 중성영역</div>
+      <span class="arrow">│</span>
+      <div class="box on">공핍층<br>(depletion)</div>
+      <span class="arrow">│</span>
+      <div class="box">n형 중성영역</div>
+    </div>
+    <ul>
+      <li>가해준 전압 V는 <span class="hl">100% 공핍층</span>에서 소모된다고 본다 → 내부전위가 (V<span class="sub">bi</span> − V<span class="sub">a</span>)로 바뀜.</li>
+      <li>따라서 양쪽 <strong>중성영역</strong>에서는 전기장 E ≈ 0, 전위 ≈ 0 으로 간주.</li>
+    </ul>
+    <div class="dev-bridge">중성영역에 E-field가 0이라는 건, 그 구역에서 캐리어를 미는 "전기적 추진력"이 없다는 뜻입니다. 그럼 캐리어는 무엇으로 움직일까요? <strong>오직 농도 차이 = 확산(diffusion)뿐</strong>입니다. 이 가정 덕분에 중성영역 문제가 "확산 단 하나"로 깔끔히 줄어듭니다. 변수 하나만 남기고 나머지를 0으로 두는 리팩터링이라고 보면 됩니다.</div>
+  </section>
+
+  <!-- 5. 나머지 가정들 -->
+  <section class="slide">
+    <span class="kicker">해석 가정 ②~⑥</span>
+    <h2>이상(ideal) 다이오드를 만드는 약속들</h2>
+    <table class="compare">
+      <tr><td>비축퇴(non-degenerate)</td><td>도핑이 과하지 않아 페르미준위가 밴드 안. <strong>볼츠만 근사</strong>(E−E<span class="sub">F</span> ≫ kT)가 성립 → 캐리어 농도식을 쓸 수 있음.</td></tr>
+      <tr><td>계단형 접합(step)</td><td>p쪽·n쪽 도핑이 위치에 무관하게 <strong>균일</strong>. 경계에서 뚝 끊김.</td></tr>
+      <tr><td>공핍 근사</td><td>공핍층과 중성영역의 경계가 칼처럼 딱 나뉜다고 봄. 공핍층 안에만 E-field가 존재.</td></tr>
+      <tr><td>저준위 주입(low-level)</td><td>주입된 잉여(excess) 캐리어 양이 <strong>다수 캐리어보다 훨씬 적음</strong> → 다수 캐리어 농도는 거의 안 변함.</td></tr>
+      <tr><td>공핍층 G/R 무시</td><td>공핍층을 건너는 동안 재결합(R)·생성(G)이 없다고 가정 (단순화용).</td></tr>
+      <tr><td>정상상태(steady-state)</td><td>충분히 시간이 흘러 ∂/∂t = 0. 시간에 따른 변화 없음.</td></tr>
+    </table>
+    <p class="note">실제론 다 일어나는 일이지만, 일단 끄고 시작합니다. 핵심 메커니즘을 먼저 보기 위해서요.</p>
+  </section>
+
+  <!-- 6. 볼츠만 근사 직관 -->
+  <section class="slide">
+    <span class="kicker">가정 보강</span>
+    <h2>왜 "비축퇴 = 볼츠만 근사"인가</h2>
+    <p>캐리어 농도는 <strong>상태밀도(DOS) × 채워질 확률(페르미-디랙)</strong> 을 밴드 전체에 적분해 구합니다. 그런데 페르미-디랙 함수는 손으로 적분하기 까다롭죠.</p>
+    <div class="eq">f(E) = 1 / ( 1 + e<span class="sup">(E−E_F)/kT</span> )  &nbsp;&nbsp;≈&nbsp;&nbsp; e<span class="sup">−(E−E_F)/kT</span></div>
+    <div class="eqcap">E − E<span class="sub">F</span> 가 kT보다 충분히 클 때, 분모의 1을 무시 → 깔끔한 지수함수로 근사.</div>
+    <div class="physnote">전도대(E<span class="sub">c</span>)는 페르미준위보다 한참 위에 있으니, 정작 전자가 채우는 영역에서는 이 근사 오차가 거의 없습니다. <strong>하지만 도핑이 과하면(축퇴) E<span class="sub">F</span>가 E<span class="sub">c</span>에 바짝 붙어</strong> 근사가 깨지고, 우리가 쓰는 농도식 자체가 못 쓰게 됩니다. 그래서 "비축퇴만 다룬다 = 볼츠만 근사를 쓴다"가 같은 말이에요.</div>
+  </section>
+
+  <!-- 7. 가정의 결과: J 일정 -->
+  <section class="slide">
+    <span class="kicker">가정에서 나오는 결론</span>
+    <h2>연속 방정식 → 전류는 어디서나 일정</h2>
+    <p>연속 방정식은 "어떤 지점에서 캐리어가 시간·공간에 따라 어떻게 변하는가"를 적은 식입니다.</p>
+    <div class="eq">∂n/∂t = (1/q)·(∂J<span class="sub">n</span>/∂x) + G − R</div>
+    <div class="eqcap">①플럭스 변화 ②생성 G ③재결합 R</div>
+    <p>공핍층에 가정을 적용하면:</p>
+    <ul>
+      <li>정상상태 → <span class="hl">∂n/∂t = 0</span></li>
+      <li>공핍층 G/R 무시 → <span class="hl">G − R = 0</span></li>
+      <li>남는 건 ∂J<span class="sub">n</span>/∂x = 0 → <strong>J<span class="sub">n</span>, J<span class="sub">p</span> 가 공핍층 안에서 위치에 무관하게 일정</strong></li>
+    </ul>
+    <div class="takeaway">전류는 다이오드를 <strong>관통</strong>해 흐르므로, 한 줄로 직렬 연결된 회로처럼 전체에서 같은 J<span class="sub">total</span> = J<span class="sub">n</span> + J<span class="sub">p</span> 값을 가집니다. 그래서 J<span class="sub">n</span> 하나만 알면 J<span class="sub">p</span> = J<span class="sub">total</span> − J<span class="sub">n</span> 으로 나머지가 자동 결정됩니다.</div>
+  </section>
+
+  <!-- 8. 표기법 -->
+  <section class="slide">
+    <span class="kicker">기호 약속</span>
+    <h2>n<span class="sub">n0</span>, p<span class="sub">n0</span>… 첨자 읽는 법</h2>
+    <p>앞으로 캐리어를 부를 때 첨자 두 개를 씁니다. 규칙만 익히면 헷갈리지 않아요.</p>
+    <div class="card">
+      <h3><span class="ico">🔤</span> 읽는 순서</h3>
+      <p style="margin-top:10px"><code>n</code> / <code>p</code> = 전자냐 홀이냐 &nbsp;·&nbsp; <span class="hl2">가운데 작은 첨자</span> = 어느 영역(n형/p형)이냐 &nbsp;·&nbsp; <span class="hl3">끝의 0</span> = 평형(thermal equilibrium)이냐.</p>
+    </div>
+    <table class="compare" style="margin-top:14px">
+      <tr><td>n<span class="sub">n0</span></td><td>n형의, 평형 전자농도 = <strong>다수 캐리어</strong> ≈ N<span class="sub">D</span></td></tr>
+      <tr><td>p<span class="sub">p0</span></td><td>p형의, 평형 홀농도 = <strong>다수 캐리어</strong> ≈ N<span class="sub">A</span></td></tr>
+      <tr><td>n<span class="sub">p0</span></td><td>p형의, 평형 전자농도 = <strong>소수 캐리어</strong> (작음)</td></tr>
+      <tr><td>p<span class="sub">n0</span></td><td>n형의, 평형 홀농도 = <strong>소수 캐리어</strong> (작음)</td></tr>
+      <tr><td>n<span class="sub">p</span> (0 없음)</td><td>p형의 <strong>비평형</strong> 전자농도 = 평형값 + 주입된 잉여분</td></tr>
+    </table>
+    <p class="note">질량작용법칙: 평형에서 n<span class="sub">n0</span>·p<span class="sub">n0</span> = n<span class="sub">p0</span>·p<span class="sub">p0</span> = n<span class="sub">i</span><span class="sup">2</span>. 소수 캐리어가 작은 이유가 여기 있습니다.</p>
+  </section>
+
+  <!-- 9. 주입 -->
+  <section class="slide">
+    <span class="kicker">핵심 그림 ①</span>
+    <h2>순방향 = 소수 캐리어를 "건너편에 쏟아붓기"</h2>
+    <p>순방향에서 장벽이 낮아지면, n형의 전자가 p형으로, p형의 홀이 n형으로 건너갑니다. 건너간 쪽에서 그들은 무엇일까요?</p>
+    <div class="analogy">n형의 전자는 자기 동네에선 다수파지만, <strong>p형으로 건너가는 순간 소수파(minority)</strong>가 됩니다. 마치 모국에선 다수 민족이던 사람이 이민 가면 소수 집단이 되는 것과 같아요. 다이오드 전류의 주인공은 바로 이 "건너간 손님" — <span class="hl">잉여 소수 캐리어(excess minority carrier)</span> 입니다.</div>
+    <ul>
+      <li>p형 중성영역: 평형 전자 n<span class="sub">p0</span> 위에, 주입된 전자가 더해짐 → <span class="hl2">Δn<span class="sub">p</span> = n<span class="sub">p</span> − n<span class="sub">p0</span></span> (잉여분).</li>
+      <li>n형 중성영역: 평형 홀 p<span class="sub">n0</span> 위에, 주입된 홀이 더해짐 → <span class="hl2">Δp<span class="sub">n</span> = p<span class="sub">n</span> − p<span class="sub">n0</span></span>.</li>
+      <li>저준위 주입이므로 다수 캐리어 농도(N<span class="sub">A</span>, N<span class="sub">D</span>)는 거의 그대로.</li>
+    </ul>
+    <p class="note">"잉여(excess)"는 평형 대비 늘어난 양을 뜻합니다. 우리가 풀어야 할 미지수가 바로 이 Δ값들이에요.</p>
+  </section>
+
+  <!-- 10. 분포: 지수 감쇠 -->
+  <section class="slide">
+    <span class="kicker">핵심 그림 ②</span>
+    <h2>주입된 캐리어는 들어갈수록 사라진다</h2>
+    <p>건너온 전자는 경계(공핍층 가장자리)에서 <strong>가장 많고</strong>, 안쪽으로 들어갈수록 줄어듭니다. 왜냐하면:</p>
+    <div class="flow" style="margin:16px 0">
+      <div class="box on">경계: 잉여 ↑↑</div>
+      <span class="arrow">→</span>
+      <div class="box">확산으로 안으로</div>
+      <span class="arrow">→</span>
+      <div class="box">홀과 재결합</div>
+      <span class="arrow">→</span>
+      <div class="box">소멸</div>
+    </div>
+    <div class="band"><svg viewBox="0 0 600 220" width="600">
+      <text x="20" y="16" fill="#9fb0c7" font-size="12">Δn (잉여 전자농도) ↑</text>
+      <!-- 축 -->
+      <line x1="60" y1="180" x2="560" y2="180" stroke="#22304a" stroke-width="1.5"/>
+      <line x1="60" y1="40" x2="60" y2="180" stroke="#22304a" stroke-width="1.5"/>
+      <!-- 지수 감쇠 곡선 -->
+      <path d="M60,55 C160,120 260,160 560,176" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <!-- 경계값 점선 -->
+      <line x1="60" y1="55" x2="60" y2="180" stroke="#5b9cff" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="68" y="50" fill="#5b9cff" font-size="12">Δn(0): 경계 최댓값</text>
+      <line x1="60" y1="176" x2="560" y2="176" stroke="#5ee6a0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="430" y="170" fill="#5ee6a0" font-size="12">→ 0 (평형 복귀)</text>
+      <text x="55" y="198" fill="#6c7c95" font-size="12">공핍층 가장자리 (x=0)</text>
+      <text x="470" y="198" fill="#6c7c95" font-size="12">중성영역 깊숙이 →</text>
+    </svg></div>
+    <p>확산은 "농도 높은 곳 → 낮은 곳"으로 캐리어를 퍼뜨립니다. 안으로 가던 전자는 p형의 풍부한 홀과 만나 재결합해 소멸 → 농도가 점점 떨어지다 결국 평형값(Δn = 0)으로 수렴.</p>
+  </section>
+
+  <!-- 11. 수식: 미분방정식과 지수해 -->
+  <section class="slide">
+    <span class="kicker">정량화</span>
+    <h2>왜 "지수함수"인가 — 연속 방정식이 답한다</h2>
+    <p>중성영역엔 E-field가 없으니 확산만 남습니다. 정상상태에서 잉여 전자에 대한 연속 방정식을 정리하면:</p>
+    <div class="eq">D<span class="sub">n</span> · ( d<span class="sup">2</span>Δn<span class="sub">p</span> / dx<span class="sup">2</span> ) − ( Δn<span class="sub">p</span> / τ<span class="sub">n</span> ) = 0</div>
+    <div class="eqcap">① 확산항 (D<span class="sub">n</span>: 확산계수) &nbsp; ② 재결합항 (τ<span class="sub">n</span>: 캐리어 수명)</div>
+    <p>양변을 D<span class="sub">n</span>으로 나누면 익숙한 2계 미분방정식이 됩니다.</p>
+    <div class="eq">d<span class="sup">2</span>Δn<span class="sub">p</span> / dx<span class="sup">2</span> = Δn<span class="sub">p</span> / L<span class="sub">n</span><span class="sup">2</span> &nbsp;&nbsp;&nbsp; ( L<span class="sub">n</span> = √( D<span class="sub">n</span> · τ<span class="sub">n</span> ) )</div>
+    <div class="eqcap">"2계 도함수 = 자기 자신" 꼴 → 해는 지수함수의 조합.</div>
+    <div class="dev-bridge">형태가 y″ = y/L² 이면 일반해는 y = A·e<span class="sup">−x/L</span> + B·e<span class="sup">+x/L</span> 입니다. 안으로 들어갈수록(x→∞) 캐리어는 사라져야 하니 발산하는 e<span class="sup">+x/L</span> 항은 버립니다(B=0). 경계조건으로 상수 A까지 정하면 끝 — 부울 플래그로 한쪽 가지를 쳐내는 것과 똑같아요.</div>
+  </section>
+
+  <!-- 12. 확산 길이 -->
+  <section class="slide">
+    <span class="kicker">핵심 개념</span>
+    <h2>확산 길이 L<span class="sub">n</span>: 캐리어가 죽기 전 가는 거리</h2>
+    <p>경계조건 두 개 — (1) 경계 x=0 에서 Δn<span class="sub">p</span>(0) = 주입된 값, (2) 멀리서 Δn<span class="sub">p</span>(∞) = 0 — 를 넣으면 깔끔한 지수 감쇠 해가 나옵니다.</p>
+    <div class="eq">Δn<span class="sub">p</span>(x) = Δn<span class="sub">p</span>(0) · e<span class="sup">−x / L_n</span></div>
+    <div class="eqcap">경계에서 들어간 잉여 전자가, 거리 L<span class="sub">n</span> 마다 e배(≈2.72배)씩 줄어든다.</div>
+    <div class="physnote">L<span class="sub">n</span> = √(D<span class="sub">n</span>·τ<span class="sub">n</span>) 의 의미: 확산계수 D(얼마나 빨리 퍼지나) × 수명 τ(재결합 전 평균 생존시간). 둘을 곱해 루트 → <strong>캐리어가 살아 있는 동안 평균적으로 이동하는 거리</strong>(단위: cm). L이 길수록 더 깊이까지 캐리어가 살아 들어갑니다.</div>
+    <table class="compare" style="margin-top:12px">
+      <tr><td>x = L<span class="sub">n</span> 지점</td><td>잉여 농도가 경계값의 1/e ≈ 37% 로 감소</td></tr>
+      <tr><td>x = 3L<span class="sub">n</span></td><td>약 5% — 사실상 거의 소멸</td></tr>
+    </table>
+    <p class="note">홀도 대칭: n형에서 Δp<span class="sub">n</span>(x) = Δp<span class="sub">n</span>(0)·e<span class="sup">−x/L_p</span>, L<span class="sub">p</span> = √(D<span class="sub">p</span>·τ<span class="sub">p</span>).</p>
+  </section>
+
+  <!-- 13. 전류는 기울기 -->
+  <section class="slide">
+    <span class="kicker">연결고리</span>
+    <h2>이 분포가 곧 전류다 — 기울기를 보라</h2>
+    <p>확산 전류는 농도의 <strong>기울기(dΔn/dx)</strong>에 비례합니다(픽의 법칙). 지수 분포를 미분하면 그 자체도 지수 꼴이라, 경계 x=0 에서의 기울기가 전류를 결정합니다.</p>
+    <div class="eq">J<span class="sub">n,확산</span> = q · D<span class="sub">n</span> · ( dΔn<span class="sub">p</span> / dx ) ∝ Δn<span class="sub">p</span>(0) / L<span class="sub">n</span></div>
+    <div class="eqcap">경계에서의 기울기 ∝ (경계 농도)/(확산 길이). 주입이 많을수록, L이 짧을수록 기울기↑ → 전류↑.</div>
+    <div class="takeaway">다이오드 전류의 정체 = <strong>공핍층 가장자리로 주입된 소수 캐리어가 만드는 확산 전류</strong>. 다음 장에서 "경계 농도 Δn(0)이 전압 V에 어떻게 달라지나"를 풀면, 그 유명한 지수 I-V 곡선 I = I<span class="sub">s</span>(e<span class="sup">qV/kT</span>−1) 이 자연스레 튀어나옵니다.</div>
+  </section>
+
+  <!-- 14. 이해 점검 -->
+  <section class="slide">
+    <span class="kicker">이해 점검</span>
+    <h2>스스로 답해 보세요</h2>
+    <div class="qa">
+      <div class="q">"외부 전압은 전부 공핍층에 걸린다"는 가정이 왜 그렇게 중요한가요?</div>
+      <div class="a">이 가정 덕분에 양쪽 중성영역의 전기장이 0이 됩니다. 그러면 중성영역에서 캐리어를 움직이는 힘은 확산밖에 안 남아, 문제가 "확산 한 가지"로 단순해집니다. 전류식 유도가 가능해지는 출발점이에요.</div>
+    </div>
+    <div class="qa">
+      <div class="q">주입된 잉여 소수 캐리어의 농도가 왜 위치에 따라 지수적으로 줄어들까요?</div>
+      <div class="a">중성영역의 연속 방정식이 d²Δn/dx² = Δn/L² 꼴이 되기 때문입니다. 이 미분방정식의 (발산하지 않는) 해가 e<span class="sup">−x/L</span> 입니다. 물리적으로는, 확산으로 안으로 퍼지면서 다수 캐리어와 재결합해 점점 소멸하기 때문이죠.</div>
+    </div>
+    <div class="qa">
+      <div class="q">확산 길이 L = √(Dτ) 가 길다는 것은 무슨 뜻인가요?</div>
+      <div class="a">캐리어가 재결합해 죽기 전까지 평균적으로 더 멀리 이동한다는 뜻입니다. 수명 τ가 길거나 확산이 빠를(D 큼)수록 L이 커지고, 잉여 캐리어가 더 깊숙이까지 살아남습니다.</div>
+    </div>
+  </section>
+
+  <!-- 15. 요약 -->
+  <section class="slide">
+    <span class="kicker">한 장 요약</span>
+    <h2>이 장의 뼈대</h2>
+    <ul>
+      <li><strong>가정</strong>: 전압은 전부 공핍층에 (중성영역 E=0) · 비축퇴(볼츠만) · 계단형 · 공핍 근사 · 저준위 주입 · 공핍층 G/R 무시 · 정상상태.</li>
+      <li><strong>결과</strong>: 연속 방정식에서 공핍층 내 J<span class="sub">n</span>, J<span class="sub">p</span>가 일정 → 전체 전류 J<span class="sub">total</span> 어디서나 동일.</li>
+      <li><strong>주입</strong>: 순방향이면 소수 캐리어가 건너편 중성영역으로 주입(Δn<span class="sub">p</span>, Δp<span class="sub">n</span>), 경계에서 최대.</li>
+      <li><strong>분포</strong>: Δn(x) = Δn(0)·e<span class="sup">−x/L</span>, 확산 길이 L = √(Dτ) = 캐리어의 평균 생존 이동거리.</li>
+      <li><strong>전류</strong>: 경계의 농도 기울기가 곧 확산 전류 → 다이오드 전류는 소수 캐리어 확산이 결정.</li>
+    </ul>
+    <div class="takeaway">한 문장: <strong>"다이오드 전류 = 공핍층 가장자리로 주입된 소수 캐리어가 지수적으로 감쇠하며 만드는 확산 전류."</strong></div>
+    <p class="note">다음 → 2-2: 경계 농도 Δn(0)을 전압 V로 표현(준평형·법칙 of the junction)하고, 합쳐서 이상 다이오드 전류식 I = I<span class="sub">s</span>(e<span class="sup">qV/kT</span> − 1) 을 완성합니다.</p>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

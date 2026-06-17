@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 1-4 · pn 응용 소자</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 1 · 1-4 pn 응용 소자">
+<div class="deck">
+
+  <!-- 1. 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>하나의 pn접합,<br>네 가지 마법</h1>
+    <p class="hook">터널 다이오드, LED, 광검출기, 태양전지 — 전부 같은 pn접합에서 출발합니다.
+      구조는 거의 같은데 "어떻게 쓰느냐"만 다를 뿐이죠.</p>
+    <p class="hint"><kbd>→</kbd> 또는 <kbd>Space</kbd> 로 넘기세요. 화면 좌/우 클릭도 됩니다.</p>
+  </section>
+
+  <!-- 2. 무엇을/왜 -->
+  <section class="slide">
+    <div class="kicker">왜 이걸 배우나</div>
+    <h2>pn접합은 부품 하나가 아니라 <span class="hl">플랫폼</span>이다</h2>
+    <p class="lead">지난 시간까지 우리는 pn접합이 "한 방향으로만 전류를 흘리는 다이오드"가 된다는 걸 봤습니다.
+      그런데 같은 접합을 살짝 비틀거나, 빛을 비추거나, 도핑을 극단으로 밀면
+      전혀 다른 소자가 됩니다.</p>
+    <div class="keyq mt">
+      <p style="margin:0"><strong>이번 챕터 한 줄:</strong> 똑같은 pn접합을
+      <span class="hl2">전압을 어떻게 거느냐 / 빛을 받느냐 / 도핑을 얼마나 하느냐</span>로
+      터널 다이오드 · LED · 광검출기 · 태양전지로 변신시킨다.</p>
+    </div>
+    <p class="note mt">교재 본문에는 없는 "응용 맛보기" 파트입니다. 식보다 에너지밴드 그림으로 직관을 잡는 게 목표예요.</p>
+  </section>
+
+  <!-- 3. 개발자 비유 -->
+  <section class="slide">
+    <div class="kicker">큰 그림</div>
+    <h2>같은 코어, 다른 모드</h2>
+    <div class="grid2">
+      <div class="dev-bridge">
+        <p style="margin:0">하나의 범용 IP 블록을 두고, <code>config</code> 레지스터 값만 바꿔
+        다른 기능으로 쓰는 것과 똑같습니다. 하드웨어 코어(pn접합)는 그대로,
+        동작 "설정"만 달라집니다.</p>
+      </div>
+      <div class="physnote">
+        <p style="margin:0">반도체에서 그 "설정"은 딱 세 가지예요 —
+        <span class="hl">바이어스 방향</span>(forward/reverse),
+        <span class="hl">빛 입사 여부</span>,
+        <span class="hl">도핑 농도</span>. 이 셋이 소자의 성격을 결정합니다.</p>
+      </div>
+    </div>
+    <table class="compare mt">
+      <tr><th>소자</th><th>설정 포인트</th><th>핵심 현상</th></tr>
+      <tr><td>터널 다이오드</td><td>초고농도 도핑 + 약한 forward</td><td>밴드-투-밴드 터널링 → 음저항</td></tr>
+      <tr><td>LED</td><td>forward bias + 직접천이 물질</td><td>전자–홀 재결합 → 발광</td></tr>
+      <tr><td>광검출기</td><td>reverse bias + 빛</td><td>빛 흡수 → 전자–홀 생성</td></tr>
+      <tr><td>태양전지</td><td>빛만(바이어스 없이도)</td><td>광기전효과 → 전기 생산</td></tr>
+    </table>
+  </section>
+
+  <!-- 4. 터널 다이오드 도입 -->
+  <section class="slide">
+    <div class="kicker">소자 1 · 터널 다이오드</div>
+    <h2>"막힌 벽을 그냥 통과하는" 전자</h2>
+    <p class="lead">터널 다이오드(에사키 다이오드)는 양쪽을 <span class="hl">미친 듯이 진하게</span> 도핑한
+      pn접합입니다. 이렇게 도핑하면 반도체가 거의 금속처럼 행동하는
+      <strong>축퇴(degenerate)</strong> 상태가 됩니다.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🧱</span>축퇴의 결과</h3>
+        <p style="margin:0">n형에서는 페르미준위 E<sub>F</sub>가 <span class="hl2">E<sub>c</sub>보다 위</span>로,
+        p형에서는 <span class="hl3">E<sub>v</sub>보다 아래</span>로 파고듭니다.
+        전자가 이미 전도대를 채우고, 홀이 가전자대를 비운 상태죠.</p>
+      </div>
+      <div class="physnote">
+        <p style="margin:0"><strong>터널링이란?</strong> 양자역학에서 입자는 에너지가 모자라도
+        장벽이 <span class="hl">충분히 얇으면</span> 확률적으로 반대편으로 "스며들" 수 있습니다.
+        장벽이 두꺼워지면 그 확률은 급격히 떨어집니다.</p>
+      </div>
+    </div>
+    <p class="note mt">에사키는 이 연구로 1973년 노벨 물리학상을 받았습니다.</p>
+  </section>
+
+  <!-- 5. 터널 다이오드 평형 밴드 -->
+  <section class="slide">
+    <div class="kicker">소자 1 · 평형 상태</div>
+    <h2>평형: E<sub>F</sub>는 수평, 밴드는 급격히 휘어짐</h2>
+    <div class="band">
+      <svg viewBox="0 0 620 240" width="620">
+        <text x="20" y="22" fill="#9fb0c7" font-size="12">E (에너지) ↑</text>
+        <!-- E_F : 수평 점선 -->
+        <line x1="40" y1="120" x2="580" y2="120" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="44" y="114" fill="#5ee6a0" font-size="12">E_F (평형, 수평)</text>
+        <!-- 전도대 E_c : p쪽 높고 n쪽 낮음, 좁은 천이 -->
+        <path d="M40,70 L290,70 Q310,70 310,135 L310,150 Q310,160 330,160 L580,160" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+        <text x="48" y="62" fill="#5b9cff" font-size="12">E_c</text>
+        <!-- 가전자대 E_v -->
+        <path d="M40,108 L290,108 Q310,108 310,135 L310,150 Q310,160 330,160 L330,200 L580,200" fill="none" stroke="#b388ff" stroke-width="2.5"/>
+        <text x="540" y="195" fill="#b388ff" font-size="12">E_v</text>
+        <!-- n쪽 채워진 전자(파랑 밴드 위 E_F 아래) -->
+        <rect x="330" y="160" width="250" height="0" fill="none"/>
+        <text x="120" y="225" fill="#6c7c95" font-size="12">p형 (초고농도) · E_F &lt; E_v</text>
+        <text x="400" y="225" fill="#6c7c95" font-size="12">n형 (초고농도) · E_F &gt; E_c</text>
+        <!-- 얇은 장벽 강조 -->
+        <line x1="310" y1="60" x2="310" y2="210" stroke="#22304a" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="295" y="50" fill="#f5a623" font-size="11" text-anchor="middle">얇은 공핍층</text>
+      </svg>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">도핑이 진하면 공핍층(장벽)이 아주 <span class="hl">얇아집니다</span>.
+      게다가 p쪽 가전자대와 n쪽 전도대가 에너지축에서 <strong>겹칩니다</strong>.
+      얇은 장벽 + 마주 보는 빈자리/채운자리 → 터널링 무대 완성.</p>
+    </div>
+  </section>
+
+  <!-- 6. 터널 다이오드: 약 forward → 전류 증가 -->
+  <section class="slide">
+    <div class="kicker">소자 1 · 동작 ①</div>
+    <h2>약한 forward: 전자가 옆으로 터널링 → 전류 ↑</h2>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 360 230" width="360">
+          <text x="14" y="20" fill="#9fb0c7" font-size="11">E ↑</text>
+          <!-- p쪽 밴드 약간 내려감 -->
+          <path d="M20,55 L150,55 Q170,55 170,120 L170,135 Q170,145 190,145 L340,145" fill="none" stroke="#5b9cff" stroke-width="2"/>
+          <path d="M20,95 L150,95 Q170,95 170,120 L170,135 Q170,145 190,145 L190,185 L340,185" fill="none" stroke="#b388ff" stroke-width="2"/>
+          <!-- n쪽 채워진 전자 (전도대 바로 위) -->
+          <line x1="190" y1="158" x2="340" y2="158" stroke="#5ee6a0" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <!-- 터널링 화살표: n전도대 전자 → p가전자대 빈자리 -->
+          <line x1="178" y1="150" x2="158" y2="98" stroke="#f5a623" stroke-width="2"/>
+          <polygon points="158,98 156,108 165,103" fill="#f5a623"/>
+          <text x="120" y="215" fill="#6c7c95" font-size="11">p형</text>
+          <text x="285" y="215" fill="#6c7c95" font-size="11">n형</text>
+        </svg>
+      </div>
+      <div>
+        <p>forward를 약간 걸면 p쪽 밴드가 살짝 내려옵니다. 그러면
+        <span class="hl2">n쪽 전도대의 채워진 전자</span>가
+        <span class="hl3">p쪽 가전자대의 빈자리(홀)</span>와 같은 에너지에서 마주 봅니다.</p>
+        <p>장벽은 여전히 얇으니 전자가 옆으로 <span class="hl">터널링</span>합니다.
+        걸어준 전압을 키울수록 마주 보는 면적이 늘어 → <strong>전류 증가</strong>.</p>
+        <div class="physnote">
+          <p style="margin:0">기억할 규칙: 페르미준위 <span class="hl">아래는 전자로 채움</span>,
+          <span class="hl">위는 비어 있음</span>. 터널링은 "채운 곳 → 빈 곳"으로만 일어납니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 터널 다이오드: 더 forward → 전류 감소(NDR) -->
+  <section class="slide">
+    <div class="kicker">소자 1 · 동작 ②</div>
+    <h2>더 세게 걸면… 오히려 전류 <span class="hl">감소</span></h2>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 360 230" width="360">
+          <text x="14" y="20" fill="#9fb0c7" font-size="11">E ↑</text>
+          <!-- p쪽 밴드 더 내려감 → 정렬 어긋남 -->
+          <path d="M20,40 L150,40 Q170,40 170,120 L170,140 Q170,150 190,150 L340,150" fill="none" stroke="#5b9cff" stroke-width="2"/>
+          <path d="M20,80 L150,80 Q170,80 170,120 L170,140 Q170,150 190,150 L190,190 L340,190" fill="none" stroke="#b388ff" stroke-width="2"/>
+          <line x1="190" y1="163" x2="340" y2="163" stroke="#5ee6a0" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <!-- n전도대 전자가 이제 p쪽 밴드갭(금지대)과 마주봄 -->
+          <text x="60" y="62" fill="#6c7c95" font-size="10">p 밴드갭</text>
+          <line x1="178" y1="152" x2="120" y2="100" stroke="#ff7a85" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="108" y="92" fill="#ff7a85" font-size="11">막힘</text>
+          <text x="120" y="215" fill="#6c7c95" font-size="11">p형</text>
+          <text x="285" y="215" fill="#6c7c95" font-size="11">n형</text>
+        </svg>
+      </div>
+      <div>
+        <p>전압을 더 키우면 p쪽 밴드가 더 내려갑니다. 이제 n쪽 전도대 전자가 마주 보는 건
+        p쪽 <span class="hl3">가전자대가 아니라 금지대(밴드갭)</span> — 갈 자리가 없습니다.</p>
+        <p>게다가 정렬이 어긋나면서 전자가 실제로 건너야 할
+        <span class="hl">유효 장벽이 더 두꺼워집니다</span>.
+        터널링 확률은 두께에 지수적으로 민감해 뚝 떨어지죠.</p>
+        <div class="takeaway">
+          <p style="margin:0"><strong>전압을 올렸는데 전류가 줄어드는 구간</strong> =
+          음의 미분저항(NDR, Negative Differential Resistance).
+          dI/dV &lt; 0 이 핵심.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 터널 다이오드: I-V 전체 + NDR -->
+  <section class="slide">
+    <div class="kicker">소자 1 · I–V 특성</div>
+    <h2>봉우리–골짜기–재상승, 그리고 NDR</h2>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 380 250" width="380">
+          <!-- 축 -->
+          <line x1="50" y1="210" x2="360" y2="210" stroke="#22304a" stroke-width="1.5"/>
+          <line x1="50" y1="30" x2="50" y2="210" stroke="#22304a" stroke-width="1.5"/>
+          <text x="330" y="228" fill="#9fb0c7" font-size="12">V (forward)</text>
+          <text x="20" y="40" fill="#9fb0c7" font-size="12">I</text>
+          <!-- 터널 다이오드 I-V: 상승 → 피크 → 하강(NDR) → 밸리 → 재상승 -->
+          <path d="M50,210 C90,120 110,90 130,90 C155,90 165,150 200,175 C235,195 260,180 360,60"
+                fill="none" stroke="#f5a623" stroke-width="2.5"/>
+          <!-- 피크/밸리 표시 -->
+          <circle cx="130" cy="90" r="4" fill="#5ee6a0"/>
+          <text x="118" y="80" fill="#5ee6a0" font-size="11">peak</text>
+          <circle cx="205" cy="178" r="4" fill="#ff7a85"/>
+          <text x="200" y="198" fill="#ff7a85" font-size="11">valley</text>
+          <!-- NDR 구간 음영 표시 -->
+          <text x="150" y="120" fill="#ff7a85" font-size="11">NDR (dI/dV&lt;0)</text>
+          <text x="290" y="100" fill="#5b9cff" font-size="11">thermionic</text>
+        </svg>
+      </div>
+      <div>
+        <p><strong>① 상승</strong> — 약 forward, 터널링 전류 증가 (→ peak).</p>
+        <p><strong>② 하강(NDR)</strong> — 정렬이 어긋나며 터널링 막힘, 전류 감소 (→ valley).</p>
+        <p><strong>③ 재상승</strong> — 더 키우면 전자가 장벽 <span class="hl2">위로 넘어가는</span>
+        열전자 방출(thermionic emission)이 시작돼 다시 보통 다이오드처럼 전류 증가.</p>
+        <div class="dev-bridge">
+          <p style="margin:0">NDR은 보통의 저항(전압↑→전류↑)과 반대라
+          <span class="hl2">발진기·초고속 스위칭</span> 같은
+          일반 디지털 로직과 다른 회로를 만들 수 있게 해줍니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. LED 도입 -->
+  <section class="slide">
+    <div class="kicker">소자 2 · LED</div>
+    <h2>전자가 "떨어지면서" 빛이 된다</h2>
+    <p class="lead">LED(Light Emitting Diode)도 그냥 pn접합입니다.
+      <span class="hl">forward bias</span>를 걸면 빛이 나옵니다.</p>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 380 220" width="380">
+          <text x="14" y="20" fill="#9fb0c7" font-size="11">E ↑</text>
+          <!-- forward: 장벽 낮아짐, 전자 주입 -->
+          <path d="M20,55 L150,55 Q175,55 175,95 L175,100 Q175,110 200,110 L360,110" fill="none" stroke="#5b9cff" stroke-width="2"/>
+          <text x="200" y="100" fill="#5b9cff" font-size="11">E_c</text>
+          <path d="M20,150 L175,150 Q175,150 175,120 Q175,110 200,110 L200,160 L360,160" fill="none" stroke="#b388ff" stroke-width="2"/>
+          <text x="40" y="142" fill="#b388ff" font-size="11">E_v</text>
+          <!-- 전자(점) 전도대, 홀(원) 가전자대 -->
+          <circle cx="120" cy="55" r="4" fill="#5ee6a0"/>
+          <!-- 재결합 화살표 (전자가 떨어짐) -->
+          <line x1="120" y1="60" x2="120" y2="146" stroke="#f5a623" stroke-width="2"/>
+          <polygon points="120,150 116,140 124,140" fill="#f5a623"/>
+          <!-- 광자 방출 -->
+          <path d="M126,100 q10,-6 20,0 q10,6 20,0" fill="none" stroke="#ffce6b" stroke-width="2"/>
+          <text x="150" y="92" fill="#ffce6b" font-size="11">hν</text>
+          <text x="60" y="205" fill="#6c7c95" font-size="11">p형</text>
+          <text x="300" y="205" fill="#6c7c95" font-size="11">n형</text>
+        </svg>
+      </div>
+      <div>
+        <p>forward를 걸면 내부전위 V<sub>bi</sub>가 낮아져, n쪽 전자와 p쪽 홀이 접합부로
+        밀려 들어옵니다. 거기서 만나면 <span class="hl2">전자가 전도대에서 가전자대의 홀로 떨어집니다</span>
+        (재결합).</p>
+        <p>떨어질 때 잃는 위치에너지(≈ 밴드갭)는 사라지지 않습니다 —
+        <span class="hl">광자(빛)</span>로 튀어나옵니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. LED: 빛의 에너지와 색 -->
+  <section class="slide">
+    <div class="kicker">소자 2 · 색을 설계하다</div>
+    <h2>밴드갭이 곧 색깔이다</h2>
+    <div class="eq">E<span class="sub">photon</span> = hν = hc / λ ≈ E<span class="sub">g</span></div>
+    <div class="eqcap">방출 광자의 에너지는 거의 밴드갭과 같다 (h: 플랑크 상수, c: 광속, ν: 진동수, λ: 파장).</div>
+    <div class="eq">λ ≈ hc / E<span class="sub">g</span>  &nbsp;⇒&nbsp;  λ ∝ 1 / E<span class="sub">g</span></div>
+    <div class="eqcap">파장은 밴드갭에 반비례 — 밴드갭이 크면 파장이 짧다(파랑 쪽), 작으면 길다(빨강 쪽).</div>
+    <div class="physnote mt">
+      <p style="margin:0">실용 어림값: λ(nm) ≈ 1240 / E<sub>g</sub>(eV).
+      예) E<sub>g</sub>≈2.0 eV → 약 620 nm(빨강), E<sub>g</sub>≈2.7 eV → 약 460 nm(파랑).
+      <strong>밴드갭을 설계하면 원하는 색의 LED</strong>를 만들 수 있다는 뜻입니다.</p>
+    </div>
+  </section>
+
+  <!-- 11. LED: 직접/간접 천이 + 물질 -->
+  <section class="slide">
+    <div class="kicker">소자 2 · 왜 실리콘은 안 빛나나</div>
+    <h2>직접천이 vs 간접천이</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">💡</span>직접천이 (direct)</h3>
+        <p style="margin:0">전도대 최저점과 가전자대 최고점의 <span class="hl">운동량이 같음</span>.
+        전자가 그냥 수직으로 떨어지며 곧장 광자를 냄 → 발광 효율 높음.
+        대부분 <strong>화합물 반도체</strong>(GaAs, GaN, InGaN 등).</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🚫</span>간접천이 (indirect)</h3>
+        <p style="margin:0">두 점의 <span class="hl">운동량이 다름</span>. 떨어지려면 포논(격자진동)의
+        도움이 추가로 필요해 확률이 낮음 → 빛 대신 열로 빠짐.
+        <strong>실리콘(Si)</strong>이 대표 — 그래서 Si로는 LED를 잘 못 만듭니다.</p>
+      </div>
+    </div>
+    <table class="compare mt">
+      <tr><th>물질</th><th>유형</th><th>대략 색</th></tr>
+      <tr><td>GaAs / AlGaAs</td><td>직접</td><td>적외선~빨강</td></tr>
+      <tr><td>GaP / GaAsP</td><td>직·간접</td><td>빨강~노랑~초록</td></tr>
+      <tr><td>InGaN / GaN</td><td>직접</td><td>초록~파랑~자외선</td></tr>
+    </table>
+    <p class="note">화합물 반도체는 광학 특성이 좋지만, 대면적 웨이퍼 제조가 Si보다 어려워 비쌉니다.</p>
+  </section>
+
+  <!-- 12. LED: OLED / 마이크로 LED -->
+  <section class="slide">
+    <div class="kicker">소자 2 · 산업 메모</div>
+    <h2>비싼 화합물 vs 저렴한 유기물</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🧪</span>OLED (Organic LED)</h3>
+        <p style="margin:0">반도체 대신 <span class="hl">유기 화합물</span>을 발광층으로 사용.
+        대면적 박막을 싸게 입힐 수 있어 현재 모바일 디스플레이 주류.
+        단, 유기물이라 수명·번인에 약점.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">📺</span>마이크로 LED</h3>
+        <p style="margin:0"><span class="hl2">화합물 반도체</span> 기반의 아주 작은 LED를 촘촘히 배치.
+        밝고 수명이 길다는 장점. 가격(소형 화합물 소자를 대량 전사하는 비용)이 관건이라
+        기술 개발을 지켜볼 분야.</p>
+      </div>
+    </div>
+    <div class="takeaway mt">
+      <p style="margin:0">LED·OLED·마이크로 LED는 표현 방식이 달라도
+      뿌리는 모두 <strong>forward bias 건 pn접합의 발광</strong>이다.</p>
+    </div>
+  </section>
+
+  <!-- 13. 광검출기 & 태양전지 도입 + PIN -->
+  <section class="slide">
+    <div class="kicker">소자 3·4 · 빛을 전기로</div>
+    <h2>이번엔 거꾸로 — 빛을 받아 전류를 만든다</h2>
+    <p class="lead">LED가 "전기 → 빛"이라면, 광검출기와 태양전지는
+      <span class="hl">"빛 → 전기"</span>. 같은 접합을 반대로 쓰는 셈입니다.</p>
+    <div class="band">
+      <svg viewBox="0 0 620 230" width="620">
+        <text x="20" y="22" fill="#9fb0c7" font-size="12">E ↑</text>
+        <!-- p / i / n 구조: 가운데 intrinsic 평탄 경사 -->
+        <path d="M40,70 L210,70 L410,140 L580,140" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+        <text x="48" y="62" fill="#5b9cff" font-size="12">E_c</text>
+        <path d="M40,110 L210,110 L410,180 L580,180" fill="none" stroke="#b388ff" stroke-width="2.5"/>
+        <text x="540" y="200" fill="#b388ff" font-size="12">E_v</text>
+        <!-- i 영역 표시 -->
+        <line x1="210" y1="55" x2="210" y2="195" stroke="#22304a" stroke-dasharray="3 3"/>
+        <line x1="410" y1="55" x2="410" y2="195" stroke="#22304a" stroke-dasharray="3 3"/>
+        <text x="120" y="220" fill="#6c7c95" font-size="12">p형</text>
+        <text x="290" y="220" fill="#f5a623" font-size="12">intrinsic(i)</text>
+        <text x="470" y="220" fill="#6c7c95" font-size="12">n형</text>
+        <!-- 입사광 + EHP 생성 -->
+        <path d="M300,30 l-10,18 l8,0 l-8,18" fill="none" stroke="#ffce6b" stroke-width="2"/>
+        <text x="305" y="40" fill="#ffce6b" font-size="11">hν</text>
+        <circle cx="305" cy="105" r="4" fill="#5ee6a0"/><text x="312" y="102" fill="#5ee6a0" font-size="10">e⁻</text>
+        <circle cx="305" cy="150" r="4" fill="none" stroke="#ff7a85" stroke-width="1.5"/><text x="312" y="158" fill="#ff7a85" font-size="10">h⁺</text>
+      </svg>
+    </div>
+    <p class="note mt">p와 n 사이에 진성(intrinsic) 층을 넣은 <strong>PIN 구조</strong>를 자주 씁니다 —
+      빛을 흡수하는 공핍 영역을 넓혀 효율을 높이려는 것. 지금은 일반 pn으로 생각해도 OK.</p>
+  </section>
+
+  <!-- 14. 광검출기 vs 태양전지 -->
+  <section class="slide">
+    <div class="kicker">소자 3·4 · 같은 원리, 다른 목적</div>
+    <h2>EHP가 흩어지면 전류가 흐른다</h2>
+    <p>빛이 공핍 영역에 들어오면 광자가 가전자대 전자를 전도대로 올려
+      <span class="hl">전자–홀 쌍(EHP)</span>을 만듭니다. 접합부의 내장 전기장이
+      <span class="hl2">전자는 n쪽으로, 홀은 p쪽으로</span> 쓸어 보내 전류가 생깁니다.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">📷</span>광검출기 (Photodetector)</h3>
+        <p style="margin:0"><span class="hl3">reverse bias</span>를 걸어 둠.
+        빛이 오면 전류↑, 안 오면 전류 거의 0 → 빛의 <strong>유무·세기를 "감지"</strong>.
+        카메라 센서, 광통신 수신기 등.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🔋</span>태양전지 (Solar Cell)</h3>
+        <p style="margin:0">외부 바이어스 없이 빛만 받아도 EHP가 분리돼
+        <strong>전압·전류를 스스로 만듦</strong>(광기전효과, photovoltaic).
+        그 전기를 모아 에너지원으로 사용.</p>
+      </div>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">둘의 코어는 같다: <strong>공핍 영역의 빛 흡수 → EHP 생성 → 전기장으로 분리</strong>.
+      "감지하려고 쓰면" 광검출기, "전력을 얻으려고 쓰면" 태양전지일 뿐.</p>
+    </div>
+  </section>
+
+  <!-- 15. Q&A 이해 점검 -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해 보기</h2>
+    <div class="qa">
+      <div class="q">터널 다이오드에서 NDR(음의 미분저항)이 나타나는 이유는?</div>
+      <div class="a">forward를 키우면 처음엔 n쪽 전도대 전자와 p쪽 가전자대 빈자리가 정렬돼 터널링 전류가 늘지만,
+      더 키우면 전자가 마주 보는 곳이 p쪽 밴드갭(금지대)이 되고 유효 장벽도 두꺼워져 터널링이 막힙니다.
+      그래서 전압↑인데 전류↓ — dI/dV &lt; 0.</div>
+    </div>
+    <div class="qa">
+      <div class="q">실리콘으로는 왜 효율 좋은 LED를 만들기 어려운가?</div>
+      <div class="a">Si는 간접천이 물질이라 전자가 떨어질 때 운동량 차이를 메울 포논이 추가로 필요해
+      발광 확률이 낮습니다. 직접천이인 GaAs·GaN 같은 화합물 반도체가 광학적으로 유리합니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">광검출기와 태양전지는 무엇이 같고 무엇이 다른가?</div>
+      <div class="a">같은 점: 공핍 영역에서 빛이 EHP를 만들고 전기장이 이를 분리해 전류를 만든다.
+      다른 점: 광검출기는 reverse bias로 빛을 "감지", 태양전지는 바이어스 없이 빛으로 "전력 생산"(광기전효과).</div>
+    </div>
+  </section>
+
+  <!-- 16. 요약 -->
+  <section class="slide">
+    <div class="kicker">한 장 정리</div>
+    <h2>pn접합 하나로 네 가지 소자</h2>
+    <table class="compare">
+      <tr><th>소자</th><th>설정</th><th>핵심 물리</th><th>방향</th></tr>
+      <tr><td>터널 다이오드</td><td>초고농도 + 약 forward</td><td>밴드-투-밴드 터널링, NDR</td><td>전기→전기(특이 I–V)</td></tr>
+      <tr><td>LED</td><td>forward + 직접천이</td><td>전자–홀 재결합 발광, λ∝1/E<sub>g</sub></td><td>전기→빛</td></tr>
+      <tr><td>광검출기</td><td>reverse + 빛</td><td>빛 흡수→EHP 생성·분리</td><td>빛→전기(감지)</td></tr>
+      <tr><td>태양전지</td><td>빛(무바이어스 가능)</td><td>광기전효과</td><td>빛→전기(발전)</td></tr>
+    </table>
+    <div class="takeaway mt">
+      <p style="margin:0">에너지밴드 다이어그램만 제대로 읽으면, 식을 외우지 않아도
+      소자의 동작과 I–V 특성을 <strong>예측하고 설계</strong>할 수 있다 — 이게 이번 챕터의 진짜 교훈.</p>
+    </div>
+    <p class="note mt">다음 → 이제 pn접합에 전압을 걸었을 때 <strong>전류가 정확히 얼마나 흐르는지</strong>
+      예측하는 다이오드 전류식(이상 다이오드 방정식)을 유도합니다.</p>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

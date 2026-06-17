@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 3 · 금속-반도체(MS) 접합</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 3 · 금속-반도체 접합">
+<div class="deck">
+
+  <!-- 1. 표지 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>금속–반도체(MS) 접합</h1>
+    <p class="hook">금속과 반도체를 그냥 붙이기만 했는데, 어떤 조합은 <span class="hl">다이오드처럼 한쪽으로만</span> 전류를 흘리고, 어떤 조합은 <span class="hl2">저항 없는 전선처럼</span> 양방향으로 흘린다. 그 갈림길은 단 하나, <strong>일함수</strong>다.</p>
+    <p class="hint">방향키 <kbd>→</kbd> <kbd>←</kbd> 또는 화면 좌우 클릭으로 이동</p>
+  </section>
+
+  <!-- 2. 무엇을 -->
+  <section class="slide">
+    <div class="kicker">왜 / 무엇</div>
+    <h2>전선을 칩에 어떻게 붙일까?</h2>
+    <p class="lead">트랜지스터를 아무리 잘 만들어도, 결국 <strong>금속 배선</strong>을 반도체에 붙여서 전기를 넣고 빼야 한다. 그 <span class="hl">금속–반도체 경계면</span>이 바로 이번 챕터의 주인공이다.</p>
+    <div class="keyq mt">
+      <p style="margin:0"><strong>MS 접합(=Schottky 접합)</strong>이란, 금속과 반도체를 붙여 만든 접합이다. 두 재료의 <span class="hl">일함수 차이</span>에 따라 경계면에 에너지 장벽이 생기고, 이 장벽의 성격이 소자 전체의 동작을 결정한다.</p>
+    </div>
+    <div class="dev-bridge mt">
+      <p style="margin:0">PCB에 칩을 솔더링하듯, 반도체 안에서도 소자끼리 신호를 주고받으려면 금속 인터커넥션이 필요하다. 그런데 이 "납땜 지점"이 의도치 않게 <span class="hl2">다이오드</span>가 되어버리면 회로가 망가진다. MS 접합을 이해한다는 건, 이 연결부를 <strong>의도한 대로</strong> 설계한다는 뜻이다.</p>
+    </div>
+  </section>
+
+  <!-- 3. 두 갈래 비유 -->
+  <section class="slide">
+    <div class="kicker">큰 그림</div>
+    <h2>MS 접합은 두 얼굴을 가진다</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🚦</span>Schottky 접합 (정류성)</h3>
+        <p>순방향에선 전류가 흐르고, 역방향에선 막힌다. pn 다이오드와 <strong>겉모습</strong>은 똑같은 정류(rectifying) 작용. 이걸 소자로 쓰면 <span class="hl">Schottky 다이오드</span>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🔌</span>Ohmic 접합 (비정류성)</h3>
+        <p>전압 극성에 상관없이 양방향으로 전류를 술술 흘린다. 저항 작은 전선처럼 행동. 칩 내부 <span class="hl2">배선 연결점</span>은 전부 이걸로 만들어야 한다.</p>
+      </div>
+    </div>
+    <div class="analogy mt">
+      <p style="margin:0">두 동네를 잇는 다리를 떠올려 보자. <strong>Schottky</strong>는 한 방향으로만 차가 넘어갈 수 있는 <span class="hl">언덕 다리</span>(에너지 장벽), <strong>Ohmic</strong>은 양방향 평지 다리다. 같은 재료(금속+반도체)로 만들었는데 무엇이 이 차이를 만들까? → 다음 슬라이드.</p>
+    </div>
+  </section>
+
+  <!-- 4. 금속과 일함수 복습 -->
+  <section class="slide">
+    <div class="kicker">준비물</div>
+    <h2>먼저, 금속을 어떻게 볼까</h2>
+    <ul>
+      <li>금속은 <strong>밴드갭이 0</strong>인 물질로 본다. E<span class="sub">c</span>·E<span class="sub">v</span>·E<span class="sub">F</span>가 사실상 한 레벨에 겹쳐 있다 — 자유전자가 어마어마하게 많다.</li>
+      <li>그래서 전류를 매우 잘 흘리고, 외부에서 여분의 캐리어(Δn, Δp)가 들어와도 <span class="hl">즉시 재결합</span>되어 사라진다. 금속 안에는 <strong>공핍층도, 여분 캐리어도 없다.</strong></li>
+    </ul>
+    <div class="keyq mt">
+      <p style="margin:6px 0 0"><strong>일함수 φ<span class="sub">M</span></strong> = 전자 하나를 페르미 준위에서 진공준위(vacuum level)까지 빼내는 데 드는 에너지.</p>
+      <p style="margin:8px 0 0"><strong>전자친화도 χ</strong> = 반도체의 전도대 E<span class="sub">c</span>에서 진공준위까지의 에너지. (반도체 고유값)</p>
+    </div>
+    <div class="eq">φ<span class="sub">S</span> = χ + (E<span class="sub">c</span> − E<span class="sub">F</span>)</div>
+    <div class="eqcap">반도체의 일함수 — 도핑에 따라 E<span class="sub">F</span>가 움직이므로 φ<span class="sub">S</span>도 변한다. 반면 χ는 고정.</div>
+  </section>
+
+  <!-- 5. 갈림길: 일함수 비교 -->
+  <section class="slide">
+    <div class="kicker">핵심 분기</div>
+    <h2>운명을 가르는 한 줄: φ<span class="sub">M</span> vs φ<span class="sub">S</span></h2>
+    <p>n형 반도체를 붙인다고 하자. 금속과 반도체의 일함수 대소관계가 접합의 성격을 결정한다.</p>
+    <table class="compare">
+      <tr><th>조건 (n형 기준)</th><th>경계면에서</th><th>결과</th></tr>
+      <tr><td>φ<span class="sub">M</span> &gt; φ<span class="sub">S</span></td><td>전자가 빠져나가 공핍층 형성, 밴드가 위로 휘어 장벽 생성</td><td><span class="pill blue">Schottky · 정류성</span></td></tr>
+      <tr><td>φ<span class="sub">M</span> &lt; φ<span class="sub">S</span></td><td>장벽이 없거나 전자가 쌓여 오히려 도와줌</td><td><span class="pill teal">Ohmic · 비정류성</span></td></tr>
+    </table>
+    <div class="physnote mt">
+      <p style="margin:0">왜 일함수가 큰 금속(φ<span class="sub">M</span>&gt;φ<span class="sub">S</span>)일 때 장벽이 생길까? 일함수가 크다는 건 전자를 <strong>더 꽉 붙잡는다</strong>는 뜻. 접합 순간 반도체의 전자가 "더 안정적인" 금속 쪽으로 빠져나가고, 반도체 표면엔 양이온(공핍층)만 남아 밴드가 위로 휜다. 이 휜 언덕이 곧 장벽이다. (p형은 모든 부등호가 반대)</p>
+    </div>
+  </section>
+
+  <!-- 6. 평형 밴드다이어그램 (Schottky) -->
+  <section class="slide">
+    <div class="kicker">에너지 밴드 · 평형(0 V)</div>
+    <h2>Schottky 접합의 평형 밴드</h2>
+    <p>금속(왼쪽)과 n형 반도체(오른쪽), φ<span class="sub">M</span>&gt;φ<span class="sub">S</span>인 경우. 접촉 후 <strong>E<span class="sub">F</span>가 하나로 정렬</strong>되고, 반도체 쪽 밴드는 경계에서 위로 휜다.</p>
+    <div class="band"><svg viewBox="0 0 620 260" width="620">
+      <text x="14" y="20" fill="#9fb0c7" font-size="12">E (에너지) ↑</text>
+      <!-- 진공준위 -->
+      <line x1="40" y1="40" x2="260" y2="40" stroke="#6c7c95" stroke-width="1" stroke-dasharray="3 3"/>
+      <path d="M260,40 Q300,40 300,58 L300,58" fill="none" stroke="#6c7c95" stroke-width="1" stroke-dasharray="3 3"/>
+      <line x1="300" y1="58" x2="580" y2="58" stroke="#6c7c95" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="44" y="34" fill="#6c7c95" font-size="11">진공준위 E₀</text>
+      <!-- 금속 영역 채움 -->
+      <rect x="40" y="150" width="120" height="95" fill="rgba(245,166,35,.10)" stroke="none"/>
+      <line x1="40" y1="150" x2="160" y2="150" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="64" y="200" fill="#f5a623" font-size="12">금속 (E_F)</text>
+      <!-- 장벽 φB 표시 (금속 E_F 에서 Ec 경계까지) -->
+      <line x1="160" y1="150" x2="160" y2="92" stroke="#ff7a85" stroke-width="1.5"/>
+      <text x="166" y="120" fill="#ff7a85" font-size="12">qφ_B</text>
+      <!-- 전도대 Ec : 경계(160)에서 위로 휘었다가 벌크로 -->
+      <path d="M160,92 Q200,92 230,118 T340,150 L580,150" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="540" y="142" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- 페르미 준위 : 수평 (평형) -->
+      <line x1="40" y1="150" x2="580" y2="150" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="500" y="166" fill="#5ee6a0" font-size="12">E_F (수평)</text>
+      <!-- 가전자대 Ev : 같은 형태로 아래에서 휨 -->
+      <path d="M160,150 Q200,150 230,176 T340,208 L580,208" fill="none" stroke="#b388ff" stroke-width="2.5"/>
+      <text x="540" y="200" fill="#b388ff" font-size="12">E_v</text>
+      <!-- 빌트인 전위 qVbi 표시 -->
+      <line x1="230" y1="118" x2="230" y2="150" stroke="#ffce6b" stroke-width="1.3"/>
+      <text x="234" y="138" fill="#ffce6b" font-size="11">qV_bi</text>
+      <!-- 공핍폭 W -->
+      <line x1="160" y1="232" x2="335" y2="232" stroke="#9fb0c7" stroke-width="1" marker-start="" />
+      <text x="225" y="228" fill="#9fb0c7" font-size="11">W (공핍층)</text>
+      <text x="80" y="258" fill="#6c7c95" font-size="11">금속</text>
+      <text x="440" y="258" fill="#6c7c95" font-size="11">n형 반도체</text>
+    </svg></div>
+    <p class="dim" style="margin-top:8px">평형에서 E<span class="sub">F</span>는 수평. 반도체 밴드가 경계에서 위로 휜 양이 곧 <strong>빌트인 전위 qV<span class="sub">bi</span></strong>이고, 금속 E<span class="sub">F</span>에서 본 전도대 턱이 <strong>Schottky 장벽 qφ<span class="sub">B</span></strong>다.</p>
+  </section>
+
+  <!-- 7. 두 가지 장벽 + 식 -->
+  <section class="slide">
+    <div class="kicker">두 개의 높이</div>
+    <h2>장벽엔 "방향"이 있다</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🧱</span>Schottky 장벽 φ<span class="sub">B</span></h3>
+        <p>금속 쪽 전자가 <strong>반도체로 넘어올 때</strong> 보는 턱.</p>
+        <div class="eq">qφ<span class="sub">B</span> = q(<span class="var">φ</span><span class="sub">M</span> − χ)</div>
+        <p class="dim">금속·반도체 재료로 <strong>고정</strong>. 전압을 걸어도 변하지 않는다 — 이게 뒤에서 중요하다.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">⛰️</span>빌트인 전위 V<span class="sub">bi</span></h3>
+        <p>반도체 쪽 전자가 <strong>금속으로 넘어갈 때</strong> 보는 턱.</p>
+        <div class="eq">qV<span class="sub">bi</span> = q(<span class="var">φ</span><span class="sub">M</span> − φ<span class="sub">S</span>)</div>
+        <p class="dim">외부 전압에 따라 <strong>오르내린다.</strong> 순방향이면 낮아지고, 역방향이면 높아진다.</p>
+      </div>
+    </div>
+    <div class="takeaway mt">
+      <p style="margin:0">한 줄 정리: <strong>φ<span class="sub">B</span>는 상수, V<span class="sub">bi</span>는 변수.</strong> 전압을 걸면 휘는 건 반도체 쪽 장벽(V<span class="sub">bi</span>)뿐이고, 금속에서 본 장벽(φ<span class="sub">B</span>)은 그대로 → 정류 작용의 근원.</p>
+    </div>
+  </section>
+
+  <!-- 8. 0V/역바이어스 공핍과 정전용량 -->
+  <section class="slide">
+    <div class="kicker">공핍층 · 정전용량</div>
+    <h2>공핍은 반도체 쪽에만 생긴다</h2>
+    <p>pn 접합과 결정적으로 다른 점: 금속 안에는 자유전자가 넘쳐서 <strong>공핍층이 생기지 않는다.</strong> 노출된 양전하(N<span class="sub">D</span>)는 전부 반도체 쪽에, 그에 대응하는 음전하는 금속 <span class="hl">표면에 시트(sheet)</span>로 모인다.</p>
+    <div class="grid2 mt">
+      <div>
+        <div class="eq">W = √( 2ε(V<span class="sub">bi</span> + V<span class="sub">R</span>) / (q·<span class="var">N</span><span class="sub">D</span>) )</div>
+        <div class="eqcap">공핍폭 — 역바이어스 V<span class="sub">R</span>가 커지면 넓어지고, 도핑 N<span class="sub">D</span>가 진하면 좁아진다. (한쪽 공핍이라 단방향 N<span class="sub">D</span>만 등장)</div>
+      </div>
+      <div>
+        <div class="eq">C / A = ε / W = √( q·ε·<span class="var">N</span><span class="sub">D</span> / 2(V<span class="sub">bi</span>+V<span class="sub">R</span>) )</div>
+        <div class="eqcap">공핍층은 평행판 커패시터처럼 행동. 1/C² 대 V<span class="sub">R</span> 그래프 기울기로 <strong>도핑 N<span class="sub">D</span></strong>를, 절편으로 <strong>V<span class="sub">bi</span></strong>를 측정할 수 있다.</div>
+      </div>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">전기장 E(x)는 경계면에서 <strong>가장 세고</strong>, 공핍층 끝(x=W)에서 0이 된다(경계조건). 이는 푸아송 방정식 ∇·E = ρ/ε을 적분해 얻은 결과로, pn 접합의 n쪽 절반과 수학적으로 똑같다.</p>
+    </div>
+  </section>
+
+  <!-- 9. 순방향 동작: thermionic emission -->
+  <section class="slide">
+    <div class="kicker">순방향 I-V · 동작 원리</div>
+    <h2>전류는 "장벽 뛰어넘기"로 흐른다</h2>
+    <p>금속에 (+)를 거는 순방향: 금속 밴드가 qV만큼 내려가 <strong>반도체 쪽 장벽 V<span class="sub">bi</span>가 낮아진다.</strong> 그러면 반도체의 전자들이 낮아진 언덕을 <span class="hl">열에너지로 뛰어넘어</span> 금속으로 쏟아진다.</p>
+    <div class="band"><svg viewBox="0 0 620 220" width="620">
+      <text x="14" y="20" fill="#9fb0c7" font-size="12">순방향(forward): V_bi 낮아짐 ↓</text>
+      <!-- 금속 EF (qV 만큼 아래로) -->
+      <rect x="40" y="170" width="120" height="40" fill="rgba(245,166,35,.10)"/>
+      <line x1="40" y1="170" x2="160" y2="170" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="62" y="195" fill="#f5a623" font-size="12">금속 E_F</text>
+      <!-- φB 변함없음 -->
+      <line x1="160" y1="170" x2="160" y2="92" stroke="#ff7a85" stroke-width="1.5"/>
+      <text x="166" y="115" fill="#ff7a85" font-size="11">qφ_B (불변)</text>
+      <!-- Ec : 낮아진 작은 언덕 -->
+      <path d="M160,92 Q195,92 220,118 T320,135 L580,135" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="540" y="128" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- 반도체 EF -->
+      <line x1="320" y1="135" x2="580" y2="135" stroke="#5ee6a0" stroke-width="1.3" stroke-dasharray="6 4"/>
+      <text x="500" y="151" fill="#5ee6a0" font-size="11">반도체 E_F</text>
+      <!-- 전자 흐름 화살표 : 반도체→금속 -->
+      <path d="M300,118 L185,118" stroke="#5ee6a0" stroke-width="2" marker-end="url(#ah)"/>
+      <text x="220" y="110" fill="#5ee6a0" font-size="11">e⁻ 다수캐리어</text>
+      <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5ee6a0"/></marker></defs>
+      <text x="80" y="218" fill="#6c7c95" font-size="11">금속</text>
+      <text x="420" y="218" fill="#6c7c95" font-size="11">n형 반도체</text>
+    </svg></div>
+    <p class="dim" style="margin-top:6px">이 "장벽 위로 뛰어넘기"가 바로 <strong>열전자 방출(thermionic emission)</strong>이다.</p>
+  </section>
+
+  <!-- 10. 역바이어스 + I-V 식 -->
+  <section class="slide">
+    <div class="kicker">역바이어스 · I-V 식</div>
+    <h2>역방향: φ<span class="sub">B</span>가 막아선다</h2>
+    <ul>
+      <li>금속에 (−)를 걸면 반도체 밴드 장벽 V<span class="sub">bi</span>는 <strong>더 높아져</strong> 반도체→금속 흐름이 막힌다.</li>
+      <li>반대로 금속→반도체 흐름은? 금속에서 본 장벽 φ<span class="sub">B</span>는 <strong>전압과 무관한 상수</strong>라 거의 안 바뀐다. → 전류는 작은 값에서 <span class="hl">포화(saturation)</span>.</li>
+    </ul>
+    <div class="eq">J = J<span class="sub">S</span> · ( e<span class="sup"> qV/kT</span> − 1 ),&nbsp;&nbsp; J<span class="sub">S</span> = A<span class="sup">*</span>·T<span class="sup">2</span>·e<span class="sup"> −qφ<span class="sub">B</span>/kT</span></div>
+    <div class="eqcap">겉모습은 pn 다이오드의 지수형 식과 똑같다. 하지만 포화전류 J<span class="sub">S</span>는 <strong>Schottky 장벽 φ<span class="sub">B</span></strong>가 지배한다 (A* = Richardson 상수). 학부 수준에선 유도보다 "장벽이 지수에 들어간다"는 의미가 핵심.</div>
+    <div class="physnote mt">
+      <p style="margin:0">왜 pn과 식이 같아 보이는데 원리가 다른가? <strong>pn 다이오드</strong>는 소수캐리어 확산이 주역이지만, <strong>Schottky 다이오드</strong>는 <span class="hl">다수캐리어가 장벽을 열적으로 뛰어넘는</span> 게 주역이다. 소수캐리어 저장이 없어 스위칭이 빠른 게 Schottky의 실전 장점.</p>
+    </div>
+  </section>
+
+  <!-- 11. pn vs Schottky 비교 표 -->
+  <section class="slide">
+    <div class="kicker">정리 비교</div>
+    <h2>pn 다이오드 vs Schottky 다이오드</h2>
+    <table class="compare">
+      <tr><th>항목</th><th>pn 다이오드</th><th>Schottky (MS)</th></tr>
+      <tr><td>주역 캐리어</td><td>소수캐리어 (확산)</td><td><span class="hl">다수캐리어</span> (열전자 방출)</td></tr>
+      <tr><td>공핍층</td><td>양쪽(p·n) 모두</td><td>반도체 쪽 <strong>한쪽만</strong></td></tr>
+      <tr><td>순방향 문턱전압</td><td>높음 (~0.7 V, Si)</td><td>낮음 (~0.2–0.4 V)</td></tr>
+      <tr><td>스위칭 속도</td><td>느림 (소수캐리어 저장)</td><td><span class="hl2">빠름</span> (저장 거의 없음)</td></tr>
+      <tr><td>I-V 형태</td><td colspan="2" style="text-align:center">둘 다 J = J<span class="sub">S</span>(e<span class="sup">qV/kT</span>−1) — <span class="dim">모양은 같고 원리가 다르다</span></td></tr>
+    </table>
+    <div class="dev-bridge mt">
+      <p style="margin:0">전원회로의 정류·클램핑에 Schottky 다이오드를 쓰는 이유가 바로 이 표에 다 있다. 낮은 순방향 강하 = 손실 적음, 빠른 스위칭 = 고주파 대응. "같은 인터페이스(I-V 식), 다른 구현(캐리어 메커니즘)"인 셈.</p>
+    </div>
+  </section>
+
+  <!-- 12. 비이상 효과 + Ohmic 만들기(터널링) -->
+  <section class="slide">
+    <div class="kicker">비이상 효과 · Ohmic 만들기</div>
+    <h2>현실에서 Ohmic은 "터널링"으로 만든다</h2>
+    <p>이론상 Ohmic 접합은 φ<span class="sub">M</span>을 잘 골라 만들 수 있다. 하지만 실제 칩은 한 영역에 n·p가 섞여 있고 도핑 농도도 제각각이라, <strong>금속을 매번 바꾸는 건 공정상 불가능</strong>하다. 그래서 금속은 하나로 고정하고 <span class="hl">도핑 농도</span>로 해결한다.</p>
+    <div class="grid2 mt">
+      <div class="card">
+        <h3><span class="ico">📏</span>고농도 도핑 → 얇은 장벽</h3>
+        <p>반도체를 아주 진하게 도핑(n⁺/p⁺)하면 E<span class="sub">F</span>가 E<span class="sub">c</span>에 바짝 붙고, 공핍폭 W ∝ 1/√N<span class="sub">D</span> 라 장벽이 <strong>극도로 얇아진다.</strong></p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">👻</span>양자 터널링</h3>
+        <p>장벽이 충분히 얇으면 전자는 넘지 않고 <strong>벽을 그냥 통과</strong>(tunneling)한다. 높이는 그대로여도 두께가 얇아 전류가 술술 → 전기적으로 Ohmic처럼 동작.</p>
+      </div>
+    </div>
+    <div class="analogy mt">
+      <p style="margin:0">담장이 높아도 <span class="hl">종이처럼 얇으면</span> 그냥 뚫고 지나갈 수 있는 것과 비슷하다. 실전 Ohmic 컨택은 "장벽 낮추기"가 아니라 "<strong>장벽 얇게 만들어 터널링시키기</strong>"가 정답이다.</p>
+    </div>
+  </section>
+
+  <!-- 13. 이종접합(heterojunction) -->
+  <section class="slide">
+    <div class="kicker">이종접합 (Heterojunction)</div>
+    <h2>서로 다른 두 반도체를 붙이면</h2>
+    <p>같은 재료끼리 붙이면 동종접합(homojunction), <strong>다른 반도체끼리</strong> 붙이면 이종접합. 밴드갭이 다른 두 물질이 만나면 경계에서 밴드에 <span class="hl">계단(band offset)</span>이 생긴다.</p>
+    <ul>
+      <li><strong>그리는 법:</strong> 진공준위 기준으로 각 물질의 χ(전자친화도)로 E<span class="sub">c</span> 위치를 고정 → 나머지는 E<span class="sub">F</span>를 수평으로 맞추면 끝. (지금까지와 같은 방법)</li>
+      <li><strong>제약 — 격자 정합:</strong> 두 결정의 격자상수 a가 거의 같아야 한다. 미스매치가 대략 <span class="hl2">0.2% 이내</span>가 아니면 접합부에 응력이 쌓여 필름이 깨진다. 그래서 화합물 조성을 미세 조정해 a를 맞춘다.</li>
+    </ul>
+    <div class="physnote mt">
+      <p style="margin:0"><strong>활용 — 2DEG / HEMT:</strong> 밴드 계단으로 만든 좁은 "우물"에 전자를 가두면, 도핑된 불순물과 떨어져 산란이 줄어 <span class="hl">이동도(mobility)가 급상승</span>한다. 도핑은 옆 물질(AlGaAs)에만 하고 전자는 무도핑 GaAs 우물을 달리게 하는 구조 → 고속 트랜지스터. 핵심은 "밴드 다이어그램만 잘 그리면 어떤 접합이든 해석된다"는 것.</p>
+    </div>
+  </section>
+
+  <!-- 14. 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 확인해보기</h2>
+    <div class="qa">
+      <div class="q">n형 반도체에 φ<span class="sub">M</span> &gt; φ<span class="sub">S</span>인 금속을 붙이면 Schottky일까 Ohmic일까?</div>
+      <div class="a">Schottky(정류성). 일함수 큰 금속이 반도체 전자를 끌어가 표면에 공핍층이 생기고, 밴드가 위로 휘어 장벽 qφ<span class="sub">B</span>=q(φ<span class="sub">M</span>−χ)이 형성된다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">역바이어스를 더 키워도 Schottky 다이오드 전류가 거의 안 늘어나는 이유는?</div>
+      <div class="a">금속→반도체로 넘는 전자가 보는 장벽 φ<span class="sub">B</span>는 전압과 무관한 <strong>상수</strong>이기 때문. 그래서 J<span class="sub">S</span>=A*T²e^(−qφ<span class="sub">B</span>/kT)에서 멈춰 포화된다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">Ohmic 컨택을 만들 때 금속이 아니라 도핑을 조절하는 이유와 그 물리는?</div>
+      <div class="a">공정상 금속은 하나로 고정해야 하므로. n⁺/p⁺로 진하게 도핑하면 공핍폭 W가 매우 얇아지고, 전자가 장벽을 <strong>터널링</strong>해 양방향으로 전류가 잘 흐른다.</div>
+    </div>
+  </section>
+
+  <!-- 15. 핵심 요약 -->
+  <section class="slide">
+    <div class="kicker">핵심 요약</div>
+    <h2>한 챕터를 한 화면에</h2>
+    <div class="grid2">
+      <ul>
+        <li><strong>갈림길은 일함수.</strong> n형에서 φ<span class="sub">M</span>&gt;φ<span class="sub">S</span> → Schottky, φ<span class="sub">M</span>&lt;φ<span class="sub">S</span> → Ohmic.</li>
+        <li><strong>φ<span class="sub">B</span>=φ<span class="sub">M</span>−χ는 상수</strong>(전압 무관), V<span class="sub">bi</span>=φ<span class="sub">M</span>−φ<span class="sub">S</span>는 전압에 따라 변한다.</li>
+        <li><strong>공핍은 반도체 한쪽만.</strong> C–V로 N<span class="sub">D</span>·V<span class="sub">bi</span> 측정 가능.</li>
+      </ul>
+      <ul>
+        <li><strong>전류 = 열전자 방출</strong>(다수캐리어). I-V는 pn과 같은 모양, 원리는 다르고 스위칭이 빠르다.</li>
+        <li><strong>실전 Ohmic = 고농도 도핑 + 터널링</strong>(장벽 얇게).</li>
+        <li><strong>이종접합</strong>은 격자정합이 관건, 2DEG로 고속 소자.</li>
+      </ul>
+    </div>
+    <div class="takeaway mt">
+      <p style="margin:0">면접 한 줄: "Schottky는 금속의 일함수가 만든 <strong>다수캐리어 장벽</strong>이고, 같은 MS 접합도 <strong>고농도 도핑으로 터널링</strong>시키면 Ohmic 컨택이 된다."</p>
+    </div>
+    <div class="note mt">다음 → MOS 커패시터: 금속·산화막·반도체가 만나는 진짜 트랜지스터의 심장으로.</div>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

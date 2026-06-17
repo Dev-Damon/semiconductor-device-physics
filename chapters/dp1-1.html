@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 1-1 · pn접합 정성적 이해</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 1 · 1-1 pn접합 정성적 이해">
+<div class="deck">
+
+  <!-- 1. 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>pn접합, 식 없이 <span class="hl">그림으로</span> 이해하기</h1>
+    <p class="hook">p형과 n형 반도체를 딱 붙였을 뿐인데, 접합 근처에서 저절로 전기장이 생기고 밴드가 휘어집니다. 왜 그런 일이 벌어지는지 — 수식 한 줄 없이 에너지 밴드 다이어그램만으로 따라가 봅니다.</p>
+    <p class="hint">→ / Space 로 넘기기 · <kbd>←</kbd> <kbd>→</kbd> 방향키</p>
+  </section>
+
+  <!-- 2. 무엇을 -->
+  <section class="slide">
+    <div class="kicker">무엇을 배우나</div>
+    <h2>pn접합 = 다이오드의 심장</h2>
+    <p class="lead">서로 다르게 도핑된 두 반도체, <span class="hl2">n형</span>과 <span class="hl3">p형</span>을 하나로 붙인 것. 이 "이음매(junction)"가 트랜지스터·다이오드·태양전지의 가장 기본 부품입니다.</p>
+    <div class="keyq">
+      <p style="margin:0"><strong>pn접합</strong>이란, 전자가 많은 n형 영역과 정공(hole)이 많은 p형 영역이 맞붙어 만들어지는 경계 구조다. 평형 상태에서는 접합 근처에 <span class="hl">캐리어가 비어버린 영역</span>과 <span class="hl">내부 전기장</span>이 저절로 생긴다.</p>
+    </div>
+    <div class="note mt">이번 장은 "정성적" 이해가 목표 — 공식 유도는 다음 장에서. 지금은 그림으로 직관을 잡습니다.</div>
+  </section>
+
+  <!-- 3. 개발자 비유 -->
+  <section class="slide">
+    <div class="kicker">먼저 직관부터</div>
+    <h2>두 개의 방을 연결하면 생기는 일</h2>
+    <div class="grid2">
+      <div class="analogy">
+        <p style="margin:0">향수를 잔뜩 뿌린 방과 깨끗한 방 사이의 문을 열면, 향 분자는 <strong>진한 쪽 → 옅은 쪽</strong>으로 저절로 퍼집니다. 누가 밀지 않아도요. 이게 <span class="hl">확산(diffusion)</span> — 농도 차이만으로 일어나는 이동입니다.</p>
+      </div>
+      <div class="dev-bridge">
+        <p style="margin:0">캐시가 꽉 찬 노드와 텅 빈 노드를 연결하면 데이터가 <strong>꽉 찬 쪽 → 빈 쪽</strong>으로 흐르죠(로드 밸런싱). 흐르다 보면 양쪽 압력이 같아져 멈춥니다. pn접합도 똑같이 <span class="hl2">"흐르다가 스스로 균형점에서 멈추는"</span> 시스템입니다.</p>
+      </div>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">반도체에서 움직이는 "분자"는 두 종류: <span class="hl2">전자(− 전하)</span>와 <span class="hl3">정공(+ 전하)</span>. 둘 다 농도 차가 있으면 확산합니다.</p>
+    </div>
+  </section>
+
+  <!-- 4. 붙이기 전: 두 조각 -->
+  <section class="slide">
+    <div class="kicker">출발점</div>
+    <h2>붙이기 전 — 각자 중성(neutral)</h2>
+    <p>도핑이란 불순물 원자를 넣어 캐리어를 만드는 일입니다. 단, 중요한 약속: 떨어진 캐리어는 움직이지만, <strong>불순물 원자핵 자체는 격자에 박혀 못 움직입니다</strong>. 이것을 <span class="hl">고정 전하(fixed charge)</span>라 부릅니다.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🔵</span> n형 (도너 도핑)</h3>
+        <p style="margin:0">인(P)·비소(As) 같은 <strong>도너</strong>를 넣으면 전자를 하나씩 내놓습니다. 자유전자(−)가 많아지고, 전자를 잃은 도너는 <span class="hl2">(+) 고정 전하</span>로 남습니다.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🟣</span> p형 (억셉터 도핑)</h3>
+        <p style="margin:0">붕소(B)·인듐(In) 같은 <strong>억셉터</strong>는 전자를 하나 받아들여 정공(+)을 만듭니다. 전자를 받은 억셉터는 <span class="hl3">(−) 고정 전하</span>로 남습니다.</p>
+      </div>
+    </div>
+    <div class="keyq mt">
+      <p style="margin:0"><strong>전하 중성(charge neutrality):</strong> 각 조각 안에서는 자유 캐리어(±)와 고정 이온(∓)이 정확히 상쇄돼 전체 전하 = 0. 그래서 붙이기 전엔 양쪽 다 "겉보기 중성"입니다.</p>
+    </div>
+  </section>
+
+  <!-- 5. 확산 시작 -->
+  <section class="slide">
+    <div class="kicker">접합 직후 ①</div>
+    <h2>맞붙이면 — 캐리어가 확산한다</h2>
+    <p>n형 왼쪽엔 전자가 바글바글, p형 오른쪽엔 전자가 거의 없습니다. 정공은 정반대. 경계를 사이에 두고 <span class="hl">엄청난 농도 차</span>가 생기죠. 그래서:</p>
+    <div class="diagram">
+      <svg viewBox="0 0 600 200" width="600">
+        <rect x="40" y="40" width="240" height="120" fill="rgba(91,156,255,.10)" stroke="#5b9cff" stroke-width="1.5"/>
+        <rect x="320" y="40" width="240" height="120" fill="rgba(179,136,255,.10)" stroke="#b388ff" stroke-width="1.5"/>
+        <text x="150" y="30" fill="#5b9cff" font-size="14" text-anchor="middle" font-family="monospace">n형 (전자 多)</text>
+        <text x="440" y="30" fill="#b388ff" font-size="14" text-anchor="middle" font-family="monospace">p형 (정공 多)</text>
+        <line x1="300" y1="30" x2="300" y2="170" stroke="#22304a" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- 전자 확산: n -> p (오른쪽) -->
+        <text x="120" y="80" fill="#5b9cff" font-size="13" font-family="monospace">e⁻ e⁻ e⁻</text>
+        <line x1="210" y1="76" x2="330" y2="76" stroke="#5b9cff" stroke-width="2" marker-end="url(#ar1)"/>
+        <text x="350" y="80" fill="#9fb0c7" font-size="12" font-family="monospace">전자 확산 →</text>
+        <!-- 정공 확산: p -> n (왼쪽) -->
+        <text x="420" y="135" fill="#b388ff" font-size="13" font-family="monospace">h⁺ h⁺ h⁺</text>
+        <line x1="400" y1="131" x2="270" y2="131" stroke="#b388ff" stroke-width="2" marker-end="url(#ar2)"/>
+        <text x="120" y="135" fill="#9fb0c7" font-size="12" font-family="monospace">← 정공 확산</text>
+        <defs>
+          <marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5b9cff"/></marker>
+          <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b388ff"/></marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0"><strong>전자는 오른쪽(n→p)으로, 정공은 왼쪽(p→n)으로</strong> 확산합니다. 둘 다 "진한 데서 옅은 데로". 누가 시킨 게 아니라 농도 기울기 때문에 저절로.</p>
+    </div>
+  </section>
+
+  <!-- 6. 재결합 -->
+  <section class="slide">
+    <div class="kicker">접합 직후 ②</div>
+    <h2>건너간 캐리어는 — 재결합해 사라진다</h2>
+    <p class="lead">확산해 넘어간 전자는 반대편(p형)에 가득한 정공과 만나 <span class="hl">재결합(recombination)</span>합니다. 정공도 n형으로 넘어가 전자와 만나 사라지죠. 마치 +1과 −1이 만나 0이 되듯.</p>
+    <div class="flow mt">
+      <div class="box">전자 n→p</div>
+      <div class="arrow">+</div>
+      <div class="box">정공(p형)</div>
+      <div class="arrow">→</div>
+      <div class="box on">재결합 = 소멸</div>
+    </div>
+    <div class="note mt">결과: 접합 바로 근처에서는 자유 캐리어(전자·정공)가 점점 비어갑니다. 그런데 — 무언가가 남습니다. 다음 슬라이드.</div>
+  </section>
+
+  <!-- 7. 공핍층 형성 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ①</div>
+    <h2>공핍층(depletion region)이 남는다</h2>
+    <p>전자가 빠져나간 n쪽 경계에는 <strong>움직이지 못하는 도너 (+)이온</strong>만 남습니다. 정공이 빠져나간 p쪽 경계에는 <strong>억셉터 (−)이온</strong>만 남죠. 자유 캐리어가 텅 빈 이 영역이 <span class="hl">공핍층</span>입니다.</p>
+    <div class="diagram">
+      <svg viewBox="0 0 600 190" width="600">
+        <rect x="40" y="40" width="180" height="100" fill="rgba(91,156,255,.10)" stroke="#5b9cff" stroke-width="1.5"/>
+        <rect x="220" y="40" width="160" height="100" fill="rgba(245,166,35,.07)" stroke="#f5a623" stroke-width="1.5"/>
+        <rect x="380" y="40" width="180" height="100" fill="rgba(179,136,255,.10)" stroke="#b388ff" stroke-width="1.5"/>
+        <text x="130" y="30" fill="#5b9cff" font-size="13" text-anchor="middle" font-family="monospace">n 중성</text>
+        <text x="300" y="30" fill="#f5a623" font-size="13" text-anchor="middle" font-family="monospace">공핍층</text>
+        <text x="470" y="30" fill="#b388ff" font-size="13" text-anchor="middle" font-family="monospace">p 중성</text>
+        <!-- n쪽 + 고정전하 -->
+        <text x="235" y="75" fill="#5b9cff" font-size="16" font-family="monospace">+ + +</text>
+        <text x="235" y="105" fill="#5b9cff" font-size="16" font-family="monospace">+ + +</text>
+        <!-- p쪽 - 고정전하 -->
+        <text x="320" y="75" fill="#b388ff" font-size="16" font-family="monospace">− − −</text>
+        <text x="320" y="105" fill="#b388ff" font-size="16" font-family="monospace">− − −</text>
+        <line x1="300" y1="40" x2="300" y2="140" stroke="#22304a" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="130" y="95" fill="#9fb0c7" font-size="12" text-anchor="middle" font-family="monospace">e⁻ 가득</text>
+        <text x="470" y="95" fill="#9fb0c7" font-size="12" text-anchor="middle" font-family="monospace">h⁺ 가득</text>
+        <text x="300" y="165" fill="#6c7c95" font-size="11" text-anchor="middle" font-family="monospace">자유 캐리어 = 0, 고정 이온만 남음</text>
+      </svg>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">다른 교재는 "공간전하영역(space charge region)"이라 부릅니다 — 양·음 고정 전하가 공간적으로 떨어져 분포하기 때문. 같은 영역의 다른 이름입니다.</p>
+    </div>
+  </section>
+
+  <!-- 8. 내부 전기장 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ②</div>
+    <h2>고정 전하가 만드는 내부 전기장</h2>
+    <p>공핍층 한쪽은 (+)이온, 반대쪽은 (−)이온. 떨어진 +/− 전하 사이에는 반드시 전기장이 생깁니다. 전기장은 언제나 <strong>(+)에서 (−) 방향</strong> — 즉 <span class="hl2">n쪽 → p쪽</span>으로 향합니다. 이것이 <span class="hl">내부 전기장(built-in E-field)</span>.</p>
+    <div class="diagram">
+      <svg viewBox="0 0 600 150" width="600">
+        <text x="235" y="55" fill="#5b9cff" font-size="18" font-family="monospace">+ + +</text>
+        <text x="320" y="55" fill="#b388ff" font-size="18" font-family="monospace">− − −</text>
+        <line x1="230" y1="90" x2="370" y2="90" stroke="#f5a623" stroke-width="2.5" marker-end="url(#aE)"/>
+        <text x="280" y="115" fill="#f5a623" font-size="14" text-anchor="middle" font-family="monospace">ε (내부 전기장)</text>
+        <text x="120" y="95" fill="#6c7c95" font-size="12" font-family="monospace">n형</text>
+        <text x="470" y="95" fill="#6c7c95" font-size="12" font-family="monospace">p형</text>
+        <defs><marker id="aE" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#f5a623"/></marker></defs>
+      </svg>
+    </div>
+    <div class="dev-bridge mt">
+      <p style="margin:0">시스템이 입력 없이 스스로 상태(전기장)를 만들어낸 셈입니다. 외부 전압 0인데도 내부엔 전위차가 생긴 것 — 이걸 <span class="hl2">내부 전위(built-in potential)</span>라 부릅니다.</p>
+    </div>
+  </section>
+
+  <!-- 9. 밴드다이어그램: 평형 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ③</div>
+    <h2>에너지 밴드로 보면 — E_F는 수평, 밴드는 휜다</h2>
+    <p>평형 상태에서 가장 중요한 규칙 한 가지: <span class="hl">페르미 준위 E<span style="font-size:.8em">F</span>는 전 영역에서 수평(일직선)</span>이어야 합니다. n쪽은 E_F가 위(전자 多), p쪽은 E_F가 아래(정공 多)에 있으니, 둘을 맞추려면 가운데서 밴드가 휘어질 수밖에 없습니다.</p>
+    <div class="band">
+      <svg viewBox="0 0 600 230" width="600">
+        <text x="20" y="20" fill="#9fb0c7" font-size="12">E (전자 에너지) ↑</text>
+        <!-- E_F : 수평 점선 -->
+        <line x1="40" y1="120" x2="560" y2="120" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="500" y="113" fill="#5ee6a0" font-size="13" font-family="monospace">E_F (수평)</text>
+        <!-- E_c : n쪽 낮음(E_F 근처) → p쪽 높음 -->
+        <path d="M40,95 L220,95 Q300,95 300,55 Q300,40 380,40 L560,40" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+        <text x="50" y="88" fill="#5b9cff" font-size="13" font-family="monospace">E_c</text>
+        <text x="510" y="34" fill="#5b9cff" font-size="13" font-family="monospace">E_c</text>
+        <!-- E_v : n쪽 낮음 → p쪽 높음(E_F 근처) -->
+        <path d="M40,185 L220,185 Q300,185 300,145 Q300,130 380,130 L560,130" fill="none" stroke="#b388ff" stroke-width="2.5"/>
+        <text x="50" y="178" fill="#b388ff" font-size="13" font-family="monospace">E_v</text>
+        <text x="510" y="146" fill="#b388ff" font-size="13" font-family="monospace">E_v</text>
+        <!-- 공핍층 표시 -->
+        <line x1="220" y1="35" x2="220" y2="200" stroke="#22304a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="380" y1="35" x2="380" y2="200" stroke="#22304a" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="300" y="215" fill="#f5a623" font-size="12" text-anchor="middle" font-family="monospace">공핍층(밴드 휘어짐)</text>
+        <text x="120" y="215" fill="#6c7c95" font-size="12" text-anchor="middle">n형</text>
+        <text x="470" y="215" fill="#6c7c95" font-size="12" text-anchor="middle">p형</text>
+      </svg>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">n쪽은 E_c가 E_F에 가깝고(전자 多), p쪽은 E_v가 E_F에 가깝습니다(정공 多). E_F를 한 직선에 맞추는 순간, p쪽 밴드 전체가 위로 들려 <strong>오른쪽으로 갈수록 올라가는</strong> 모양이 됩니다.</p>
+    </div>
+  </section>
+
+  <!-- 10. 밴드 휨 = 전기장 + 장벽 -->
+  <section class="slide">
+    <div class="kicker">밴드를 읽는 법</div>
+    <h2>휜 밴드 = 전기장의 존재 + 에너지 장벽</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">⚡</span> 밴드 기울기 = 전기장</h3>
+        <p style="margin:0">밴드가 기울어진 곳엔 전기장이 있습니다. 여기선 밴드가 <strong>오른쪽으로 올라가는(+기울기)</strong> 모양 → 전기장 방향은 n쪽에서 p쪽(왼→오)으로. 앞 슬라이드의 내부 전기장과 정확히 일치합니다.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">⛰️</span> 휨의 높이 = 에너지 장벽</h3>
+        <p style="margin:0">n쪽의 전자가 p쪽으로 가려면, 들려 올라간 밴드 = <span class="hl">언덕</span>을 넘어야 합니다. 이 언덕 높이가 곧 내부 전위에 해당하는 <strong>에너지 장벽</strong>입니다.</p>
+      </div>
+    </div>
+    <div class="keyq mt">
+      <p style="margin:0">전자는 "에너지가 낮은 골짜기"에 머물려 합니다. 페르미-디랙 분포에 따라 <span class="hl">높은 에너지 상태를 차지할 확률은 지수적으로(exponential) 작아지므로</span>, 대부분의 전자는 언덕을 못 넘고 n쪽에 그대로 머뭅니다.</p>
+    </div>
+  </section>
+
+  <!-- 11. 확산 vs 드리프트 균형 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ④</div>
+    <h2>평형 = 확산과 드리프트가 정확히 상쇄</h2>
+    <p>두 가지 힘이 전자에게 동시에 작용합니다 — 방향이 정반대입니다.</p>
+    <table class="compare">
+      <tr><th>힘</th><th>원인</th><th>전자에게 작용하는 방향</th></tr>
+      <tr><td>확산(diffusion)</td><td>농도 차 (n에 전자 多)</td><td>n → p (오른쪽)</td></tr>
+      <tr><td>드리프트(drift)</td><td>내부 전기장 ε</td><td>p → n (왼쪽) *</td></tr>
+    </table>
+    <p class="dim" style="font-size:14px;margin-top:-6px">* 전기장은 n→p 방향이지만, 전자는 (−)전하라 전기장 반대 방향으로 힘을 받습니다. 그래서 전자의 드리프트는 p→n.</p>
+    <div class="physnote">
+      <p style="margin:0"><strong>평형의 정의:</strong> 확산하려는 흐름과, 전기장이 되밀어내는 드리프트 흐름이 <span class="hl">크기는 같고 방향은 반대</span>가 되어 알짜 전류 = 0. 캐리어들이 더는 순이동하지 않고 멈춘 상태입니다. (정공도 똑같이 두 힘이 상쇄됩니다.)</p>
+    </div>
+    <div class="note mt">두 관점은 같은 이야기: ① "전기장이 확산을 막는다" ② "전자가 에너지 장벽을 못 넘는다". 편한 쪽으로 이해하면 됩니다.</div>
+  </section>
+
+  <!-- 12. 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 확인해 보기</h2>
+    <div class="qa">
+      <div class="q">평형 상태 pn접합에서 페르미 준위 E_F는 어떻게 그려지나요?</div>
+      <div class="a">전 영역에서 <strong>수평(일직선)</strong>으로 그립니다. 그래야 평형 조건을 만족합니다. E_F를 맞추는 과정에서 E_c·E_v 밴드가 접합부에서 휘어지게 됩니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">공핍층 안에는 정말 아무 전하도 없나요?</div>
+      <div class="a">움직이는 <strong>자유 캐리어</strong>(전자·정공)는 거의 0입니다. 하지만 <span class="hl">움직이지 못하는 고정 이온</span>(n쪽 +도너, p쪽 −억셉터)은 그대로 남아 있어, 이들이 내부 전기장을 만듭니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">내부 전기장의 방향은? 그리고 무슨 역할을 하나요?</div>
+      <div class="a"><strong>n쪽(+) → p쪽(−)</strong> 방향입니다. 이 전기장은 전자·정공의 추가 확산을 <span class="hl">되밀어 막는</span> 역할을 해서, 결국 확산과 드리프트가 균형을 이루고 알짜 이동이 0이 됩니다.</div>
+    </div>
+  </section>
+
+  <!-- 13. 요약 -->
+  <section class="slide">
+    <div class="kicker">한 장 요약</div>
+    <h2>평형 pn접합, 한눈에</h2>
+    <div class="flow">
+      <div class="box">확산</div>
+      <div class="arrow">→</div>
+      <div class="box">재결합</div>
+      <div class="arrow">→</div>
+      <div class="box">공핍층</div>
+      <div class="arrow">→</div>
+      <div class="box">고정전하</div>
+      <div class="arrow">→</div>
+      <div class="box on">내부 전기장 → 균형</div>
+    </div>
+    <ul class="mt">
+      <li><span class="hl2">확산:</span> 전자는 n→p, 정공은 p→n으로 농도 차 따라 이동 → 반대편에서 재결합해 소멸.</li>
+      <li><span class="hl">공핍층:</span> 접합 근처에 자유 캐리어가 비고, 움직이지 못하는 고정 이온(+/−)만 남는다.</li>
+      <li><span class="hl3">내부 전기장:</span> 고정 전하가 n→p 방향 전기장을 만들고, 이는 추가 확산을 막는다.</li>
+      <li><span class="hl">밴드:</span> 평형에서 E_F 수평, 밴드는 접합부에서 휘어짐(p쪽이 위) → 전자에겐 에너지 장벽.</li>
+      <li><strong>평형:</strong> 확산력 = 드리프트력, 알짜 전류 0.</li>
+    </ul>
+    <div class="takeaway">
+      <p style="margin:0">"pn접합은 캐리어 확산 → 재결합 → 공핍층의 고정 전하가 내부 전기장(=내부 전위)을 만들고, 그 전기장이 확산을 정확히 상쇄해 평형에 이른다. 밴드 그림에서는 E_F가 수평, 밴드가 휘어진 모습으로 나타난다."</p>
+    </div>
+    <div class="note mt">다음 → <span class="hl">1-2</span>: 여기에 외부 전압을 걸면? 순방향/역방향 바이어스와 다이오드의 정류(I-V) 특성으로 들어갑니다.</div>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

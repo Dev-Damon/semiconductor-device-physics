@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 0 · 에너지밴드·전기장·전위</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 0 · 에너지밴드·전기장·전위">
+<div class="deck">
+
+  <!-- 1) 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>반도체를 읽는 <span class="hl">언어</span> 배우기</h1>
+    <p class="hook">pn접합, 다이오드, MOSFET — 결국 우리가 가려는 곳은 칩 속 트랜지스터다.
+      그런데 그 동작을 "물리적으로" 설명하려면 먼저 공통 어휘가 필요하다.
+      전기장 · 전위 · 에너지밴드. 이번 0장에서 그 도구상자를 챙긴다.</p>
+    <p class="hint">방향키 <kbd>→</kbd> <kbd>←</kbd> 또는 화면 좌우 클릭으로 이동</p>
+  </section>
+
+  <!-- 2) 이 강의가 무엇을 향하는가 -->
+  <section class="slide">
+    <div class="kicker">강의 전체 지도</div>
+    <h2>우리는 결국 <span class="hl">MOSFET</span>까지 간다</h2>
+    <p class="lead">반도체 "소자(device)" — 칩을 이루는 가장 작은 기능 단위 한 개의
+      <strong>물리적 동작 원리</strong>를 이해하는 것이 목표다.</p>
+    <div class="flow mt">
+      <div class="box">pn 접합</div><div class="arrow">→</div>
+      <div class="box">다이오드 I-V</div><div class="arrow">→</div>
+      <div class="box">금속-반도체 접합</div><div class="arrow">→</div>
+      <div class="box">MOS 캐패시터</div><div class="arrow">→</div>
+      <div class="box on">MOSFET</div>
+    </div>
+    <p class="mt dim">스마트폰 칩 한 개에는 MOSFET이 수십억 개 들어 있다. 그 한 개를 제대로
+      이해하면 칩 전체를 이해하는 밑바탕이 생긴다. 이 0장은 그 여정의 <span class="hl">준비물</span>이다.</p>
+  </section>
+
+  <!-- 3) 왜 이 도구가 필요한가 (핵심 정의) -->
+  <section class="slide">
+    <div class="kicker">왜 이걸 먼저 배우나</div>
+    <h2>반도체 안에서 전자는 <span class="hl">힘</span>을 받아 움직인다</h2>
+    <div class="keyq">
+      소자 동작은 결국 "전자와 정공이 어디로, 왜 움직이는가"의 이야기다.
+      그 움직임을 정량적으로 말하려면 <strong>전기장 E</strong>(어떤 힘이 작용하는가),
+      <strong>전위 V</strong>(에너지 지형은 어떻게 생겼는가),
+      <strong>에너지밴드</strong>(전자가 앉을 수 있는 자리는 어디인가) — 이 세 가지 언어가 있어야 한다.
+    </div>
+    <div class="dev-bridge mt">
+      소프트웨어로 비유하면, 본격적인 코드를 짜기 전에 먼저 <strong>타입과 자료구조</strong>를 정의하는 단계다.
+      전기장·전위·밴드는 앞으로 모든 챕터에서 재사용할 공용 라이브러리라고 생각하면 된다.
+    </div>
+  </section>
+
+  <!-- 4) 전기장 직관 -->
+  <section class="slide">
+    <div class="kicker">도구 ① 전기장 E</div>
+    <h2><span class="hl">전기장</span> = 단위 양전하가 받는 힘</h2>
+    <p>공간 어딘가에 전하 <span class="hl">+Q</span>가 있으면, 그 주변 공간의 "성질"이 바뀐다.
+      이제 다른 전하 <span class="hl2">+q</span>를 어느 지점에 놓아도 즉시 힘을 받는다.
+      이 "지점마다 정의되는 힘의 경향"이 바로 <strong>장(field)</strong>이다.</p>
+    <div class="analogy">
+      전기장은 "지도에 미리 그려둔 바람 화살표"와 같다. 아직 아무 입자도 안 놓았어도,
+      공간의 각 점마다 "여기 전하를 놓으면 이 방향으로 이만큼 밀린다"가 정해져 있다.
+      입자를 놓는 순간 그 화살표대로 힘 = <span class="hl">qE</span>를 받는다.
+    </div>
+    <div class="eq mt"><span class="var">E</span> = F / q &nbsp;&nbsp;⟹&nbsp;&nbsp; F = q·<span class="var">E</span></div>
+    <div class="eqcap">전기장 안의 전하가 받는 힘. 단위는 N/C — "전하 1쿨롱당 몇 뉴턴".</div>
+  </section>
+
+  <!-- 5) 쿨롱 법칙 -->
+  <section class="slide">
+    <div class="kicker">도구 ① 전기장 E</div>
+    <h2>점전하의 전기장은 <span class="hl">쿨롱 법칙</span>에서 나온다</h2>
+    <p>두 전하 사이의 힘은 쿨롱 법칙을 따른다 — 전하량의 곱에 비례하고, 거리의 제곱에 반비례한다.
+      그 힘을 시험전하 q로 나누면 곧바로 +Q가 만든 전기장이 보인다.</p>
+    <div class="eq">F = k<span class="sub">e</span> · <span class="var">Q</span>·q / r<span class="sup">2</span>
+      &nbsp;&nbsp;⟹&nbsp;&nbsp; <span class="var">E</span> = F / q = k<span class="sub">e</span> · <span class="var">Q</span> / r<span class="sup">2</span></div>
+    <div class="eqcap">k<span class="sub">e</span>는 쿨롱 상수. E는 q와 무관 — 공간 자체의 성질임을 다시 확인할 수 있다.</div>
+    <div class="physnote mt">
+      방향까지 살피면 E는 벡터다. +Q에서는 바깥으로 뻗어 나가고(척력 방향), &minus;Q로는 안쪽으로 모인다.
+      반도체에서는 1차원(x축)만 보는 경우가 많아 부호 ↑↓로 방향을 다룬다.
+    </div>
+  </section>
+
+  <!-- 6) 전위 직관 (중력 비유) -->
+  <section class="slide">
+    <div class="kicker">도구 ② 전위 V</div>
+    <h2><span class="hl">전위</span> = 단위 전하가 가진 위치에너지</h2>
+    <p>물체를 중력을 거슬러 높이 h만큼 들어올리면 위치에너지 <code>mgh</code>가 저장된다.
+      손을 놓으면 다시 떨어지며 그 에너지를 돌려준다. 전기에서도 똑같다.</p>
+    <div class="grid2 mt">
+      <div class="card">
+        <h3><span class="ico">🌍</span> 중력장 g</h3>
+        <p>질량 m을 높이 h로 올릴 때 든 일 = 위치에너지</p>
+        <div class="eq">U = m·g·h</div>
+      </div>
+      <div class="card">
+        <h3><span class="ico">⚡</span> 전기장 E</h3>
+        <p>전하 q를 균일한 E를 거슬러 거리 d만큼 옮길 때 든 일</p>
+        <div class="eq">U = q·<span class="var">E</span>·d</div>
+      </div>
+    </div>
+    <div class="physnote mt">
+      "potential(잠재적)"이라는 이름 그대로다. 가만히 놓으면 다시 힘을 받아 되돌아가므로,
+      그만큼의 에너지를 <strong>잠재적으로 품고 있다</strong>.
+    </div>
+  </section>
+
+  <!-- 7) 전위 식 + 전위차/전압 -->
+  <section class="slide">
+    <div class="kicker">도구 ② 전위 V</div>
+    <h2>위치에너지를 <span class="hl">전하로 나누면</span> 전위 V</h2>
+    <p>위치에너지 U는 옮기는 전하량 q가 클수록 커진다. q 의존성을 떼어내려고 q로 나눈 값이
+      <strong>전위 V</strong> — 즉 "단위 전하당 위치에너지"다.</p>
+    <div class="eq"><span class="var">V</span> = U / q = <span class="var">E</span>·d
+      &nbsp;&nbsp;&nbsp; [ 단위: J/C = <span class="hl">볼트(V)</span> ]</div>
+    <div class="eqcap">1 V = "1 C을 옮기는 데 1 J이 드는 두 지점 사이의 전위차".</div>
+    <div class="note mt">
+      엄밀히 "전위(한 점의 값)"와 "전압 = 전위차(두 점의 차)"는 다른 개념이다. 다만 보통 기준점 B를
+      <strong>0 V</strong>로 약속하기 때문에, 실무에서는 "A점 전압 = A의 전위"처럼 두 말을 섞어 쓴다.
+    </div>
+  </section>
+
+  <!-- 8) E = -dV/dx 핵심 관계 -->
+  <section class="slide">
+    <div class="kicker">도구 ①+② 둘을 잇는 다리</div>
+    <h2>이 강의의 핵심 공식: <span class="hl">E = &minus;dV/dx</span></h2>
+    <p>전기장이 균일하지 않으면 <code>V = E·d</code>는 적분/미분 형태로 일반화된다.
+      이 한 줄이 앞으로 밴드다이어그램을 읽을 때 가장 많이 쓰일 도구다.</p>
+    <div class="eq"><span class="var">V</span> = &minus;∫ <span class="var">E</span> dx
+      &nbsp;&nbsp;&nbsp;⟺&nbsp;&nbsp;&nbsp; <span class="var">E</span> = &minus;dV/dx</div>
+    <div class="eqcap">전위 기울기의 반대 방향이 전기장. (&minus;) 부호는 기준점을 0 V로 잡은 약속에서 나온다.</div>
+    <div class="grid2 mt">
+      <div class="physnote">
+        <strong>해석:</strong> 전위 곡선이 <strong>가파를수록</strong> 전기장이 세다.
+        전위가 평평하면(기울기 0) 전기장은 0이다.
+      </div>
+      <div class="dev-bridge">
+        E는 V를 x로 미분한 것 — 마치 위치를 미분하면 속도가 나오듯,
+        <strong>전위가 "원함수", 전기장이 "도함수"</strong> 관계다. 둘 중 하나만 알면 나머지는 자동으로 따라온다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 9) 전위차의 시각화: 언덕 SVG -->
+  <section class="slide">
+    <div class="kicker">도구 ②를 그림으로</div>
+    <h2>전위 = <span class="hl">언덕</span>, 전기장 = <span class="hl2">내리막 방향</span></h2>
+    <div class="band">
+      <svg viewBox="0 0 600 230" width="600">
+        <text x="20" y="20" fill="#9fb0c7" font-size="12">V (전위) ↑</text>
+        <!-- V 곡선: 왼쪽 높고 오른쪽 낮은 언덕 -->
+        <path d="M40,60 C160,60 220,150 340,160 C440,168 500,172 560,174" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+        <text x="60" y="52" fill="#f5a623" font-size="13">V 높음</text>
+        <text x="470" y="195" fill="#f5a623" font-size="13">V 낮음</text>
+        <!-- 가장 가파른 곳에 굵은 화살표(전기장 큼) -->
+        <line x1="230" y1="120" x2="285" y2="135" stroke="#5b9cff" stroke-width="3" marker-end="url(#ah)"/>
+        <text x="220" y="112" fill="#5b9cff" font-size="12">E 큼 (가파름)</text>
+        <!-- 평평한 곳에 작은 화살표(전기장 작음) -->
+        <line x1="470" y1="173" x2="500" y2="174" stroke="#5b9cff" stroke-width="1.5" marker-end="url(#ah)"/>
+        <text x="455" y="160" fill="#9fb0c7" font-size="12">E 작음</text>
+        <!-- 양전하가 굴러내려가는 표시 -->
+        <circle cx="120" cy="78" r="9" fill="#5ee6a0"/>
+        <text x="112" y="83" fill="#04122e" font-size="11" font-weight="700">+</text>
+        <text x="100" y="105" fill="#5ee6a0" font-size="11">+전하는 내리막으로</text>
+        <line x1="40" y1="210" x2="560" y2="210" stroke="#22304a" stroke-width="1"/>
+        <text x="300" y="226" fill="#6c7c95" font-size="12">위치 x →</text>
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#5b9cff"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <p class="mt"><strong>+전하</strong>는 전위가 높은 곳에서 낮은 곳으로 굴러 내려간다.
+      전기장 E는 항상 <span class="hl2">전위가 떨어지는 방향(내리막)</span>을 가리키고, 언덕이 가파른 곳일수록 세다.
+      바로 <code>E = &minus;dV/dx</code>의 그림 버전이다.</p>
+  </section>
+
+  <!-- 10) 에너지밴드 도입 -->
+  <section class="slide">
+    <div class="kicker">도구 ③ 에너지밴드</div>
+    <h2>전자가 <span class="hl">앉을 수 있는 자리</span>의 지도</h2>
+    <p>고체 안에서 전자가 가질 수 있는 에너지는 아무 값이나 되는 게 아니다.
+      허용되는 에너지가 띠(band)처럼 묶여 있고, 그 사이에 전자가 존재할 수 없는 금지된 틈이 있다.</p>
+    <div class="keyq">
+      <strong>가전자대(E<span class="sub">v</span>, valence band)</strong>는 전자가 원자에 묶여 꽉 차 있는 아래 띠,
+      <strong>전도대(E<span class="sub">c</span>, conduction band)</strong>는 전자가 자유롭게 돌아다닐 수 있는 위 띠다.
+      그 사이의 틈이 <strong>밴드갭 E<span class="sub">g</span> = E<span class="sub">c</span> &minus; E<span class="sub">v</span></strong>.
+    </div>
+    <div class="dev-bridge mt">
+      비유하자면 <strong>주차장 1층(가전자대)은 만차</strong>, <strong>2층(전도대)은 텅 빔</strong>,
+      그리고 1·2층 사이엔 차가 머물 수 없는 <strong>경사로(밴드갭)</strong>가 있다.
+      전류는 차(전자)가 움직일 빈자리가 있어야 흐른다.
+    </div>
+  </section>
+
+  <!-- 11) 밴드다이어그램 읽는 법 + SVG -->
+  <section class="slide">
+    <div class="kicker">도구 ③을 그림으로</div>
+    <h2><span class="hl">밴드다이어그램</span> 읽는 법</h2>
+    <div class="band">
+      <svg viewBox="0 0 600 240" width="600">
+        <text x="20" y="20" fill="#9fb0c7" font-size="12">E (전자 에너지) ↑</text>
+        <!-- E_c -->
+        <line x1="60" y1="70" x2="560" y2="70" stroke="#5b9cff" stroke-width="2.5"/>
+        <text x="510" y="62" fill="#5b9cff" font-size="13">E_c 전도대</text>
+        <!-- E_F -->
+        <line x1="60" y1="120" x2="560" y2="120" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="510" y="114" fill="#5ee6a0" font-size="13">E_F 페르미</text>
+        <!-- E_v -->
+        <line x1="60" y1="170" x2="560" y2="170" stroke="#b388ff" stroke-width="2.5"/>
+        <text x="510" y="190" fill="#b388ff" font-size="13">E_v 가전자대</text>
+        <!-- 밴드갭 표시 -->
+        <line x1="110" y1="70" x2="110" y2="170" stroke="#f5a623" stroke-width="1.5" marker-start="url(#a2)" marker-end="url(#a2)"/>
+        <text x="120" y="125" fill="#f5a623" font-size="13">E_g 밴드갭</text>
+        <!-- 전자(전도대) -->
+        <circle cx="300" cy="70" r="8" fill="#5b9cff"/>
+        <text x="292" y="75" fill="#fff" font-size="11" font-weight="700">&minus;</text>
+        <text x="265" y="55" fill="#5b9cff" font-size="11">전자(자유)</text>
+        <!-- 정공(가전자대) -->
+        <circle cx="380" cy="170" r="8" fill="none" stroke="#b388ff" stroke-width="2"/>
+        <text x="376" y="175" fill="#b388ff" font-size="11" font-weight="700">+</text>
+        <text x="365" y="200" fill="#b388ff" font-size="11">정공(빈자리)</text>
+        <defs>
+          <marker id="a2" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto">
+            <path d="M4.5,0 L9,9 L0,9 Z" fill="#f5a623"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <ul class="mt">
+      <li><strong>세로축은 전자의 에너지</strong>다 — 위로 갈수록 전자가 에너지가 높다(불안정).</li>
+      <li><span class="hl3">E<span class="sub">v</span> 위쪽 가까이</span>가 정공, <span class="hl2">E<span class="sub">c</span> 위쪽</span>에 전자가 자유롭게 산다.</li>
+      <li><strong>E<span class="sub">F</span>(페르미 준위)</strong>는 "전자가 어디까지 차 있느냐"의 기준선. 평형에서는 수평이다.</li>
+    </ul>
+  </section>
+
+  <!-- 12) 전자/정공 -->
+  <section class="slide">
+    <div class="kicker">전하 운반자 두 종류</div>
+    <h2><span class="hl2">전자</span>와 <span class="hl3">정공</span> — 반대 부호의 짝</h2>
+    <p>전자가 가전자대에서 빠져나와 전도대로 올라가면, 자유로운 <strong>전자</strong> 하나와
+      가전자대에 남은 빈자리 = <strong>정공(hole)</strong> 하나가 동시에 생긴다. 둘 다 전류를 나른다.</p>
+    <table class="compare mt">
+      <thead><tr><th>항목</th><th>전자 (electron)</th><th>정공 (hole)</th></tr></thead>
+      <tbody>
+        <tr><td>부호</td><td class="hl2">&minus;q</td><td class="hl3">+q</td></tr>
+        <tr><td>사는 곳</td><td>전도대 E<span class="sub">c</span> 부근</td><td>가전자대 E<span class="sub">v</span> 부근</td></tr>
+        <tr><td>전기장 E 속 이동</td><td>E의 반대 방향</td><td>E와 같은 방향</td></tr>
+        <tr><td>정체</td><td>실제 입자</td><td>전자가 빠진 "빈자리"</td></tr>
+      </tbody>
+    </table>
+    <div class="physnote mt">
+      주의: 밴드다이어그램의 세로축은 <strong>전자</strong>의 에너지다. 그래서 정공은 "에너지가 위로 갈수록 안정"이라
+      보통 거품처럼 <strong>위로 떠오르려</strong> 한다고 직관하면 부호 실수를 줄일 수 있다.
+    </div>
+  </section>
+
+  <!-- 13) 물리상수 + eV / kT -->
+  <section class="slide">
+    <div class="kicker">자주 쓰는 상수와 단위</div>
+    <h2>챙겨둘 <span class="hl">숫자 도구</span>들</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🔢</span> 기본 상수</h3>
+        <dl class="kv">
+          <dt>q</dt><dd>전자 1개 전하량 ≈ 1.6×10⁻¹⁹ C</dd>
+          <dt>k</dt><dd>볼츠만 상수 [J/K] — 온도↔에너지 변환</dd>
+          <dt>ε</dt><dd>유전율 — 매질이 전기장을 얼마나 잘 전달하나 (C = ε·A/d)</dd>
+          <dt>h</dt><dd>플랑크 상수 — 양자역학에서 등장</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <h3><span class="ico">⚖️</span> eV vs V — 헷갈림 주의</h3>
+        <p><strong>eV는 에너지 단위</strong>(J과 같은 차원), <strong>V는 J/C</strong> — 전혀 다르다!</p>
+        <div class="eq">1 eV = q·(1V) ≈ 1.6×10⁻¹⁹ J</div>
+        <p class="dim">전자 1개를 1 V 전위차만큼 옮길 때의 에너지.</p>
+      </div>
+    </div>
+    <div class="eq mt">kT/q ≈ 0.0259 V &nbsp;(상온 300K) &nbsp;&nbsp;⟷&nbsp;&nbsp; kT ≈ 0.0259 eV</div>
+    <div class="eqcap">왼쪽이 <strong>열전압(thermal voltage)</strong>, 오른쪽이 <strong>열에너지(kT)</strong>.
+      값은 같아 보여도 단위(V vs eV)가 달라 절대 같은 양이 아니다 — 앞으로 수식에 자주 나온다.</div>
+  </section>
+
+  <!-- 14) 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해보기</h2>
+    <div class="qa">
+      <div class="q">전위 곡선이 평평한 구간(기울기 0)에서 전기장 E는 얼마인가?</div>
+      <div class="a">0이다. <code>E = &minus;dV/dx</code>에서 기울기가 0이면 E도 0. 전위가 가파른 곳일수록 E가 세다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">밴드다이어그램에서 E_c, E_v, E_g, E_F는 각각 무엇인가?</div>
+      <div class="a">E_c = 전도대 바닥(자유 전자 영역), E_v = 가전자대 천장, E_g = E_c &minus; E_v(전자 못 들어가는 틈),
+        E_F = 페르미 준위(전자가 차 있는 기준선, 평형에서 수평).</div>
+    </div>
+    <div class="qa">
+      <div class="q">"0.0259 V"와 "0.0259 eV"는 같은 값인가?</div>
+      <div class="a">아니다. 숫자는 닮았지만 단위가 V(전압)와 eV(에너지)로 차원이 다르다.
+        앞이 열전압 kT/q, 뒤가 열에너지 kT. 혼동하면 1.6×10⁻¹⁹ 배만큼 계산이 틀어진다.</div>
+    </div>
+  </section>
+
+  <!-- 15) 요약 -->
+  <section class="slide">
+    <div class="kicker">핵심 요약</div>
+    <h2>이번 0장에서 챙긴 <span class="hl">도구상자</span></h2>
+    <ul>
+      <li><strong>전기장 E</strong> = 단위 양전하가 받는 힘 (F = qE), 방향은 전위 내리막.</li>
+      <li><strong>전위 V</strong> = 단위 전하의 위치에너지, 전압은 두 점의 전위차.</li>
+      <li><strong>E = &minus;dV/dx</strong> — 전위와 전기장은 미분/적분으로 묶인 한 쌍. 이 강의 최다 출연 공식.</li>
+      <li><strong>에너지밴드</strong>: E<span class="sub">c</span>(전도대)·E<span class="sub">v</span>(가전자대)·E<span class="sub">g</span>(밴드갭)·E<span class="sub">F</span>(페르미), 세로축은 전자 에너지.</li>
+      <li><strong>전자(&minus;q)와 정공(+q)</strong>이 전류를 나르고, <strong>q·k·ε</strong>와 <strong>eV·kT</strong>가 단골 숫자다.</li>
+    </ul>
+    <div class="takeaway mt">
+      반도체 소자 이야기는 전부 "전자·정공이 밴드 위에서 전기장을 따라 어떻게 움직이나"로 환원된다.
+      그 문장을 읽고 쓰는 문법을 이번에 익혔다.
+    </div>
+    <p class="note mt">다음 → 이 언어로 진짜 소자를 만져본다: <span class="hl">고유/도핑 반도체와 캐리어 농도</span>,
+      그리고 p형·n형을 붙인 <span class="hl">pn 접합</span>에서 밴드가 어떻게 휘는지.</p>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

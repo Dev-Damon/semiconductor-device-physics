@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>반도체 소자물리 기초 — 목차</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/physics.css">
+<style>
+  body{overflow:auto}
+  .wrap{max-width:1080px;margin:0 auto;padding:64px 24px 100px}
+  .hero{text-align:center;margin-bottom:46px}
+  .hero h1{font-size:clamp(34px,6vw,60px)}
+  .hero p{max-width:720px;margin:10px auto 0}
+  .part{margin-top:40px}
+  .part-h{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .part-h .n{font-family:var(--mono);color:var(--accent);font-weight:800;font-size:15px}
+  .part-h h2{font-size:22px;margin:0}
+  .part-h .d{color:var(--dim);font-size:14px;margin-left:auto}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  a.chap{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;text-decoration:none;transition:.16s}
+  a.chap:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow)}
+  a.chap .num{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:700}
+  a.chap h3{color:var(--ink);font-size:16.5px;margin:6px 0 7px}
+  a.chap p{font-size:13px;color:var(--dim);margin:0;line-height:1.55}
+  .foot{text-align:center;color:var(--dim);font-size:13px;margin-top:56px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="phys-badge">⚛️ Device Physics · 소자물리 기초</div>
+    <h1 style="margin-top:18px">반도체 소자물리 기초</h1>
+    <p class="lead">트랜지스터가 <strong class="hl">왜</strong> 동작하는가 — 에너지 밴드에서 출발해 pn접합·다이오드·MOS·MOSFET까지.<br>수식은 직관으로, 그림으로 차근차근. 개발자도 이해하는 반도체 물리.</p>
+  </div>
+
+  <div class="part">
+    <div class="part-h"><span class="n">PART 0</span><h2>기초 도구</h2><span class="d">밴드·전기장·전위</span></div>
+    <div class="cards">
+      <a class="chap" href="chapters/dp0.html"><div class="num">0</div><h3>에너지 밴드·전기장·전위</h3><p>반도체 물리를 읽는 언어. 밴드다이어그램·전위·전기장의 기초.</p></a>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-h"><span class="n">PART 1</span><h2>pn 접합</h2><span class="d">반도체의 심장</span></div>
+    <div class="cards">
+      <a class="chap" href="chapters/dp1-1.html"><div class="num">1-1</div><h3>pn 접합 정성적 이해</h3><p>p형+n형을 붙이면? 밴드다이어그램으로 보는 공핍층의 탄생.</p></a>
+      <a class="chap" href="chapters/dp1-2.html"><div class="num">1-2</div><h3>내부전위 · 공핍층 폭</h3><p>built-in potential, depletion width, 단측 접합.</p></a>
+      <a class="chap" href="chapters/dp1-3.html"><div class="num">1-3</div><h3>바이어스 · 정전용량 · 항복</h3><p>순/역방향, depletion capacitance, zener·avalanche 항복.</p></a>
+      <a class="chap" href="chapters/dp1-4.html"><div class="num">1-4</div><h3>pn 응용 소자</h3><p>터널 다이오드·LED·광검출기·태양전지.</p></a>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-h"><span class="n">PART 2</span><h2>pn 다이오드</h2><span class="d">전류는 어떻게 흐르나</span></div>
+    <div class="cards">
+      <a class="chap" href="chapters/dp2-1.html"><div class="num">2-1</div><h3>다이오드 동작 · 소수캐리어</h3><p>정성적 동작, 가정, 소수캐리어 분포.</p></a>
+      <a class="chap" href="chapters/dp2-2.html"><div class="num">2-2</div><h3>I-V 특성 · 비이상 · 확산용량</h3><p>이상 다이오드 식, nonideal effect, diffusion capacitance.</p></a>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-h"><span class="n">PART 3</span><h2>금속-반도체 접합</h2><span class="d">MS junction</span></div>
+    <div class="cards">
+      <a class="chap" href="chapters/dp3.html"><div class="num">3</div><h3>Schottky · Ohmic 접합</h3><p>일함수·장벽, thermionic emission I-V, 오믹 접촉, 이종접합.</p></a>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-h"><span class="n">PART 4</span><h2>MOS 커패시터</h2><span class="d">MOSFET의 전 단계</span></div>
+    <div class="cards">
+      <a class="chap" href="chapters/dp4-1.html"><div class="num">4-1</div><h3>MOS 3대 동작 영역</h3><p>accumulation·depletion·inversion, 밴드 휘어짐.</p></a>
+      <a class="chap" href="chapters/dp4-2.html"><div class="num">4-2</div><h3>문턱전압 · C-V 특성</h3><p>표면전위·threshold voltage, 게이트 전압 분배, C-V 곡선.</p></a>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-h"><span class="n">PART 5</span><h2>MOSFET</h2><span class="d">현대 칩의 주역</span></div>
+    <div class="cards">
+      <a class="chap" href="chapters/dp5-1.html"><div class="num">5-1</div><h3>MOSFET 동작 원리</h3><p>채널 형성, linear·pinch-off·saturation.</p></a>
+      <a class="chap" href="chapters/dp5-2.html"><div class="num">5-2</div><h3>I-V 모델 · 바디 효과</h3><p>이상 I-V 모델, 기판 바이어스 효과.</p></a>
+      <a class="chap" href="chapters/dp5-3.html"><div class="num">5-3</div><h3>비이상 효과 · 스케일링</h3><p>subthreshold swing, 단채널 효과, scaling.</p></a>
+    </div>
+  </div>
+
+  <div class="foot">반도체 소자물리 기초 · 개념 학습용 · 키보드 ← → 로 슬라이드 이동</div>
+</div>
+</body>
+</html>

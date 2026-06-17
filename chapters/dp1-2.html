@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 1-2 · 내부전위·공핍층 폭</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 1 · 1-2 내부전위·공핍층 폭">
+<a class="home-link" href="../index.html">← 목차</a>
+<div class="deck">
+
+  <!-- 1) 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>내부전위와 공핍층 폭</h1>
+    <p class="hook">전압을 하나도 안 걸었는데, pn접합 안에는 이미 <strong class="hl">전위 장벽</strong>이 서 있다.
+    그 장벽의 높이가 <span class="hl2">V<sub>bi</sub></span>, 그리고 그게 만들어 놓은 빈 땅의 폭이 <span class="hl3">공핍층 W</span>다. 둘을 직접 계산해 보자.</p>
+    <p class="hint"><kbd>→</kbd> 다음 슬라이드 · <kbd>←</kbd> 이전 · <kbd>F</kbd> 전체화면</p>
+  </section>
+
+  <!-- 2) 무엇을 -->
+  <section class="slide">
+    <div class="kicker">이걸 왜 / 무엇</div>
+    <h2>"가만히 둔" pn접합 안의 두 숫자</h2>
+    <p class="lead">지난 시간에 p형과 n형을 붙이면 페르미 레벨이 평평해지려고 <strong>밴드가 휜다</strong>는 걸 봤다. 이번엔 그 휨의 <strong class="hl">크기</strong>와, 휨이 펼쳐진 <strong class="hl3">공간의 폭</strong>을 수식으로 못 박는다.</p>
+    <div class="keyq">
+      <p style="margin:0"><strong class="hl3">내부전위 V<sub>bi</sub></strong> (built-in potential): 외부 전압 0 V(열평형)에서, pn접합이 <strong>스스로</strong> 만들어 가진 p쪽과 n쪽 사이의 전위차. 에너지 밴드가 휜 총 높이와 같다.</p>
+      <p style="margin:10px 0 0"><strong class="hl">공핍층 폭 W</strong> (depletion width): 접합 근처에서 자유 캐리어가 비워지고 <strong>고정 이온 전하만</strong> 남은 영역의 너비. W = x<sub>p</sub> + x<sub>n</sub>.</p>
+    </div>
+  </section>
+
+  <!-- 3) 직관 + 개발자 비유 -->
+  <section class="slide">
+    <div class="kicker">직관</div>
+    <h2>왜 "건드리지도 않았는데" 전위차가 생길까</h2>
+    <div class="grid2">
+      <div class="analogy">
+        <p style="margin:0">방 두 개를 문으로 연결한다고 하자. 한 방엔 향수(전자), 옆 방엔 연기(홀)가 가득하다. 문을 열면 서로 <strong>확산</strong>해 섞이려 한다. 하지만 입자가 <strong class="hl">전하</strong>를 띠고 있어서, 빠져나간 자리에 <strong>반대 부호의 고정 전하</strong>가 드러난다. 이 고정 전하가 만든 전기장이 확산을 막아설 때까지 평형이 잡힌다.</p>
+        <p style="margin:10px 0 0">그 "막아서는 힘"을 전위로 환산한 게 바로 <strong class="hl3">V<sub>bi</sub></strong>다.</p>
+      </div>
+      <div class="dev-bridge">
+        <p style="margin:0">두 DB 노드를 처음 연결한 직후를 떠올려 보자. 데이터가 한쪽으로 쏠려 있으면 <strong>리밸런싱(확산)</strong>이 일어난다. 하지만 무한정 흐르지 않는다 — 흐를수록 <strong class="hl2">역압(backpressure)</strong>이 쌓여 결국 net flow가 0이 되는 정상상태에 안착한다.</p>
+        <p style="margin:10px 0 0">V<sub>bi</sub>는 그 backpressure의 평형값이고, 외부에서 <code>write</code>(전압)를 안 줘도 시스템이 알아서 잡아 둔 값이다.</p>
+      </div>
+    </div>
+    <div class="note mt">핵심: 평형은 "아무 일도 안 일어나는" 게 아니라, 확산 흐름과 드리프트(전기장) 흐름이 <strong>정확히 상쇄</strong>되는 상태다.</div>
+  </section>
+
+  <!-- 4) V_bi = 두 페르미 차의 합 -->
+  <section class="slide">
+    <div class="kicker">밴드로 읽기</div>
+    <h2>V<sub>bi</sub> = "두 쪽 휨을 합친 높이"</h2>
+    <p>평형이면 E<sub>F</sub>가 한 줄로 수평이 된다. 그러려고 밴드가 휜다. 떨어져 있던 p형과 n형 각각에서, E<sub>F</sub>가 진성 준위 E<sub>i</sub>에서 얼마나 벗어나 있었는지를 더하면 총 휨 = qV<sub>bi</sub>가 된다.</p>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <text x="16" y="18" fill="#9fb0c7" font-size="12">E ↑ (전자 에너지)</text>
+      <!-- E_c -->
+      <path d="M40,55 L250,55 Q300,55 300,100 L300,100 Q300,140 350,140 L560,140" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="44" y="48" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- E_F flat -->
+      <line x1="40" y1="120" x2="560" y2="120" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="44" y="115" fill="#5ee6a0" font-size="12">E_F</text>
+      <!-- E_v -->
+      <path d="M40,170 L250,170 Q300,170 300,125 Q300,165 350,165 L560,165" fill="none" stroke="#b388ff" stroke-width="2.5"/>
+      <text x="510" y="158" fill="#b388ff" font-size="12">E_v</text>
+      <!-- qVbi arrow span -->
+      <line x1="585" y1="55" x2="585" y2="140" stroke="#f5a623" stroke-width="1.4"/>
+      <path d="M585,55 l-4,8 M585,55 l4,8" stroke="#f5a623" stroke-width="1.4" fill="none"/>
+      <path d="M585,140 l-4,-8 M585,140 l4,-8" stroke="#f5a623" stroke-width="1.4" fill="none"/>
+      <text x="540" y="100" fill="#f5a623" font-size="12">qV_bi</text>
+      <text x="120" y="210" fill="#6c7c95" font-size="13">p형</text>
+      <text x="430" y="210" fill="#6c7c95" font-size="13">n형</text>
+      <line x1="300" y1="40" x2="300" y2="190" stroke="#22304a" stroke-width="1" stroke-dasharray="3 4"/>
+      <text x="276" y="38" fill="#6c7c95" font-size="11">접합</text>
+    </svg></div>
+    <div class="physnote mt"><p style="margin:0">전자가 본 에너지는 위치에너지 <strong>−qV</strong>다. 그래서 밴드다이어그램은 전위 V를 위아래로 뒤집어 −q배 한 그림이다. 전위가 낮은 p쪽은 밴드가 <strong>위로</strong>, 전위가 높은 n쪽은 밴드가 <strong>아래로</strong> 간다.</p></div>
+  </section>
+
+  <!-- 5) V_bi 식 -->
+  <section class="slide">
+    <div class="kicker">수식의 의미</div>
+    <h2>도핑이 진할수록 장벽이 높다</h2>
+    <p>p쪽 휨은 E<sub>i</sub>−E<sub>F</sub> (홀 농도 ≈ N<sub>A</sub>), n쪽 휨은 E<sub>F</sub>−E<sub>i</sub> (전자 농도 ≈ N<sub>D</sub>). 두 로그를 더하면 깔끔하게 합쳐진다.</p>
+    <div class="eq">qV<span class="sub">bi</span> = (E<span class="sub">i</span>−E<span class="sub">F</span>)<span class="sub">p</span> + (E<span class="sub">F</span>−E<span class="sub">i</span>)<span class="sub">n</span> = kT · ln( <span class="var">N</span><span class="sub">A</span>/n<span class="sub">i</span> ) + kT · ln( <span class="var">N</span><span class="sub">D</span>/n<span class="sub">i</span> )</div>
+    <div class="eq">V<span class="sub">bi</span> = (kT/q) · ln( <span class="var">N</span><span class="sub">A</span> · <span class="var">N</span><span class="sub">D</span> / n<span class="sub">i</span><span class="sup">2</span> )</div>
+    <div class="eqcap">kT/q는 열전압(thermal voltage), 상온에서 ≈ 0.026 V. 앞으로 수식마다 단골로 등장한다.</div>
+    <div class="grid2 mt">
+      <div class="card"><h3><span class="ico">📈</span>왜 도핑에 비례?</h3><p style="margin:0">N<sub>A</sub>, N<sub>D</sub>가 클수록 E<sub>F</sub>가 밴드 가장자리로 더 밀려 있다 → 두 페르미 레벨의 처음 간격이 더 크다 → 평평하게 맞추려면 더 많이 휘어야 한다 → V<sub>bi</sub> ↑.</p></div>
+      <div class="card"><h3><span class="ico">🌡️</span>n<sub>i</sub>·온도는?</h3><p style="margin:0">분모 n<sub>i</sub><span class="sup">2</span>가 크면(고온·좁은 밴드갭) 분수가 작아져 V<sub>bi</sub> ↓. 그래서 같은 도핑이라도 뜨거우면 장벽이 낮아진다.</p></div>
+    </div>
+  </section>
+
+  <!-- 6) 적용 한계: 축퇴 -->
+  <section class="slide">
+    <div class="kicker">주의</div>
+    <h2>이 식은 "너무 진하면" 못 쓴다</h2>
+    <p>위 V<sub>bi</sub> 식은 캐리어 농도를 구할 때 <strong class="hl">볼츠만 근사</strong>를 깔고 유도됐다. 도핑이 약 10<sup>18</sup> cm<sup>−3</sup>를 넘어 <strong>축퇴(degenerate)</strong> 영역에 들어가면 이 근사가 깨진다.</p>
+    <table class="compare">
+      <tr><th>상황</th><th>도핑 농도(대략)</th><th>볼츠만 근사 / V<sub>bi</sub> 식</th></tr>
+      <tr><td>비축퇴</td><td>≲ 10<sup>18</sup> cm<sup>−3</sup></td><td>유효 ✔ — 위 식 그대로 사용</td></tr>
+      <tr><td>축퇴</td><td>≳ 10<sup>18</sup> cm<sup>−3</sup></td><td>깨짐 ✘ — E<sub>F</sub>가 밴드 안으로, 다른 근사 필요</td></tr>
+    </table>
+    <div class="analogy mt"><p style="margin:0">실리콘에 도펀트를 무한정 못 녹인다(고용한계, 약 10<sup>20</sup> cm<sup>−3</sup>). 물에 소금 녹이기와 같다 — 일정 농도 넘으면 더는 "들어가지" 않는다.</p></div>
+    <div class="note mt">앞으로의 유도는 모두 <strong>비축퇴(도핑 적당)</strong>를 전제로 한다.</div>
+  </section>
+
+  <!-- 7) 해석 레시피 -->
+  <section class="slide">
+    <div class="kicker">전체 그림</div>
+    <h2>모든 소자를 푸는 똑같은 4단계</h2>
+    <p>이제 W를 구하러 간다. 그 전에 — 이 흐름은 pn접합뿐 아니라 <strong>앞으로 배울 모든 소자</strong>에 똑같이 쓰인다. 한 번 익히면 평생 쓴다.</p>
+    <div class="flow mt">
+      <div class="box on">전하밀도 ρ(x)</div><div class="arrow">→</div>
+      <div class="box">전기장 E(x)</div><div class="arrow">→</div>
+      <div class="box">전위 V(x)</div><div class="arrow">→</div>
+      <div class="box">밴드 −qV</div><div class="arrow">→</div>
+      <div class="box">캐리어 운동</div>
+    </div>
+    <div class="eq mt">dE/dx = ρ / ε<span class="sub">s</span> &nbsp;&nbsp;(푸아송)&nbsp;&nbsp;|&nbsp;&nbsp; E = −dV/dx</div>
+    <div class="eqcap">ρ를 한 번 적분 → E. E를 한 번 더 적분하고 부호 뒤집기 → V. V에 −q 곱하면 밴드.</div>
+    <div class="dev-bridge mt"><p style="margin:0">파이프라인이라고 보면 된다: <code>ρ</code> 가 입력, 적분이 변환 단계, 출력이 <code>밴드</code>. 각 단계는 순수 함수고, 경계조건이 그 적분의 "초기값"이다.</p></div>
+  </section>
+
+  <!-- 8) 전하밀도 프로파일 + 공핍근사 -->
+  <section class="slide">
+    <div class="kicker">1단계 · 전하</div>
+    <h2>접합 근처엔 "고정 이온"만 남는다</h2>
+    <p>접합부에선 전자·홀이 서로 확산하고 재결합해 비워진다. 남는 건 도너가 만든 <span class="hl2">+ 고정전하</span>(n쪽)와 억셉터가 만든 <span class="hl3">− 고정전하</span>(p쪽)뿐. 이 빈 영역이 <strong>공핍층</strong>이다.</p>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <!-- axes -->
+      <line x1="40" y1="115" x2="560" y2="115" stroke="#6c7c95" stroke-width="1"/>
+      <text x="560" y="112" fill="#6c7c95" font-size="11">x</text>
+      <text x="305" y="132" fill="#6c7c95" font-size="11">0</text>
+      <text x="20" y="40" fill="#9fb0c7" font-size="11">ρ(x)</text>
+      <!-- n side +qNd (right, above axis) -->
+      <rect x="300" y="60" width="150" height="55" fill="rgba(91,156,255,.18)" stroke="#5b9cff" stroke-width="2"/>
+      <text x="350" y="50" fill="#5b9cff" font-size="12">+q·N_D</text>
+      <text x="452" y="112" fill="#6c7c95" font-size="11">x_n</text>
+      <!-- p side -qNa (left, below axis) -->
+      <rect x="170" y="115" width="130" height="55" fill="rgba(179,136,255,.18)" stroke="#b388ff" stroke-width="2"/>
+      <text x="190" y="190" fill="#b388ff" font-size="12">−q·N_A</text>
+      <text x="150" y="112" fill="#6c7c95" font-size="11">−x_p</text>
+      <text x="90" y="105" fill="#6c7c95" font-size="12">p 중성</text>
+      <text x="480" y="105" fill="#6c7c95" font-size="12">n 중성</text>
+    </svg></div>
+    <div class="physnote mt"><p style="margin:0"><strong>공핍 근사(depletion approximation):</strong> 경계가 칼같이 딱 끊긴다고 가정한다. 공핍층 안은 캐리어 0·고정전하만, 바깥 중성영역은 ρ = 0. 실제론 부드럽게 변하지만, 이 네모 가정 덕에 손으로 풀 수 있다.</p></div>
+  </section>
+
+  <!-- 9) 전하 보존 → 면적 같음 -->
+  <section class="slide">
+    <div class="kicker">2단계 · 전기장 + 전하 균형</div>
+    <h2>"양쪽 박스 면적은 항상 같다"</h2>
+    <p>푸아송 식을 양쪽에서 적분하고, 경계(±x 끝)에서 E = 0, 접합 x=0에서 E가 연속이라는 조건을 쓰면 곧장 한 가지 황금 법칙이 나온다.</p>
+    <div class="eq"><span class="var">N</span><span class="sub">A</span> · x<span class="sub">p</span> = <span class="var">N</span><span class="sub">D</span> · x<span class="sub">n</span></div>
+    <div class="eqcap">전하 중성: 공핍층이 통째로 보면 +전하 총량 = −전하 총량. 전기장이 바깥으로 새지 않으니 당연하다.</div>
+    <div class="grid2 mt">
+      <div class="card"><h3><span class="ico">⚖️</span>읽는 법</h3><p style="margin:0">도핑이 <strong>진한 쪽</strong>은 x가 좁고, <strong>옅은 쪽</strong>은 x가 넓다. 곱(=박스 면적)을 맞추려면 어쩔 수 없다.</p></div>
+      <div class="card"><h3><span class="ico">📐</span>전기장 모양</h3><p style="margin:0">ρ가 상수(네모)면 E는 <strong>1차 직선</strong>. x=0에서 <strong>최댓값</strong>(음의 봉우리), 양 끝에서 0인 삼각형이 된다.</p></div>
+    </div>
+    <div class="band"><svg viewBox="0 0 600 170" width="600">
+      <line x1="40" y1="40" x2="560" y2="40" stroke="#6c7c95" stroke-width="1"/>
+      <text x="20" y="36" fill="#9fb0c7" font-size="11">E(x)</text>
+      <text x="565" y="38" fill="#6c7c95" font-size="11">x</text>
+      <!-- triangle dipping below (E negative) -->
+      <path d="M150,40 L300,140 L450,40" fill="rgba(245,166,35,.14)" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="305" y="155" fill="#f5a623" font-size="12">|E|_max @ x=0</text>
+      <text x="135" y="36" fill="#6c7c95" font-size="11">−x_p</text>
+      <text x="455" y="36" fill="#6c7c95" font-size="11">x_n</text>
+    </svg></div>
+    <div class="note">E가 전부 음수인 건 좌표 설정 탓 — p(왼쪽)→n(오른쪽) 배치라 전기장이 n에서 p, 즉 오른쪽→왼쪽을 가리킨다.</div>
+  </section>
+
+  <!-- 10) 전위(포물선) + W 식 -->
+  <section class="slide">
+    <div class="kicker">3단계 · 전위 → 4) W</div>
+    <h2>전기장을 한 번 더 적분 → 공핍층 폭</h2>
+    <p>E(직선)를 적분하면 V는 <strong>포물선</strong>이 된다. x=−x<sub>p</sub>에서 V=0, x=x<sub>n</sub>에서 V=V<sub>bi</sub>로 잡고, x=0 연속 조건과 N<sub>A</sub>x<sub>p</sub>=N<sub>D</sub>x<sub>n</sub>를 연립하면 폭이 떨어진다.</p>
+    <div class="eq">W = x<span class="sub">p</span> + x<span class="sub">n</span> = √( <span style="font-size:.9em">2 ε<span class="sub">s</span> V<span class="sub">bi</span></span> / q · ( 1/<span class="var">N</span><span class="sub">A</span> + 1/<span class="var">N</span><span class="sub">D</span> ) )</div>
+    <div class="eqcap">ε<sub>s</sub> = 실리콘 유전율 = 11.7·ε₀. 도핑이 진할수록 (1/N 항이 작아져) W는 좁아진다.</div>
+    <div class="grid2 mt">
+      <div class="band"><svg viewBox="0 0 280 150" width="280">
+        <line x1="20" y1="120" x2="270" y2="120" stroke="#6c7c95" stroke-width="1"/>
+        <text x="10" y="30" fill="#9fb0c7" font-size="11">V(x)</text>
+        <path d="M40,120 Q90,118 130,95 Q175,68 230,45" fill="none" stroke="#5ee6a0" stroke-width="2.5"/>
+        <line x1="230" y1="45" x2="270" y2="45" stroke="#5ee6a0" stroke-width="2.5" stroke-dasharray="4 3"/>
+        <text x="38" y="138" fill="#6c7c95" font-size="10">−x_p (V=0)</text>
+        <text x="200" y="38" fill="#5ee6a0" font-size="11">V_bi</text>
+      </svg></div>
+      <div class="card"><h3><span class="ico">🔑</span>왜 포물선?</h3><p style="margin:0">E가 x의 <strong>1차</strong>식 → 적분하면 V는 <strong>2차</strong>식. 두 포물선이 x=0에서 매끄럽게 이어진다. 전위 차이(끝–끝)가 곧 V<sub>bi</sub>.</p></div>
+    </div>
+  </section>
+
+  <!-- 11) one-sided junction -->
+  <section class="slide">
+    <div class="kicker">특수 케이스</div>
+    <h2>단측 접합: 공핍층은 "약한 쪽"으로 쏠린다</h2>
+    <p>한쪽 도핑이 압도적으로 진한 접합을 <strong class="hl">단측 접합(one-sided junction)</strong>이라 한다. 예: p쪽 10<sup>19</sup>, n쪽 10<sup>15</sup> → <code>p+n</code>. 진한 쪽은 +를 붙여 표시한다.</p>
+    <div class="grid2 mt">
+      <div class="card"><h3><span class="ico">➡️</span>폭은 옅은 쪽이 결정</h3>
+        <p style="margin:0">p+n이면 N<sub>A</sub> ≫ N<sub>D</sub> → 1/N<sub>A</sub> ≈ 0. 그래서 W는 사실상 N<sub>D</sub>만으로 정해지고, x<sub>p</sub> ≈ 0.</p>
+        <div class="eq" style="margin-top:12px">W ≈ √( 2 ε<span class="sub">s</span> V<span class="sub">bi</span> / (q·<span class="var">N</span><span class="sub">D</span>) )</div>
+      </div>
+      <div class="card"><h3><span class="ico">📊</span>전하 박스로 보면</h3>
+        <p style="margin:0">진한 p+쪽은 높이(qN<sub>A</sub>)는 크지만 폭(x<sub>p</sub>)이 0에 가까운 <strong>가느다란 막대</strong>. 옅은 n쪽은 낮고 <strong>넓게</strong> 퍼진다. 두 박스 면적은 여전히 같다.</p>
+      </div>
+    </div>
+    <div class="warnbox mt"><p style="margin:0">⚠️ 진한 p+쪽은 <strong>축퇴</strong>라 V<sub>bi</sub> 로그식을 못 쓴다. 그쪽 휨은 <strong>E<sub>F</sub> ≈ E<sub>v</sub></strong>로 보고 E<sub>F</sub>−E<sub>i</sub> ≈ E<sub>g</sub>/2로 근사한다(n+p면 n쪽을 E<sub>g</sub>/2). 옅은 쪽 휨만 원래 로그식으로 계산해 더한다.</p></div>
+  </section>
+
+  <!-- 12) E_max (관계 활용) -->
+  <section class="slide">
+    <div class="kicker">덤 · 관계 활용</div>
+    <h2>최대 전기장은 삼각형 넓이로 한 방에</h2>
+    <p>E를 직접 미적분하지 않아도, V<sub>bi</sub> = (E를 W에 걸쳐 적분한 값) = <strong>삼각형 넓이</strong>라는 관계만 알면 끝난다.</p>
+    <div class="eq">V<span class="sub">bi</span> = ½ · W · |E|<span class="sub">max</span> &nbsp;&nbsp;⟹&nbsp;&nbsp; |E|<span class="sub">max</span> = 2 V<span class="sub">bi</span> / W</div>
+    <div class="eqcap">E 프로파일은 밑변 W, 높이 |E|<sub>max</sub>인 삼각형. 그 넓이가 곧 전위차 V<sub>bi</sub>다. W식을 넣으면 닫힌 식이 된다.</div>
+    <div class="physnote mt"><p style="margin:0">이 슬라이드의 진짜 목적은 |E|<sub>max</sub> 공식 암기가 아니다. <strong>"전위 = 전기장을 거리로 적분"</strong>이라는 관계가 그래프 넓이로 그대로 보인다는 걸 느끼는 것이다. 미분·적분 대신 도형으로 푸는 감각.</p></div>
+  </section>
+
+  <!-- 13) Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해 보기</h2>
+    <div class="qa">
+      <div class="q">전압을 0 V로 둔 평형인데, 어떻게 내부에 전위차 V<sub>bi</sub>가 있을 수 있나?</div>
+      <div class="a">V<sub>bi</sub>는 외부 전원이 만든 게 아니라, 확산하려는 캐리어와 그걸 막는 고정전하의 전기장이 <strong>평형</strong>을 이룬 결과다. 외부 회로로 전류를 뽑아낼 수는 없다(단락해도 0). 어디까지나 접합 내부의 전위 장벽이다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">p+n 접합에서 공핍층은 주로 어느 쪽으로 넓어지고, 그 폭은 무엇이 결정하나?</div>
+      <div class="a">옅게 도핑된 <strong>n쪽</strong>으로 거의 다 펼쳐진다(x<sub>p</sub>≈0). N<sub>A</sub>x<sub>p</sub>=N<sub>D</sub>x<sub>n</sub> 때문에 진한 쪽은 좁고 옅은 쪽이 넓다. 따라서 W ≈ √(2ε<sub>s</sub>V<sub>bi</sub>/qN<sub>D</sub>) 로 <strong>옅은 쪽 도핑 N<sub>D</sub></strong>가 폭을 지배한다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">도핑을 양쪽 다 진하게 하면 V<sub>bi</sub>와 W는 어떻게 변하나?</div>
+      <div class="a">V<sub>bi</sub> = (kT/q)·ln(N<sub>A</sub>N<sub>D</sub>/n<sub>i</sub><span class="sup">2</span>)는 <strong>커진다</strong>(로그라 천천히). 반대로 W = √(2ε<sub>s</sub>V<sub>bi</sub>/q·(1/N<sub>A</sub>+1/N<sub>D</sub>))는 1/N 항이 작아져 <strong>좁아진다</strong>. 단, 너무 진하면 축퇴라 로그식 자체가 깨진다.</div>
+    </div>
+  </section>
+
+  <!-- 14) 요약 -->
+  <section class="slide">
+    <div class="kicker">핵심 요약</div>
+    <h2>한 장으로 정리</h2>
+    <ul>
+      <li><strong class="hl3">V<sub>bi</sub> = (kT/q)·ln(N<sub>A</sub>N<sub>D</sub>/n<sub>i</sub><span class="sup">2</span>)</strong> — 평형(0 V) 밴드 휨의 총 높이. 도핑 진할수록 ↑, 온도 높을수록 ↓.</li>
+      <li>해석은 항상 <strong>ρ → E → V → 밴드 → 캐리어</strong> 4단계. ρ는 공핍근사로 네모, E는 직선(삼각형), V는 포물선.</li>
+      <li>전하 균형 <strong>N<sub>A</sub>x<sub>p</sub> = N<sub>D</sub>x<sub>n</sub></strong> → 진한 쪽 좁고 옅은 쪽 넓다.</li>
+      <li><strong class="hl">W = √(2ε<sub>s</sub>V<sub>bi</sub>/q·(1/N<sub>A</sub>+1/N<sub>D</sub>))</strong> — 도핑 진할수록 좁아진다.</li>
+      <li>단측 접합(p+n / n+p): 공핍층은 <strong>옅은 쪽</strong>으로 쏠리고, 진한 쪽 휨은 <strong>E<sub>g</sub>/2</strong>로 근사.</li>
+    </ul>
+    <div class="takeaway mt"><p style="margin:0">"V<sub>bi</sub>는 도핑의 곱에 로그로 커지는 평형 장벽, W는 그 장벽이 펼쳐진 폭이고 옅은 쪽 도핑이 좌우한다 — 둘 다 ρ→E→V 적분으로 나온다."</p></div>
+    <div class="note mt">다음 → <strong>역방향·순방향 바이어스</strong>: 외부 전압을 걸면 V<sub>bi</sub>±V로 장벽과 W가 어떻게 움직이는지, 그래서 다이오드가 왜 한 방향으로만 통하는지.</div>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

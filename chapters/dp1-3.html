@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 1-3 · 바이어스·정전용량·항복</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 1 · 1-3 바이어스·정전용량·항복">
+<div class="deck">
+
+  <!-- 1. 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>전압을 걸면 pn접합은<br>어떻게 변할까</h1>
+    <p class="hook">평형이던 pn접합에 전압을 인가하는 순간, 밴드가 휘고 공핍층이 늘었다 줄고, 전류가 한쪽으로만 흐른다. 그리고 너무 세게 거꾸로 밀면 — 댐이 터지듯 <span class="hl">항복(breakdown)</span>이 일어난다.</p>
+    <p class="hint">forward / reverse bias · depletion capacitance · zener &amp; avalanche · <kbd>→</kbd> 로 진행</p>
+  </section>
+
+  <!-- 2. 한 문장 정의 -->
+  <section class="slide">
+    <div class="kicker">이번 챕터에서 답할 질문</div>
+    <h2>"다이오드는 왜 한쪽으로만 전류를 흘릴까?"</h2>
+    <div class="keyq">
+      <p style="margin:0">pn접합에 <strong>전압을 거는 방향</strong>에 따라 가운데 <span class="hl2">에너지 장벽</span>이 낮아지기도, 높아지기도 한다. 낮아지면 전류가 폭발적으로 흐르고(<span class="hl">forward</span>), 높아지면 거의 막힌다(<span class="hl3">reverse</span>). 이 비대칭이 바로 <strong>정류(rectification)</strong> — 다이오드의 정체성이다.</p>
+    </div>
+    <p class="mt dim">약속: 앞으로 인가 전압은 항상 <strong>p형 단자 기준</strong>으로 말한다. "p에 +" = forward, "p에 −" = reverse.</p>
+  </section>
+
+  <!-- 3. 평형 복습 + 개발자 비유 -->
+  <section class="slide">
+    <div class="kicker">출발점 — 전압이 0일 때(평형)</div>
+    <h2>아무 일도 안 일어나는 게 아니라, 완벽히 비기는 중</h2>
+    <div class="grid2">
+      <div class="physnote">
+        <p style="margin:0 0 8px">평형(thermal equilibrium)에서는 페르미 레벨 E<span class="sub">F</span>가 접합 전체에 <strong>하나의 수평선</strong>으로 이어진다. n쪽 전자는 농도가 높으니 p쪽으로 <strong>확산(diffusion)</strong>하려 하지만, 접합에 생긴 <strong>built-in 전기장</strong>이 전자를 다시 n쪽으로 끌어당기는 <strong>드리프트(drift)</strong>를 만든다.</p>
+        <p style="margin:8px 0 0">두 힘이 <span class="hl">정확히 상쇄</span> → 알짜 전류 = 0.</p>
+      </div>
+      <div class="dev-bridge">
+        <p style="margin:0">두 가지 시선은 같은 말이다.<br>
+        ① <strong>힘의 균형</strong>: 확산 ↔ 드리프트가 비긴다.<br>
+        ② <strong>장벽</strong>: V<span class="sub">bi</span>라는 언덕이 너무 높아 전자가 못 넘는다.<br><br>
+        try/catch처럼 — 던지려는 예외(확산)를 정확히 받아내는(드리프트) 상태. 겉으론 조용하지만 내부에선 둘이 팽팽하게 맞서고 있다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 밴드는 -qV 그림이다 (핵심 부호 규칙) -->
+  <section class="slide">
+    <div class="kicker">반드시 짚고 갈 부호 규칙</div>
+    <h2>"+전압을 거는데 왜 밴드가 <span class="hl3">아래</span>로?"</h2>
+    <div class="eq">E(전자 에너지) = (−<span class="var">q</span>) · <span class="var">V</span>(전위)</div>
+    <div class="eqcap">전자의 전하 −q 때문에, 전위 V가 높은 곳일수록 전자 에너지는 낮다.</div>
+    <p>에너지밴드 다이어그램은 사실 <strong>전위 V에 −q를 곱한 그림</strong>이다. 그래서 부호가 뒤집힌다.</p>
+    <ul>
+      <li><strong>p쪽에 +V (forward)</strong> → −q를 곱하면 음수 → 그쪽 밴드가 <span class="hl">아래로</span> 내려온다.</li>
+      <li><strong>p쪽에 −V (reverse)</strong> → −q를 곱하면 양수 → 그쪽 밴드가 <span class="hl3">위로</span> 올라간다.</li>
+    </ul>
+    <div class="physnote"><p style="margin:0">이 한 줄("밴드 = −qV")만 외워두면, 앞으로 나올 밴드 그림의 방향을 절대 헷갈리지 않는다.</p></div>
+  </section>
+
+  <!-- 5. Forward bias 밴드 -->
+  <section class="slide">
+    <div class="kicker">Forward Bias — p에 +전압</div>
+    <h2>장벽이 낮아져 전자가 쏟아진다</h2>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <text x="16" y="18" fill="#9fb0c7" font-size="12">E ↑</text>
+      <!-- 평형 장벽(점선, 참고) -->
+      <path d="M40,55 L250,55 Q300,55 300,120 L300,120 Q300,180 350,180 L560,180" fill="none" stroke="#3a4a66" stroke-width="1.4" stroke-dasharray="3 4"/>
+      <text x="455" y="48" fill="#6c7c95" font-size="11">평형(참고)</text>
+      <!-- forward: 장벽 낮아짐, 우측(n) 위로 올라온 효과로 단차 작음 -->
+      <path d="M40,95 L255,95 Q300,95 300,135 L300,135 Q300,170 350,170 L560,170" fill="none" stroke="#5b9cff" stroke-width="2.4"/>
+      <text x="48" y="88" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- 분리된 quasi-Fermi 레벨 -->
+      <line x1="40" y1="148" x2="300" y2="148" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="120" y="143" fill="#5ee6a0" font-size="11">E_Fp</text>
+      <line x1="300" y1="158" x2="560" y2="158" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="430" y="153" fill="#5ee6a0" font-size="11">E_Fn</text>
+      <!-- qVF 격차 표시 -->
+      <line x1="295" y1="148" x2="295" y2="158" stroke="#f5a623" stroke-width="1.2"/>
+      <text x="232" y="200" fill="#f5a623" font-size="11">qV_F (분리)</text>
+      <!-- 전자가 넘어가는 화살표 -->
+      <path d="M255,108 q40,-6 70,40" fill="none" stroke="#f5a623" stroke-width="1.6" marker-end="url(#aF)"/>
+      <defs><marker id="aF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#f5a623"/></marker></defs>
+      <text x="150" y="222" fill="#6c7c95" font-size="12">p형 (+V)</text>
+      <text x="440" y="222" fill="#6c7c95" font-size="12">n형 (0)</text>
+    </svg></div>
+    <p style="margin-top:12px">밴드가 내려오면서 <strong>장벽 높이가 V<span class="sub">bi</span> → V<span class="sub">bi</span> − V<span class="sub">F</span></strong>로 줄어든다. 낮아진 언덕은 전자가 훨씬 쉽게 넘는다 → 전류가 잘 흐른다.</p>
+  </section>
+
+  <!-- 6. 전류는 전압에 지수함수 -->
+  <section class="slide">
+    <div class="kicker">왜 "조금만" 더 걸어도 전류가 폭발하나</div>
+    <h2>장벽을 넘는 비율이 <span class="hl">지수함수</span>이기 때문</h2>
+    <div class="eq">(장벽을 넘을 확률) ∝ exp( −(장벽 높이) / kT )</div>
+    <div class="eqcap">페르미-디랙 분포의 꼬리 — 높은 에너지 상태를 채우는 확률은 지수적으로 떨어진다.</div>
+    <p>장벽이 V<span class="sub">F</span>만큼 낮아지면, 넘는 전자 수는 <strong>지수적으로</strong> 늘어난다. 그래서 전류도 가해준 전압에 지수적으로 비례한다.</p>
+    <div class="eq">I ∝ exp( <span class="var">q</span>V<span class="sub">F</span> / kT ) − 1</div>
+    <div class="eqcap">정밀한 다이오드 전류식은 다음 챕터에서 — 지금은 "지수"라는 감각만.</div>
+    <div class="dev-bridge"><p style="margin:0">선형이 아니라 <code>exp()</code>다. 0.6 V 부근에서 전압을 0.06 V만 더 올려도 전류가 약 10배로 뛴다. LED를 전압으로 직접 구동하면 안 되고 전류 제한 저항을 다는 이유가 여기 있다.</p></div>
+  </section>
+
+  <!-- 7. Reverse bias 밴드 -->
+  <section class="slide">
+    <div class="kicker">Reverse Bias — p에 −전압</div>
+    <h2>장벽이 더 높아져 전류가 막힌다</h2>
+    <div class="band"><svg viewBox="0 0 600 235" width="600">
+      <text x="16" y="18" fill="#9fb0c7" font-size="12">E ↑</text>
+      <!-- 평형 참고 -->
+      <path d="M40,75 L250,75 Q300,75 300,120 L300,120 Q300,165 350,165 L560,165" fill="none" stroke="#3a4a66" stroke-width="1.4" stroke-dasharray="3 4"/>
+      <text x="455" y="68" fill="#6c7c95" font-size="11">평형(참고)</text>
+      <!-- reverse: p쪽 위로, n쪽 아래로 → 장벽 크고 가파름, W 넓음 -->
+      <path d="M40,45 L235,45 Q300,45 300,135 L300,135 Q300,200 365,200 L560,200" fill="none" stroke="#5b9cff" stroke-width="2.4"/>
+      <text x="48" y="38" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- quasi-Fermi 크게 분리 -->
+      <line x1="40" y1="92" x2="300" y2="92" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="115" y="87" fill="#5ee6a0" font-size="11">E_Fp</text>
+      <line x1="300" y1="180" x2="560" y2="180" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="420" y="175" fill="#5ee6a0" font-size="11">E_Fn</text>
+      <line x1="295" y1="92" x2="295" y2="180" stroke="#f5a623" stroke-width="1.2"/>
+      <text x="305" y="140" fill="#f5a623" font-size="11">qV_R</text>
+      <!-- 넓어진 공핍폭 표시 -->
+      <line x1="235" y1="215" x2="365" y2="215" stroke="#b388ff" stroke-width="1.4"/>
+      <text x="262" y="228" fill="#b388ff" font-size="11">넓어진 W</text>
+      <text x="135" y="32" fill="#6c7c95" font-size="12">p형 (−V)</text>
+      <text x="455" y="32" fill="#6c7c95" font-size="12">n형 (0)</text>
+    </svg></div>
+    <p style="margin-top:12px">밴드가 더 벌어지며 <strong>장벽이 V<span class="sub">bi</span> → V<span class="sub">bi</span> + V<span class="sub">R</span></strong>로 커진다. 전자가 넘기 더 힘들어 전류는 거의 0. 대신 공핍층은 더 <span class="hl3">넓어진다</span>.</p>
+  </section>
+
+  <!-- 8. 전압은 어디에 걸리나 (voltage drop) -->
+  <section class="slide">
+    <div class="kicker">수식 전개를 단순하게 만드는 핵심 가정</div>
+    <h2>걸어준 전압은 거의 전부 <span class="hl3">공핍층</span>에 걸린다</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🚧</span>공핍층 (depletion region)</h3>
+        <p style="margin:0">움직일 수 있는 캐리어가 거의 없다 → 전류가 안 통한다 → <strong>저항이 매우 큰</strong> 구간처럼 행동. 외부 전압은 거의 다 여기에 걸린다.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🔌</span>중성 영역 (neutral region)</h3>
+        <p style="margin:0">캐리어가 풍부해 저항이 작다. depletion 근사로 E-field≈0, 전위차≈0. 그냥 <strong>전압을 전달하는 전극</strong>처럼 취급.</p>
+      </div>
+    </div>
+    <div class="physnote mt"><p style="margin:0"><strong>결론:</strong> 외부 전압은 오직 <span class="hl2">built-in potential</span>만 바꾼다. 그래서 지난 챕터의 모든 식에서 손댈 항은 <span class="hl">V<span class="sub">bi</span> 하나뿐</span>이다.</p></div>
+    <p class="note">엄밀히는 중성 영역에도 작은 전압 강하가 있다. 다음 챕터 전류식에서는 이걸 반드시 고려한다 — 지금은 무시.</p>
+  </section>
+
+  <!-- 9. 치환 규칙 한 장 -->
+  <section class="slide">
+    <div class="kicker">그래서 수식 유도가 "거저"가 된다</div>
+    <h2>V<span class="sub">bi</span>만 갈아끼우면 끝</h2>
+    <div class="eq">forward: V<span class="sub">bi</span> → V<span class="sub">bi</span> − <span class="var">V</span><span class="sub">F</span> &nbsp;&nbsp; reverse: V<span class="sub">bi</span> → V<span class="sub">bi</span> + <span class="var">V</span><span class="sub">R</span></div>
+    <div class="eqcap">지난 챕터에서 유도한 x<span class="sub">n</span>, x<span class="sub">p</span>, E<span class="sub">max</span>, W 식의 V<span class="sub">bi</span> 자리에 위 값을 넣기만 하면 된다.</div>
+    <div class="eq">W ∝ √( V<span class="sub">bi</span> ∓ <span class="var">V</span> )  ·  ( 1/<span class="var">N</span><span class="sub">A</span> + 1/<span class="var">N</span><span class="sub">D</span> )</div>
+    <div class="eqcap">장벽(괄호 안)이 커지면 W가 커진다. → reverse: W↑, forward: W↓.</div>
+    <table class="compare mt">
+      <tr><th>항목</th><th>Forward (p에 +)</th><th>Reverse (p에 −)</th></tr>
+      <tr><td>장벽 높이</td><td>V<span class="sub">bi</span> − V<span class="sub">F</span> (낮아짐)</td><td>V<span class="sub">bi</span> + V<span class="sub">R</span> (높아짐)</td></tr>
+      <tr><td>공핍폭 W</td><td class="hl">좁아짐</td><td class="hl3">넓어짐</td></tr>
+      <tr><td>E-field (밴드 기울기)</td><td>완만 → 약함</td><td>가파름 → 강함</td></tr>
+      <tr><td>전류</td><td>지수적으로 잘 흐름</td><td>거의 0 (차단)</td></tr>
+    </table>
+  </section>
+
+  <!-- 10. 커패시터 복습 -->
+  <section class="slide">
+    <div class="kicker">잠깐, 커패시터 복습</div>
+    <h2>전류는 안 통하고 전기장만 전달하는 구조</h2>
+    <div class="grid2">
+      <div>
+        <p>커패시터는 두 전극 사이에 <strong>전류가 안 통하는 유전체</strong>를 끼운 소자다. 한쪽엔 +전하, 반대쪽엔 −전하가 쌓이고 그 사이에 E-field가 생긴다. 전하를 얼마나 모을 수 있나가 <strong>정전용량 C</strong>.</p>
+        <div class="eq">C = ε · <span class="var">A</span> / <span class="var">d</span></div>
+        <div class="eqcap">유전율 ε에 비례, 면적 A에 비례, 간격 d에 반비례.</div>
+        <p class="dim">앞으로는 단위면적당 값 C/A 를 쓰며 단위는 [F/cm²]. 그러면 <strong>C = ε / d</strong> 꼴이 된다.</p>
+      </div>
+      <div class="diagram">
+        <svg viewBox="0 0 240 170" width="240">
+          <rect x="40" y="20" width="12" height="120" fill="#5b9cff"/>
+          <rect x="188" y="20" width="12" height="120" fill="#b388ff"/>
+          <text x="30" y="155" fill="#5b9cff" font-size="12">+Q</text>
+          <text x="178" y="155" fill="#b388ff" font-size="12">−Q</text>
+          <line x1="58" y1="50" x2="182" y2="50" stroke="#f5a623" stroke-width="1.4" marker-end="url(#e1)"/>
+          <line x1="58" y1="80" x2="182" y2="80" stroke="#f5a623" stroke-width="1.4" marker-end="url(#e1)"/>
+          <line x1="58" y1="110" x2="182" y2="110" stroke="#f5a623" stroke-width="1.4" marker-end="url(#e1)"/>
+          <defs><marker id="e1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#f5a623"/></marker></defs>
+          <text x="95" y="40" fill="#9fb0c7" font-size="11">E-field</text>
+          <text x="92" y="166" fill="#6c7c95" font-size="11">유전체 (간격 d)</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. depletion capacitance 정의 -->
+  <section class="slide">
+    <div class="kicker">Depletion Capacitance</div>
+    <h2>역바이어스 pn접합 = 그 자체로 하나의 커패시터</h2>
+    <div class="physnote"><p style="margin:0">reverse bias를 걸면 공핍층엔 전류가 안 통하고, 한쪽엔 도너 이온의 +전하(<span class="hl2">+Q<span class="sub">dep</span></span>), 반대쪽엔 억셉터 이온의 −전하(<span class="hl3">−Q<span class="sub">dep</span></span>)가 마주 본다. 중성 영역을 전극이라 보면 — 이건 <strong>완벽히 커패시터 구조</strong>다.</p></div>
+    <div class="eq">+Q<span class="sub">dep</span> = <span class="var">q</span>·<span class="var">N</span><span class="sub">D</span>·x<span class="sub">n</span> &nbsp;=&nbsp; |−Q<span class="sub">dep</span>| = <span class="var">q</span>·<span class="var">N</span><span class="sub">A</span>·x<span class="sub">p</span></div>
+    <div class="eqcap">양쪽 공핍 전하량은 크기가 같다(전하 중성). 면적이 같은 두 사각형.</div>
+    <div class="keyq mt"><p style="margin:0"><strong>정의:</strong> 외부 reverse bias를 살짝 바꿨을 때 공핍 전하가 얼마나 따라 바뀌나.<br>
+    <span class="eq" style="margin-top:8px">C<span class="sub">dep</span> = dQ<span class="sub">dep</span> / dV<span class="sub">R</span>&nbsp;&nbsp;[F/cm²]</span></p></div>
+  </section>
+
+  <!-- 12. Cdep = εs/W 유도 결과 -->
+  <section class="slide">
+    <div class="kicker">유도 결과 — 과정은 복잡, 결과는 단순</div>
+    <h2>결국 평행판 공식과 <span class="hl">똑같다</span></h2>
+    <p class="dim">Q<span class="sub">dep</span>↔x<span class="sub">n</span>, x<span class="sub">n</span>↔W, W↔V<span class="sub">R</span> 세 관계를 각각 미분해 곱하면(체인 룰):</p>
+    <div class="eq">C<span class="sub">dep</span> = dQ<span class="sub">dep</span>/dx<span class="sub">n</span> · dx<span class="sub">n</span>/dW · dW/dV<span class="sub">R</span> &nbsp;=&nbsp; <span class="hl">ε<span class="sub">s</span> / W</span></div>
+    <div class="eqcap">반도체의 유전율 ε<span class="sub">s</span>를 공핍폭 W로 나눈 값 — 평행판 커패시터의 ε/d 와 판박이.</div>
+    <div class="dev-bridge"><p style="margin:0">유전체 간격 d 자리에 <strong>공핍폭 W</strong>가 들어간 것. 그런데 W는 전압에 따라 변한다 → 이 커패시터는 <strong>전압으로 용량을 조절</strong>할 수 있다(가변 커패시터, varactor). reverse bias↑ → W↑ → C<span class="sub">dep</span>↓. 이게 FM 라디오 동조나 PLL VCO의 핵심 부품이다.</p></div>
+    <div class="physnote mt"><p style="margin:0">forward bias에서는 다른 종류인 <strong>diffusion capacitance</strong>가 지배적이다. 그건 전류를 먼저 이해해야 하므로 다음 챕터로 미룬다.</p></div>
+  </section>
+
+  <!-- 13. 1/C^2 측정으로 도핑 추출 -->
+  <section class="slide">
+    <div class="kicker">실전 활용 — C-V 측정</div>
+    <h2>용량만 재서 미지의 도핑 농도를 알아낸다</h2>
+    <div class="grid2">
+      <div>
+        <p>C<span class="sub">dep</span> = ε<span class="sub">s</span>/W 를 제곱해 역수를 취하면 V<span class="sub">R</span>에 대해 <strong>완벽한 직선</strong>이 된다.</p>
+        <div class="eq">1 / C<span class="sub">dep</span><span class="sup">2</span> &nbsp;∝&nbsp; ( V<span class="sub">bi</span> + V<span class="sub">R</span> )</div>
+        <div class="eqcap">V<span class="sub">R</span>을 바꿔가며 C를 재고 1/C²을 그리면 직선 하나가 나온다.</div>
+        <ul>
+          <li><strong>기울기</strong> → (1/N<span class="sub">A</span>+1/N<span class="sub">D</span>) 정보를 담는다.</li>
+          <li><strong>x절편</strong> = <span class="hl3">−V<span class="sub">bi</span></span> → built-in 전위를 실험으로 확인.</li>
+          <li>V<span class="sub">bi</span>식과 연립 → <span class="hl">N<span class="sub">A</span>, N<span class="sub">D</span></span>를 둘 다 풀어낸다.</li>
+        </ul>
+      </div>
+      <div class="diagram">
+        <svg viewBox="0 0 250 190" width="250">
+          <line x1="40" y1="160" x2="235" y2="160" stroke="#22304a" stroke-width="1.4"/>
+          <line x1="40" y1="20" x2="40" y2="160" stroke="#22304a" stroke-width="1.4"/>
+          <text x="2" y="30" fill="#9fb0c7" font-size="11">1/C²</text>
+          <text x="205" y="178" fill="#9fb0c7" font-size="11">V_R</text>
+          <!-- 직선: x절편 -Vbi 에서 시작 -->
+          <line x1="70" y1="160" x2="225" y2="45" stroke="#f5a623" stroke-width="2.2"/>
+          <circle cx="70" cy="160" r="3.5" fill="#5ee6a0"/>
+          <text x="38" y="180" fill="#5ee6a0" font-size="10">−V_bi</text>
+          <line x1="150" y1="105" x2="200" y2="105" stroke="#6c7c95" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="200" y1="105" x2="200" y2="68" stroke="#6c7c95" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="158" y="100" fill="#9fb0c7" font-size="10">기울기→도핑</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. breakdown 도입 -->
+  <section class="slide">
+    <div class="kicker">Breakdown(항복) — 막혔던 댐이 터진다</div>
+    <h2>역방향인데 갑자기 전류가 폭증하는 구간</h2>
+    <div class="keyq"><p style="margin:0">reverse bias에서는 전류가 거의 0이다. 그런데 <strong>어떤 임계 전압 V<span class="sub">B</span>를 넘기면</strong> 전류가 절벽처럼 급증한다. 이 현상이 <span class="hl">breakdown(항복)</span>이다.</p></div>
+    <div class="diagram mt">
+      <svg viewBox="0 0 420 200" width="420">
+        <line x1="30" y1="100" x2="400" y2="100" stroke="#22304a" stroke-width="1.4"/>
+        <line x1="230" y1="20" x2="230" y2="190" stroke="#22304a" stroke-width="1.4"/>
+        <text x="362" y="94" fill="#9fb0c7" font-size="11">V</text>
+        <text x="238" y="32" fill="#9fb0c7" font-size="11">I</text>
+        <!-- forward 지수 상승 (우측) -->
+        <path d="M230,100 Q300,98 330,40" fill="none" stroke="#5ee6a0" stroke-width="2.4"/>
+        <text x="300" y="60" fill="#5ee6a0" font-size="11">forward</text>
+        <!-- reverse 거의 0 그러다 VB에서 급강하 -->
+        <path d="M230,102 L80,104 L70,104" fill="none" stroke="#5b9cff" stroke-width="2.2"/>
+        <path d="M70,104 L70,185" fill="none" stroke="#ff7a85" stroke-width="2.6"/>
+        <text x="36" y="160" fill="#ff7a85" font-size="11">breakdown</text>
+        <line x1="70" y1="100" x2="70" y2="110" stroke="#f5a623" stroke-width="1.4"/>
+        <text x="50" y="92" fill="#f5a623" font-size="11">−V_B</text>
+      </svg>
+    </div>
+    <p class="mt">원인은 두 가지다 — <span class="hl2">제너(Zener) 효과</span>와 <span class="hl3">애벌랜치(Avalanche) 효과</span>. 메커니즘이 전혀 다르다.</p>
+  </section>
+
+  <!-- 15. Zener effect -->
+  <section class="slide">
+    <div class="kicker">① Zener Effect — 터널링</div>
+    <h2>장벽이 너무 <span class="hl2">얇아져서</span> 전자가 그냥 통과한다</h2>
+    <div class="grid2">
+      <div>
+        <p><strong>고농도로 도핑된</strong> 접합에서 일어난다. 도핑이 진하면 E<span class="sub">F</span>가 E<span class="sub">c</span>/E<span class="sub">v</span>에 거의 붙고, 밴드 휘어짐(V<span class="sub">bi</span>)이 매우 커진다.</p>
+        <p>여기에 강한 reverse bias를 걸면 밴드가 극심하게 휘면서, 전자가 마주한 장벽의 <strong>두께</strong>가 아주 얇아진다.</p>
+        <div class="physnote"><p style="margin:0">장벽이 충분히 얇으면 전자는 넘지 않고 <strong>그대로 뚫고 지나간다</strong> — 양자역학적 <span class="hl2">터널링(tunneling)</span>. p쪽 가전자대 전자가 n쪽 전도대로 새어 나가 전류가 흐른다.</p></div>
+      </div>
+      <div class="band"><svg viewBox="0 0 280 200" width="280">
+        <text x="10" y="16" fill="#9fb0c7" font-size="11">E ↑</text>
+        <!-- 고농도+강한 reverse: 급격히 휜 밴드 -->
+        <path d="M20,40 L95,40 L150,150 L260,150" fill="none" stroke="#5b9cff" stroke-width="2.2"/>
+        <text x="24" y="34" fill="#5b9cff" font-size="10">E_c</text>
+        <path d="M20,70 L95,70 L150,180 L260,180" fill="none" stroke="#b388ff" stroke-width="2.2"/>
+        <text x="232" y="172" fill="#b388ff" font-size="10">E_v</text>
+        <!-- 얇아진 장벽 위로 수평 터널 화살표 -->
+        <line x1="60" y1="60" x2="170" y2="60" stroke="#f5a623" stroke-width="2" marker-end="url(#tz)"/>
+        <defs><marker id="tz" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 z" fill="#f5a623"/></marker></defs>
+        <text x="78" y="52" fill="#f5a623" font-size="10">터널링</text>
+        <text x="40" y="198" fill="#6c7c95" font-size="10">p (−V)</text>
+        <text x="210" y="198" fill="#6c7c95" font-size="10">n (+V)</text>
+      </svg></div>
+    </div>
+  </section>
+
+  <!-- 16. Zener diode 활용 -->
+  <section class="slide">
+    <div class="kicker">Zener Diode — 항복 구간을 일부러 쓴다</div>
+    <h2>"전압을 V<span class="sub">B</span> 이상으로 못 올라가게 붙잡는" 부품</h2>
+    <p>제너 다이오드는 일반 다이오드처럼 forward에선 잘 흐르고 reverse에선 막는다. 다만 <strong>breakdown 구간을 동작점으로 사용</strong>한다.</p>
+    <div class="physnote"><p style="margin:0">핵심 성질: breakdown 구간에서는 전류가 아무리 크게 흘러도 <strong>다이오드 양단 전압은 V<span class="sub">B</span>에 거의 고정</strong>된다. 큰 전류를 흘려주는 능력 + 전압을 묶어두는 능력.</p></div>
+    <div class="dev-bridge mt"><p style="margin:0"><strong>회로 보호(클램핑):</strong> 정전기 같은 과전압이 들어오면, 제너가 먼저 항복하며 그 큰 전류를 자기 쪽으로 받아낸다. 그 결과 보호하려는 회로의 입력 전압은 V<span class="sub">B</span> 위로 못 올라간다 → 회로가 안 탄다. 소프트웨어의 <code>Math.min(input, MAX)</code> 같은 클램프를 하드웨어가 물리적으로 해주는 셈.</p></div>
+  </section>
+
+  <!-- 17. Avalanche effect -->
+  <section class="slide">
+    <div class="kicker">② Avalanche Effect — 충돌 이온화</div>
+    <h2>전자 한 개가 <span class="hl3">눈사태</span>처럼 전자·홀을 불린다</h2>
+    <div class="grid2">
+      <div>
+        <p>도핑이 진하지 <strong>않아도</strong> 일어난다. 강한 reverse bias로 공핍층 안 E-field가 매우 세지는 게 조건.</p>
+        <ol>
+          <li>전자 하나가 공핍층에 들어와 강한 E-field로 <strong>가속</strong>된다.</li>
+          <li>급격한 위치에너지 차 → <strong>운동에너지</strong>로 전환(에너지 보존).</li>
+          <li>이 빠른 전자가 원자와 <strong>충돌</strong>해 결합을 끊고 <strong>전자-홀 쌍</strong>을 새로 만든다.</li>
+          <li>새로 생긴 전자도 다시 가속·충돌 → <strong>연쇄 증폭</strong> → 전류 폭증.</li>
+        </ol>
+        <p class="dim">다른 이름: <strong>impact ionization(충격 이온화)</strong>.</p>
+      </div>
+      <div class="band"><svg viewBox="0 0 280 210" width="280">
+        <text x="10" y="16" fill="#9fb0c7" font-size="11">E ↑</text>
+        <path d="M20,45 L90,45 Q150,45 150,120 Q150,165 215,165 L260,165" fill="none" stroke="#5b9cff" stroke-width="2"/>
+        <!-- 연쇄: 1개 -> 2개 -> 4개 화살표 -->
+        <line x1="60" y1="60" x2="110" y2="80" stroke="#f5a623" stroke-width="1.8" marker-end="url(#av)"/>
+        <line x1="115" y1="85" x2="150" y2="120" stroke="#f5a623" stroke-width="1.8" marker-end="url(#av)"/>
+        <line x1="115" y1="85" x2="160" y2="95" stroke="#5ee6a0" stroke-width="1.6" marker-end="url(#av2)"/>
+        <line x1="150" y1="120" x2="190" y2="150" stroke="#f5a623" stroke-width="1.8" marker-end="url(#av)"/>
+        <line x1="150" y1="120" x2="200" y2="120" stroke="#5ee6a0" stroke-width="1.6" marker-end="url(#av2)"/>
+        <defs>
+          <marker id="av" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#f5a623"/></marker>
+          <marker id="av2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#5ee6a0"/></marker>
+        </defs>
+        <text x="60" y="195" fill="#6c7c95" font-size="10">충돌 → 쌍 생성 → 연쇄</text>
+      </svg></div>
+    </div>
+  </section>
+
+  <!-- 18. avalanche 임계 조건 -->
+  <section class="slide">
+    <div class="kicker">언제 충돌 이온화가 시작되나</div>
+    <h2>전자의 운동에너지가 밴드갭을 넘을 만큼 — 결국 E-field 문제</h2>
+    <p>가전자대 전자 하나를 전도대로 끌어올리려면(=쌍 하나 만들려면) 적어도 밴드갭 E<span class="sub">g</span>만큼의 에너지가 필요하다.</p>
+    <div class="eq">(전자 운동에너지) &gt; E<span class="sub">g</span></div>
+    <div class="eqcap">이 조건을 만족해야 충돌로 새 전자-홀 쌍이 생긴다.</div>
+    <p>운동에너지는 속도가, 속도는 가속시키는 <strong>E-field 세기</strong>가 결정한다. 그래서 임계 E-field만 넘으면 avalanche가 터진다.</p>
+    <div class="eq">E<span class="sub">max</span>(reverse) &gt; E<span class="sub">crit</span> &nbsp;≈&nbsp; 1×10<span class="sup">6</span> [V/cm]  (Si)</div>
+    <div class="eqcap">실리콘 기준 임계 전기장 — reverse bias로 E<span class="sub">max</span>가 이 값을 넘으면 항복. MOSFET 단계에서 다시 만난다(hot carrier).</div>
+  </section>
+
+  <!-- 19. Zener vs Avalanche 비교 -->
+  <section class="slide">
+    <div class="kicker">두 항복을 한눈에</div>
+    <h2>같은 "전류 폭증", 전혀 다른 원인</h2>
+    <table class="compare">
+      <tr><th>구분</th><th>Zener (제너)</th><th>Avalanche (애벌랜치)</th></tr>
+      <tr><td>메커니즘</td><td class="hl2">터널링(tunneling)</td><td class="hl3">연쇄 생성(impact ionization)</td></tr>
+      <tr><td>핵심 원리</td><td>장벽 <strong>두께</strong>가 얇아져 전자가 뚫고 지나감</td><td>가속된 전자가 충돌해 전자-홀 쌍을 눈사태처럼 증식</td></tr>
+      <tr><td>도핑 농도</td><td><strong>매우 높음</strong> 필요</td><td>높지 않아도 발생</td></tr>
+      <tr><td>방아쇠</td><td>얇은 장벽 (큰 V<span class="sub">bi</span>+강한 reverse)</td><td>강한 E-field (E<span class="sub">max</span> &gt; E<span class="sub">crit</span>)</td></tr>
+      <tr><td>새 캐리어</td><td>생성 없음 (있던 전자가 이동)</td><td>다수 생성 (전자-홀 쌍 증폭)</td></tr>
+    </table>
+    <div class="takeaway mt"><p style="margin:0">"Zener는 <strong>얇아진 장벽을 뚫는 터널링</strong>(고농도), Avalanche는 <strong>강한 E-field가 만든 충돌 연쇄</strong>(impact ionization). 둘 다 reverse bias 항복이지만 캐리어를 새로 만드느냐가 갈림길."</p></div>
+  </section>
+
+  <!-- 20. 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해보기</h2>
+    <div class="qa">
+      <div class="q">p쪽에 +전압(forward)을 거는데 왜 그쪽 밴드가 아래로 내려가나요?</div>
+      <div class="a">밴드 다이어그램은 전위 V에 −q를 곱한 그림(E=−qV)이라서. +V에 −q를 곱하면 음수 → 에너지가 낮아져 밴드가 내려간다. 장벽이 V<span class="sub">bi</span>−V<span class="sub">F</span>로 낮아져 전류가 잘 흐른다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">reverse bias를 더 세게 걸면 depletion capacitance는 커지나요, 작아지나요?</div>
+      <div class="a">작아진다. reverse bias↑ → 공핍폭 W↑. C<span class="sub">dep</span>=ε<span class="sub">s</span>/W 이므로 W가 커지면 C는 줄어든다. 그래서 전압으로 용량을 조절하는 varactor가 가능하다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">고농도로 도핑된 다이오드의 항복은 Zener? Avalanche?</div>
+      <div class="a">주로 Zener(터널링). 도핑이 진하면 V<span class="sub">bi</span>가 크고 장벽이 얇아져 터널링이 쉽다. 도핑이 낮은 쪽은 공핍층이 넓고 E-field로 가속될 거리가 길어 Avalanche(충돌 이온화)가 지배적이다.</div>
+    </div>
+  </section>
+
+  <!-- 21. 요약 -->
+  <section class="slide">
+    <div class="kicker">한 챕터 정리</div>
+    <h2>핵심만 다시</h2>
+    <ul>
+      <li><strong>바이어스(p 기준):</strong> forward(+)는 장벽 V<span class="sub">bi</span>−V<span class="sub">F</span>로 낮아져 W↓·E↓·전류 지수 증가. reverse(−)는 V<span class="sub">bi</span>+V<span class="sub">R</span>로 높아져 W↑·E↑·전류 차단.</li>
+      <li><strong>전압의 위치:</strong> 외부 전압은 거의 전부 공핍층에 걸린다 → 식에서 V<span class="sub">bi</span> 항만 갈아끼우면 끝.</li>
+      <li><strong>Depletion capacitance:</strong> 역바이어스 접합 = 커패시터. <span class="hl">C<span class="sub">dep</span>=ε<span class="sub">s</span>/W</span>. 1/C² vs V<span class="sub">R</span> 직선의 기울기→도핑, x절편→−V<span class="sub">bi</span>.</li>
+      <li><strong>Breakdown:</strong> Zener=얇은 장벽 터널링(고농도) / Avalanche=충돌 이온화 연쇄(강한 E-field, Si≈10⁶ V/cm).</li>
+    </ul>
+    <div class="takeaway mt"><p style="margin:0">다이오드의 비대칭 정류는 "바이어스 방향이 장벽을 올리거나 내린다"에서 나온다. 역바이어스는 정전용량(C-V로 도핑 측정)과 항복(Zener/Avalanche)이라는 두 얼굴을 더 가진다.</p></div>
+    <p class="note mt">다음 → forward bias에서 실제로 <strong>전류가 얼마나</strong> 흐르는지(다이오드 전류식, 소수 캐리어 확산), 그리고 그때 생기는 <strong>diffusion capacitance</strong>.</p>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

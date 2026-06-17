@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 4-2 · 문턱전압·C-V 특성</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 4 · 4-2 문턱전압·C-V 특성">
+<div class="deck">
+
+  <!-- 1. 표지 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>게이트 전압은 어디로 가는가</h1>
+    <p class="hook">한 칸짜리 전압이 어떻게 <strong class="hl">세 군데로 쪼개져</strong> 쓰이고,
+       그 결과 MOS 커패시터의 용량(C)이 게이트 전압에 따라 출렁이는지 —
+       문턱전압 V<span class="sub">T</span>의 정체와 C-V 곡선을 그림으로 풉니다.</p>
+    <p class="hint">← → 또는 화면 좌우 클릭으로 이동 · <kbd>Space</kbd> 다음</p>
+  </section>
+
+  <!-- 2. 무엇을 -->
+  <section class="slide">
+    <div class="kicker">이번 장의 한 문장</div>
+    <h2>전압 분배 → C-V 곡선 → 비이상 보정</h2>
+    <div class="keyq">
+      <p style="margin:0">게이트에 전압 <span class="hl">V<span class="sub">G</span></span>를 걸면,
+      그 전압은 <strong>① 일함수 차이를 맞추는 데(φ<span class="sub">ms</span>)</strong>,
+      <strong>② 산화막을 가로지르는 데(V<span class="sub">ox</span>)</strong>,
+      <strong>③ 실리콘 표면을 휘게 하는 데(ψ<span class="sub">s</span>)</strong> 나누어 쓰입니다.
+      이 "분배"를 이해하면 문턱전압과 C-V 곡선이 통째로 따라옵니다.</p>
+    </div>
+    <p class="mt dim">큰 흐름: ① 전압이 어떻게 쪼개지나 → ② 문턱전압 V<span class="sub">T</span>가 무엇으로 이뤄지나 →
+       ③ 동작 모드별 용량 변화(C-V) → ④ 저주파 vs 고주파 → ⑤ 실제 소자의 비이상 효과.</p>
+  </section>
+
+  <!-- 3. 비유 / 개발자 다리 -->
+  <section class="slide">
+    <div class="kicker">직관부터 잡기</div>
+    <h2>전압은 직렬로 연결된 "저금통"들에 나눠 들어간다</h2>
+    <div class="grid2">
+      <div class="analogy">
+        <p style="margin:0">수도관 하나에 밸브 세 개가 <strong>직렬</strong>로 달려 있다고 생각해 보세요.
+        펌프 압력(V<span class="sub">G</span>)을 올리면 그 압력은 세 밸브에 <strong>나뉘어 걸립니다</strong>.
+        어느 밸브가 뻑뻑하냐에 따라 분배 비율이 달라지죠 — MOS도 똑같습니다.</p>
+      </div>
+      <div class="dev-bridge">
+        <p style="margin:0">코드로 보면 직렬 저항의 전압 분배와 같습니다.
+        <code>V_total = V1 + V2 + V3</code>. 단, 각 항이 단순 저항이 아니라
+        <strong>일함수 오프셋(상수)</strong>, <strong>산화막(고정 커패시터)</strong>,
+        <strong>실리콘 표면(전압에 따라 변하는 커패시터)</strong>이라는 점만 다릅니다.</p>
+      </div>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">핵심 직관: <strong>실리콘 표면 항만 "비선형"</strong>입니다.
+      나머지 둘은 고정값에 가까워서, C-V 곡선의 출렁임은 거의 전부 실리콘 표면에서 나옵니다.</p>
+    </div>
+  </section>
+
+  <!-- 4. 평형 상태 복습 -->
+  <section class="slide">
+    <div class="kicker">출발점 — 전압을 걸기 전(평형)</div>
+    <h2>접합을 만들면 밴드가 먼저 휜다</h2>
+    <p>금속과 반도체를 붙이면 둘의 <strong class="hl">페르미 준위(E<span class="sub">F</span>)가 어긋나</strong> 있습니다.
+       평형이 되려면 E<span class="sub">F</span>가 한 줄로 맞춰져야 하므로, 그 차이(일함수 차 φ<span class="sub">ms</span>)만큼
+       밴드가 휘어집니다. 이번엔 휘어질 곳이 <strong>산화막</strong>과 <strong>실리콘</strong> 두 군데입니다.</p>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <text x="20" y="20" fill="#9fb0c7" font-size="12">E (에너지) ↑</text>
+      <!-- 영역 구분: 금속 | 산화막 | 실리콘(p형) -->
+      <line x1="150" y1="35" x2="150" y2="205" stroke="#22304a" stroke-width="1" stroke-dasharray="3 3"/>
+      <line x1="250" y1="35" x2="250" y2="205" stroke="#22304a" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="70"  y="50" fill="#6c7c95" font-size="12">금속(게이트)</text>
+      <text x="172" y="50" fill="#6c7c95" font-size="12">산화막</text>
+      <text x="400" y="50" fill="#6c7c95" font-size="12">p형 실리콘</text>
+      <!-- 금속 페르미 -->
+      <line x1="40" y1="120" x2="150" y2="120" stroke="#f5a623" stroke-width="2"/>
+      <text x="45" y="113" fill="#f5a623" font-size="12">E_F(금속)</text>
+      <!-- 산화막 E_c (위), E_v(아래) : 산화막 안에서 기울어짐 -->
+      <path d="M150,80 L250,100" fill="none" stroke="#5b9cff" stroke-width="2"/>
+      <path d="M150,175 L250,190" fill="none" stroke="#b388ff" stroke-width="2"/>
+      <text x="158" y="74" fill="#5b9cff" font-size="11">산화막 E_c</text>
+      <!-- 실리콘 E_c : 표면에서 아래로 휘어 평탄해짐 -->
+      <path d="M250,100 Q300,118 340,128 L560,128" fill="none" stroke="#5b9cff" stroke-width="2"/>
+      <text x="520" y="120" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- 실리콘 E_F (수평, p형이라 E_v에 가깝게) -->
+      <line x1="250" y1="168" x2="560" y2="168" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="520" y="163" fill="#5ee6a0" font-size="12">E_F</text>
+      <!-- 실리콘 E_v -->
+      <path d="M250,190 Q300,182 340,180 L560,180" fill="none" stroke="#b388ff" stroke-width="2"/>
+      <text x="520" y="200" fill="#b388ff" font-size="12">E_v</text>
+    </svg></div>
+    <p class="dim">밴드가 휜 총량 = φ<span class="sub">ms</span> = (산화막 휘어짐 V<span class="sub">ox0</span>) + (실리콘 표면 휘어짐 ψ<span class="sub">s0</span>).
+       평형에서는 외부 전압이 0인데도 이미 이만큼 휘어 있습니다.</p>
+  </section>
+
+  <!-- 5. 전압 분배 식 유도 -->
+  <section class="slide">
+    <div class="kicker">핵심 식 ①</div>
+    <h2>전압을 걸면: 추가 휘어짐 = 외부 전압</h2>
+    <p>게이트에 V<span class="sub">G</span>를 더 걸면 산화막과 실리콘 표면이 <strong>추가로</strong> 더 휩니다.
+       평형 상태(Δ=0) 기준으로 변화량만 모으면 평형 때 있던 휘어짐이 상쇄되고, 깔끔한 식이 남습니다.</p>
+    <div class="eq">
+      <span class="var">V</span><span class="sub">G</span>
+      = φ<span class="sub">ms</span> + <span class="var">ψ</span><span class="sub">s</span> + <span class="var">V</span><span class="sub">ox</span>
+    </div>
+    <div class="eqcap">게이트 전압 = 일함수 차 + 실리콘 표면전위(휘어짐) + 산화막 전압.</div>
+    <div class="grid3 mt">
+      <div class="card"><h3><span class="ico">🔩</span> φ<span class="sub">ms</span></h3>
+        <p style="margin:0;font-size:15px">금속·반도체 일함수 차. <strong>고정 오프셋</strong>(상수). 곡선을 좌우로 미는 역할.</p></div>
+      <div class="card"><h3><span class="ico">🌊</span> ψ<span class="sub">s</span></h3>
+        <p style="margin:0;font-size:15px">실리콘 표면이 휜 정도(표면전위). <strong>모드를 결정</strong>하는 비선형 주인공.</p></div>
+      <div class="card"><h3><span class="ico">🧱</span> V<span class="sub">ox</span></h3>
+        <p style="margin:0;font-size:15px">산화막에 걸리는 전압. 평판 커패시터처럼 표면 전하량에 비례.</p></div>
+    </div>
+  </section>
+
+  <!-- 6. V_ox = -Qs/Cox -->
+  <section class="slide">
+    <div class="kicker">핵심 식 ② — 산화막 항의 정체</div>
+    <h2>MOS는 그냥 평판 커패시터다</h2>
+    <p>가운데가 절연체(산화막)라 전류는 못 흐르고 전기장만 전달됩니다. 그래서 게이트에 +전압을 걸면
+       금속 표면에 +Q<span class="sub">m</span>, 실리콘 쪽엔 양은 같고 부호 반대인 전하 −Q<span class="sub">s</span>가 마주 섭니다
+       (Q<span class="sub">m</span> = −Q<span class="sub">s</span>). 평판 커패시터 공식 Q = C·V를 그대로 쓰면:</p>
+    <div class="eq">
+      <span class="var">V</span><span class="sub">ox</span> = <span class="var">Q</span><span class="sub">m</span> / C<span class="sub">ox</span>
+      = − <span class="var">Q</span><span class="sub">s</span> / C<span class="sub">ox</span>
+    </div>
+    <div class="eqcap">산화막 전압 = (실리콘 전하의 반대부호) ÷ 산화막 용량. C<span class="sub">ox</span> = ε<span class="sub">ox</span> / t<span class="sub">ox</span>.</div>
+    <div class="physnote">
+      <p style="margin:0">부호 직관: 실리콘에 음전하(−Q<span class="sub">s</span>)가 모이면 게이트엔 양전하(Q<span class="sub">m</span>)가 모입니다.
+      산화막 양단에 ± 전하가 마주 보니, 그 사이에 전압 V<span class="sub">ox</span>가 걸립니다. 전하가 많을수록 V<span class="sub">ox</span>도 큽니다.</p>
+    </div>
+  </section>
+
+  <!-- 7. 세 가지 동작 모드 -->
+  <section class="slide">
+    <div class="kicker">표면에서 벌어지는 일 — 세 모드</div>
+    <h2>축적 · 공핍 · 반전 (p형 기준)</h2>
+    <p>p형 실리콘 위 MOS에서 게이트 전압을 키워가면 표면 상태가 세 단계로 바뀝니다.</p>
+    <table class="compare">
+      <tr><th>모드</th><th>게이트 전압</th><th>표면에서 일어나는 일</th><th>실리콘 전하 Q<span class="sub">s</span></th></tr>
+      <tr><td>축적(Accumulation)</td><td>(−) 음전압</td><td>다수캐리어 정공이 표면으로 <strong>몰림</strong></td><td>표면에 +정공층</td></tr>
+      <tr><td>공핍(Depletion)</td><td>약한 (+)</td><td>정공이 밀려나 <strong>비어 있는 공핍층</strong> 생성</td><td>고정 음이온(억셉터)</td></tr>
+      <tr><td>반전(Inversion)</td><td>강한 (+) ≥ V<span class="sub">T</span></td><td>표면에 전자가 모여 <strong>n형처럼</strong> 행동</td><td>음전자층 + 공핍층</td></tr>
+    </table>
+    <div class="flow mt">
+      <div class="box on">축적</div><div class="arrow">→</div>
+      <div class="box">공핍</div><div class="arrow">→</div>
+      <div class="box">반전</div>
+    </div>
+    <p class="dim center">게이트 전압을 (−) → (+)로 키울수록 왼쪽에서 오른쪽으로 이동.</p>
+  </section>
+
+  <!-- 8. 문턱전압 V_T 구성 -->
+  <section class="slide">
+    <div class="kicker">핵심 식 ③ — 문턱전압의 부품들</div>
+    <h2>V<span class="sub">T</span>는 "분배 식"에 모드 조건을 넣은 것</h2>
+    <p>반전이 막 시작되는 순간(표면 전자농도 = 벌크 정공농도)이 문턱입니다. 이때 표면전위는
+       ψ<span class="sub">s</span> = 2φ<span class="sub">F</span>로 고정되고, 공핍층 전하 Q<span class="sub">dep</span>(max)가 산화막에 분배됩니다. 식에 그대로 대입하면:</p>
+    <div class="eq">
+      <span class="var">V</span><span class="sub">T</span>
+      = φ<span class="sub">ms</span>
+      + 2φ<span class="sub">F</span>
+      + <span class="var">Q</span><span class="sub">dep</span> / C<span class="sub">ox</span>
+    </div>
+    <div class="eqcap">문턱전압 = 일함수 차 + 표면을 반전시키는 데 필요한 휘어짐(2φ<span class="sub">F</span>) + 공핍전하를 받치는 산화막 전압.</div>
+    <ul>
+      <li><strong>φ<span class="sub">ms</span></strong> — 출발선 보정(고정).</li>
+      <li><strong>2φ<span class="sub">F</span></strong> — 표면을 "n형처럼" 뒤집기 위해 휘어야 하는 양. 도핑이 진할수록 커짐.</li>
+      <li><strong>Q<span class="sub">dep</span>/C<span class="sub">ox</span></strong> — 그 아래 공핍층 음전하를 게이트가 받쳐주는 몫.</li>
+    </ul>
+    <div class="takeaway"><p style="margin:0">V<span class="sub">T</span>는 전압 분배 식 V<span class="sub">G</span> = φ<span class="sub">ms</span> + ψ<span class="sub">s</span> + V<span class="sub">ox</span>에
+      "반전 직전" 조건을 끼워 넣은 특수해입니다. 외울 게 아니라 분배 식에서 유도되는 값입니다.</p></div>
+  </section>
+
+  <!-- 9. C-V가 왜 생기나 -->
+  <section class="slide">
+    <div class="kicker">small-signal로 넘어가기</div>
+    <h2>DC로 모드를 정하고, AC로 용량을 잰다</h2>
+    <p>지금까지 건 게이트 전압은 <strong class="hl">DC</strong>(예: 2V로 고정). 여기에 작게 흔드는
+       <strong class="hl2">AC small-signal</strong>(ΔV<span class="sub">G</span>)을 얹으면, 그에 맞춰 전하가 ΔQ만큼
+       찰랑입니다. 이 비율이 바로 용량입니다.</p>
+    <div class="eq">
+      C = <span class="var">dQ</span> / <span class="var">dV</span><span class="sub">G</span>
+      = Q-V 곡선의 <strong>기울기</strong>
+    </div>
+    <div class="eqcap">게이트 전압을 조금 흔들 때 전하가 얼마나 따라 움직이나 = small-signal 커패시턴스.</div>
+    <div class="dev-bridge">
+      <p style="margin:0">DC는 동작점(operating point), AC는 그 점에서의 미분(국소 기울기)입니다.
+      같은 소자라도 <strong>어느 DC 점에 있느냐</strong>에 따라 측정되는 C가 달라집니다 — 그래서 C-V 곡선이 됩니다.</p>
+    </div>
+  </section>
+
+  <!-- 10. 이상적 C-V 곡선 -->
+  <section class="slide">
+    <div class="kicker">핵심 그림 — 이상적 C-V</div>
+    <h2>모드마다 용량이 달라진다</h2>
+    <div class="grid2">
+      <div>
+        <div class="diagram"><svg viewBox="0 0 420 260" width="420">
+          <!-- 축 -->
+          <line x1="50" y1="220" x2="400" y2="220" stroke="#22304a" stroke-width="1.5"/>
+          <line x1="50" y1="30"  x2="50"  y2="220" stroke="#22304a" stroke-width="1.5"/>
+          <text x="360" y="240" fill="#9fb0c7" font-size="12">V_G →</text>
+          <text x="8" y="40" fill="#9fb0c7" font-size="12">C ↑</text>
+          <text x="55" y="70" fill="#6c7c95" font-size="11">C_ox</text>
+          <line x1="50" y1="70" x2="400" y2="70" stroke="#6c7c95" stroke-width="1" stroke-dasharray="4 4"/>
+          <!-- 저주파 곡선 (축적-공핍-반전 복귀) -->
+          <path d="M60,72 L150,72 Q190,72 210,140 Q230,200 300,205 L390,205" fill="none" stroke="#5ee6a0" stroke-width="2.5"/>
+          <!-- 고주파 곡선 (반전에서 낮게 유지) -->
+          <path d="M300,205 Q330,205 345,200 L390,200" fill="none" stroke="#5ee6a0" stroke-width="0"/>
+          <path d="M210,140 Q235,205 300,206 L390,206" fill="none" stroke="#5b9cff" stroke-width="0"/>
+          <!-- 모드 라벨 -->
+          <text x="80"  y="60"  fill="#5ee6a0" font-size="11">축적</text>
+          <text x="180" y="115" fill="#f5a623" font-size="11">공핍</text>
+          <text x="330" y="195" fill="#5ee6a0" font-size="11">반전</text>
+          <!-- V_T 표시 -->
+          <line x1="285" y1="30" x2="285" y2="220" stroke="#ff7a85" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="270" y="44" fill="#ff7a85" font-size="11">V_T</text>
+        </svg></div>
+        <p class="dim center" style="font-size:13px">초록: 저주파 C-V (반전에서 다시 C_ox로 복귀)</p>
+      </div>
+      <div>
+        <ul>
+          <li><strong class="hl">축적</strong>: 정공이 표면에 딱 붙어 산화막 양단에서 마주 봄 → 용량은
+            <strong>C = C<span class="sub">ox</span></strong> (최댓값).</li>
+          <li><strong>공핍</strong>: 공핍층이 산화막과 <strong>직렬</strong>로 추가됨 → 두께가 늘수록 C 감소.</li>
+          <li><strong class="hl">반전</strong>: 반전 전하가 다시 표면에 붙으면 산화막만 보임 → <strong>C = C<span class="sub">ox</span></strong>로 복귀.</li>
+        </ul>
+        <div class="eq" style="font-size:14px">
+          1/C = 1/C<span class="sub">ox</span> + 1/C<span class="sub">dep</span>
+        </div>
+        <div class="eqcap">공핍 구간: 산화막 커패시터와 공핍층 커패시터의 직렬 합.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. 직렬 커패시터 직관 + 공핍층 용량 -->
+  <section class="slide">
+    <div class="kicker">왜 공핍에서 줄어드나</div>
+    <h2>공핍층 = 한 장 더 끼어든 커패시터</h2>
+    <p>공핍 모드에선 게이트 전하 ΔQ<span class="sub">m</span>에 대응하는 전하가 <strong>표면에서 떨어진</strong>
+       공핍층 끝(고정 음이온)에 생깁니다. 두 전하가 떨어져 있으니, 산화막 커패시터 뒤에
+       공핍층 커패시터가 <strong class="hl">직렬</strong>로 하나 더 붙은 셈입니다.</p>
+    <div class="grid2">
+      <div class="diagram"><svg viewBox="0 0 360 150" width="360">
+        <rect x="20" y="55" width="40" height="40" fill="none" stroke="#f5a623" stroke-width="2"/>
+        <text x="14" y="120" fill="#f5a623" font-size="12">C_ox</text>
+        <line x1="60" y1="75" x2="110" y2="75" stroke="#9fb0c7" stroke-width="2"/>
+        <rect x="110" y="55" width="40" height="40" fill="none" stroke="#5b9cff" stroke-width="2"/>
+        <text x="100" y="120" fill="#5b9cff" font-size="12">C_dep</text>
+        <line x1="0" y1="75" x2="20" y2="75" stroke="#9fb0c7" stroke-width="2"/>
+        <line x1="150" y1="75" x2="170" y2="75" stroke="#9fb0c7" stroke-width="2"/>
+        <text x="200" y="80" fill="#e8eef7" font-size="13">직렬 → C 작아짐</text>
+      </svg></div>
+      <div>
+        <div class="eq" style="font-size:15px">C<span class="sub">dep</span> = ε<span class="sub">si</span> / W<span class="sub">dep</span></div>
+        <div class="eqcap">공핍층이 두꺼워질수록(W↑) 공핍 커패시턴스↓ → 전체 C↓.</div>
+        <div class="physnote"><p style="margin:0">게이트 전압을 더 키우면 공핍층이 더 깊어지므로 C는 계속 작아집니다.
+          반전이 시작되면 전하가 다시 표면으로 와서 더 이상 깊어지지 않습니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. 저주파 vs 고주파 -->
+  <section class="slide">
+    <div class="kicker">반전에서 갈리는 길 — 주파수</div>
+    <h2>저주파는 복귀, 고주파는 바닥에 머문다</h2>
+    <p>반전층의 전자는 <strong>벌크에서 확산</strong>해 오거나 공핍층에서 <strong>열적으로 생성</strong>됩니다.
+       이 과정은 <strong class="hl">시간이 걸립니다</strong>. 그래서 흔드는 신호의 주파수에 따라 반응이 달라집니다.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🐢</span> 저주파 (LF)</h3>
+        <p style="margin:0;font-size:15px">전자 공급이 느린 변화를 <strong>따라잡음</strong>. 반전층이 ΔQ<span class="sub">m</span>에 직접 대응 →
+        다시 <strong>C = C<span class="sub">ox</span></strong>로 올라감 (그림의 초록 복귀 곡선).</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🐇</span> 고주파 (HF, ~수십 kHz↑)</h3>
+        <p style="margin:0;font-size:15px">전자가 빠른 변화를 <strong>못 따라감</strong>. 대신 공핍층 끝이 출렁이며 대응 →
+        C<span class="sub">ox</span>와 C<span class="sub">dep</span>(max)가 직렬 → <strong>최솟값에서 평탄</strong>.</p>
+      </div>
+    </div>
+    <div class="band mt"><svg viewBox="0 0 480 200" width="480">
+      <line x1="40" y1="170" x2="460" y2="170" stroke="#22304a" stroke-width="1.5"/>
+      <line x1="40" y1="20"  x2="40"  y2="170" stroke="#22304a" stroke-width="1.5"/>
+      <text x="420" y="190" fill="#9fb0c7" font-size="12">V_G →</text>
+      <text x="6" y="30" fill="#9fb0c7" font-size="12">C ↑</text>
+      <line x1="40" y1="45" x2="460" y2="45" stroke="#6c7c95" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="44" y="40" fill="#6c7c95" font-size="11">C_ox</text>
+      <!-- 공통: 축적~공핍 -->
+      <path d="M55,47 L150,47 Q200,47 230,110" fill="none" stroke="#9fb0c7" stroke-width="2"/>
+      <!-- 저주파 복귀 -->
+      <path d="M230,110 Q270,160 340,150 L450,46" fill="none" stroke="#5ee6a0" stroke-width="2.5"/>
+      <text x="360" y="70" fill="#5ee6a0" font-size="12">저주파</text>
+      <!-- 고주파 바닥 -->
+      <path d="M230,110 Q270,158 330,158 L450,158" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="360" y="150" fill="#5b9cff" font-size="12">고주파</text>
+      <line x1="225" y1="20" x2="225" y2="170" stroke="#ff7a85" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="208" y="33" fill="#ff7a85" font-size="11">V_T</text>
+    </svg></div>
+  </section>
+
+  <!-- 13. 비이상 ① 산화막 전하 -->
+  <section class="slide">
+    <div class="kicker">실제 소자 — 비이상 효과 ①</div>
+    <h2>산화막 전하: 곡선이 통째로 옆으로 밀린다</h2>
+    <p>이상적으로는 산화막 안에 전하가 없다고 가정했지만, 실제 산화막에는 공정에서 생긴 전하가
+       <strong>항상</strong> 존재합니다. 이 전하가 추가 밴드밴딩을 만들어, 평탄밴드를 만드는 전압
+       V<span class="sub">FB</span>가 달라집니다.</p>
+    <div class="eq">
+      <span class="var">V</span><span class="sub">FB</span> = φ<span class="sub">ms</span> − <span class="var">Q</span><span class="sub">ox</span> / C<span class="sub">ox</span>
+    </div>
+    <div class="eqcap">이상적이면 V<span class="sub">FB</span> = φ<span class="sub">ms</span>. 산화막 전하 Q<span class="sub">ox</span>가 있으면 그만큼 보정.</div>
+    <ul>
+      <li>V<span class="sub">FB</span>가 바뀌면 V<span class="sub">T</span>도 같은 양만큼 이동 → <strong class="hl">C-V 곡선 전체가 좌/우로 평행이동</strong>.</li>
+      <li>이동 방향은 산화막 전하의 <strong>부호</strong>에 따라 결정 (양전하면 보통 음의 방향으로).</li>
+    </ul>
+    <div class="note">정리: 산화막 전하는 곡선 모양은 그대로 두고, 가로축 위치만 미는 효과.</div>
+  </section>
+
+  <!-- 14. 비이상 ②③④ -->
+  <section class="slide">
+    <div class="kicker">비이상 효과 ②③④</div>
+    <h2>일함수 차 · 양자효과 · 폴리 공핍</h2>
+    <div class="grid3">
+      <div class="card">
+        <h3><span class="ico">🔩</span> 일함수 차</h3>
+        <p style="margin:0;font-size:14.5px">φ<span class="sub">ms</span> 자체가 0이 아니므로, 기준선이 옮겨져
+        C-V 곡선이 옆으로 밀립니다. V<span class="sub">FB</span>의 출발 항.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🌫️</span> 양자효과 (축적)</h3>
+        <p style="margin:0;font-size:14.5px">정공이 경계면에 딱 붙지 못하고 <strong>약간 떨어진</strong> 곳에 분포.
+        추가 커패시터가 직렬로 붙어 축적 용량이 <strong>C<span class="sub">ox</span>보다 작게</strong> 측정됨.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🧊</span> 폴리 공핍</h3>
+        <p style="margin:0;font-size:14.5px">게이트가 금속이 아니라 폴리실리콘이면 게이트 쪽도 살짝 공핍됨 →
+        커패시터가 하나 더 직렬 → 반전에서 C가 더 낮아짐.</p>
+      </div>
+    </div>
+    <div class="physnote mt">
+      <p style="margin:0">공통 원리: <strong>전하가 경계면에서 떨어져 분포</strong>하면, 그 거리만큼의 커패시터가
+      <strong>직렬</strong>로 추가됩니다. 직렬이면 전체 C는 항상 더 작아집니다.</p>
+    </div>
+    <div class="warnbox mt">
+      <p style="margin:0;font-size:15px">또한 공핍 모드에서도 반전 전하가 0이 아니라 조금씩 생기므로, 실제 곡선의 최저점 부근은
+      급격히 꺾이지 않고 <strong>부드럽게</strong> 이어집니다(미세 보정).</p>
+    </div>
+  </section>
+
+  <!-- 15. 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해보기</h2>
+    <div class="qa">
+      <div class="q">게이트 전압 V<span class="sub">G</span>는 어떤 세 항으로 나뉘나요?</div>
+      <div class="a">V<span class="sub">G</span> = φ<span class="sub">ms</span>(일함수 차) + ψ<span class="sub">s</span>(실리콘 표면전위)
+        + V<span class="sub">ox</span>(산화막 전압). 일함수 차와 산화막 항은 거의 고정, 표면전위만 비선형입니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">반전 모드에서 저주파와 고주파 C-V가 다른 이유는?</div>
+      <div class="a">반전 전자는 확산·열생성으로 공급되어 시간이 걸립니다. 저주파면 전자가 신호를 따라잡아
+        C가 C<span class="sub">ox</span>로 복귀하고, 고주파면 못 따라잡아 공핍층이 대신 반응해
+        C<span class="sub">ox</span>·C<span class="sub">dep</span> 직렬의 최솟값에 머뭅니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">산화막 안에 양전하가 있으면 C-V 곡선은 어떻게 변하나요?</div>
+      <div class="a">V<span class="sub">FB</span> = φ<span class="sub">ms</span> − Q<span class="sub">ox</span>/C<span class="sub">ox</span>가
+        바뀌어 곡선 전체가 가로로 평행이동합니다(모양은 그대로). 양전하면 보통 음의 방향으로 밀립니다.</div>
+    </div>
+  </section>
+
+  <!-- 16. 요약 -->
+  <section class="slide">
+    <div class="kicker">한 장 요약</div>
+    <h2>분배 → 모드 → 용량 → 보정</h2>
+    <ul>
+      <li><strong>전압 분배</strong>: V<span class="sub">G</span> = φ<span class="sub">ms</span> + ψ<span class="sub">s</span> + V<span class="sub">ox</span>,
+        그리고 V<span class="sub">ox</span> = −Q<span class="sub">s</span>/C<span class="sub">ox</span>.</li>
+      <li><strong>문턱전압</strong>: V<span class="sub">T</span> = φ<span class="sub">ms</span> + 2φ<span class="sub">F</span> + Q<span class="sub">dep</span>/C<span class="sub">ox</span> — 분배 식에 반전 조건 대입.</li>
+      <li><strong>C-V</strong>: 축적·반전에서 C=C<span class="sub">ox</span>(최대), 공핍에서 직렬로 감소. 곡선 기울기 = small-signal C.</li>
+      <li><strong>주파수</strong>: 반전에서 저주파는 복귀, 고주파는 최솟값 유지.</li>
+      <li><strong>비이상</strong>: 산화막 전하·일함수 차는 곡선을 <em>밀고</em>, 양자효과·폴리 공핍은 직렬 추가로 C를 <em>낮춤</em>.</li>
+    </ul>
+    <div class="takeaway"><p style="margin:0">면접 한 줄: "MOS의 C-V 곡선은 게이트 전압이 산화막·공핍층·반전층에 어떻게 분배되느냐의
+      그림이고, V<span class="sub">FB</span> 이동(산화막 전하·일함수)과 직렬 커패시터 추가(양자·폴리 공핍)가 실제와 이상의 차이를 만든다."</p></div>
+    <div class="note mt">다음 → 4-3: 이 V<span class="sub">T</span>와 채널을 발판으로 MOSFET의 전류-전압(I-V) 특성으로 들어갑니다.</div>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

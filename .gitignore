@@ -1,0 +1,10 @@
+# 원본 강의 자막(개념 추출용 소스) — 배포하지 않음
+_transcripts/
+
+# OS / Google Drive 부산물
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+~$*

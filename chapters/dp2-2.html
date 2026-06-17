@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 2-2 · I-V·비이상·확산용량</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 2 · 2-2 I-V 특성·비이상·확산용량">
+<div class="deck">
+
+  <!-- 1. 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>다이오드의 전류·전압,<br>그리고 현실의 보정들</h1>
+    <p class="hook">앞에서 모은 식들을 한 줄로 묶으면 <strong>다이오드의 정체</strong>가 드러납니다.
+      이상적인 I-V 곡선을 먼저 그리고, 그 다음 실제 다이오드가 모델에서 벗어나는 지점들과
+      순방향에서 새로 생기는 <strong>확산 용량</strong>까지 따라가 봅니다.</p>
+    <p class="hint">방향키 <kbd>→</kbd> <kbd>←</kbd> 로 이동</p>
+  </section>
+
+  <!-- 2. 한 문장 정의 -->
+  <section class="slide">
+    <div class="kicker">한 문장으로</div>
+    <h2>이상 다이오드 방정식이란?</h2>
+    <p class="lead">전압 한 개를 넣으면 전류 한 개가 튀어나오는,
+      다이오드의 가장 단순한 입출력 관계식입니다.</p>
+    <div class="keyq">
+      <p style="margin:0">중성 영역으로 주입된 소수 캐리어의 <strong>확산 전류</strong>를
+      접합 양쪽 경계에서 더한 것이 곧 다이오드 전류입니다.
+      그 결과가 그 유명한 <span class="hl">지수 함수</span> 형태로 정리됩니다.</p>
+    </div>
+    <div class="eq">I = <span class="var">I</span><span class="sub">s</span> · ( e<span class="sup">qV/kT</span> − 1 )</div>
+    <div class="eqcap">V: 가한 전압 · q: 전하량 · k: 볼츠만 상수 · T: 온도 · I<span class="sub">s</span>: 포화 전류</div>
+  </section>
+
+  <!-- 3. 비유 / 개발자 다리 -->
+  <section class="slide">
+    <div class="kicker">직관부터</div>
+    <h2>왜 하필 "지수 함수"일까</h2>
+    <div class="grid2">
+      <div class="analogy">
+        <p style="margin:0">접합의 <strong>전위 장벽</strong>은 언덕입니다. 순방향 전압을 주면 언덕이 낮아져요.
+        그런데 언덕을 넘을 수 있는 캐리어 수는 언덕 높이에 <strong>지수적으로</strong> 민감합니다.
+        조금만 낮춰도 넘는 놈이 폭발적으로 늘죠. 그래서 전류가 지수로 치솟습니다.</p>
+      </div>
+      <div class="dev-bridge">
+        <p style="margin:0">정류기를 <code>if (V &gt; 0) currentRises() else currentFlat()</code> 로 본다고 합시다.
+        순방향은 <code>exp(V/Vt)</code> 처럼 급격히 커지고, 역방향은 작은 상수 <code>-Is</code> 로 포화합니다.
+        한 줄의 식에 분기 두 개가 자연스럽게 들어 있는 셈입니다.</p>
+      </div>
+    </div>
+    <div class="physnote mt">
+      열전압 V<span class="sub">t</span> = kT/q 는 상온에서 약 <span class="hl">26&nbsp;mV</span>.
+      전압을 V<span class="sub">t</span> 만큼 올릴 때마다 지수 항은 약 e(≈2.7)배가 됩니다.
+    </div>
+  </section>
+
+  <!-- 4. 식이 어디서 오는가 (확산 전류의 합) -->
+  <section class="slide">
+    <div class="kicker">식의 출처</div>
+    <h2>두 경계에서의 확산 전류를 더한다</h2>
+    <p>주입된 소수 캐리어의 농도는 경계에서 가장 높고 안쪽으로 갈수록
+      지수적으로 줄어듭니다(<span class="dim">감쇠 길이 = 확산거리 L</span>).
+      <strong>기울기 × 확산상수</strong>가 곧 확산 전류이므로, 두 중성 영역의 경계값을 더하면 전체 전류가 됩니다.</p>
+    <div class="eq">I = q·A·( <span class="var">D</span><span class="sub">p</span>/L<span class="sub">p</span> · p<span class="sub">n0</span> + <span class="var">D</span><span class="sub">n</span>/L<span class="sub">n</span> · n<span class="sub">p0</span> ) · ( e<span class="sup">qV/kT</span> − 1 )</div>
+    <div class="eqcap">앞의 큰 괄호 전체가 포화 전류 I<span class="sub">s</span> 입니다 — 도핑·확산·재결합이 모두 녹아 있음.</div>
+    <div class="card">
+      <h3><span class="ico">🧩</span> 핵심 논리</h3>
+      <p style="margin:0">공핍층 안에서는 전자 전류와 정공 전류가 각각 거의 일정하다고 봤습니다.
+        그래서 한쪽 경계의 정공 전류 J<span class="sub">p</span> 와 반대쪽 경계의 전자 전류 J<span class="sub">n</span> 만 구해 더하면
+        됩니다. 균일 도핑(스텝 접합)이라 평형 농도는 상수 → 미분에서 사라지고, 깔끔한 식이 남습니다.</p>
+    </div>
+  </section>
+
+  <!-- 5. I-V 그래프 -->
+  <section class="slide">
+    <div class="kicker">그래프로 보기</div>
+    <h2>이상 I-V 곡선의 모양</h2>
+    <div class="band"><svg viewBox="0 0 600 300" width="600">
+      <!-- 축 -->
+      <line x1="60" y1="160" x2="560" y2="160" stroke="#22304a" stroke-width="1.5"/>
+      <line x1="300" y1="40" x2="300" y2="280" stroke="#22304a" stroke-width="1.5"/>
+      <text x="540" y="180" fill="#9fb0c7" font-size="12">V</text>
+      <text x="310" y="52" fill="#9fb0c7" font-size="12">I</text>
+      <!-- 역방향: -Is로 거의 평평 -->
+      <path d="M70,172 L250,170 Q290,169 300,160" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="95" y="190" fill="#5b9cff" font-size="12">역방향: I ≈ −I_s (포화)</text>
+      <!-- 순방향: 지수 급상승 -->
+      <path d="M300,160 Q360,158 400,150 Q450,138 480,90 Q495,60 500,48" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="380" y="120" fill="#f5a623" font-size="12">순방향: 지수 급상승</text>
+      <!-- Is 표시 -->
+      <line x1="300" y1="160" x2="300" y2="170" stroke="#6c7c95" stroke-width="1"/>
+      <text x="225" y="150" fill="#6c7c95" font-size="11">원점 부근에서 1만큼 빼줌</text>
+    </svg></div>
+    <div class="row mt">
+      <div class="card" style="flex:1">
+        <h3><span class="ico">➕</span> 순방향 (V&gt;0)</h3>
+        <p style="margin:0">e<span class="sup">qV/kT</span> ≫ 1 → 1은 무시. 전류가 지수적으로 증가합니다.</p>
+      </div>
+      <div class="card" style="flex:1">
+        <h3><span class="ico">➖</span> 역방향 (V&lt;0)</h3>
+        <p style="margin:0">e<span class="sup">qV/kT</span> → 0 → I ≈ <span class="hl">−I<span class="sub">s</span></span> 로 고정. 그래서 I<span class="sub">s</span>를 <strong>포화 전류</strong>라 부릅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 비이상 효과 개요 -->
+  <section class="slide">
+    <div class="kicker">현실로</div>
+    <h2>이상 모델이 놓친 것들</h2>
+    <p>위 식은 "수식을 풀 수 있게" 많은 것을 가정한 결과입니다.
+      실제 다이오드는 네 군데에서 모델과 어긋납니다.</p>
+    <table class="compare">
+      <tr><th>효과</th><th>어디서</th><th>전류에 미치는 영향</th></tr>
+      <tr><td>고준위 주입</td><td>큰 순방향</td><td>기울기 완만 → 전류가 덜 오름</td></tr>
+      <tr><td>공핍층 재결합</td><td>작은 순방향</td><td>전류가 모델보다 작음</td></tr>
+      <tr><td>공핍층 생성</td><td>역방향</td><td>−I<span class="sub">s</span>보다 조금 더 흐름(증가)</td></tr>
+      <tr><td>직렬 저항</td><td>아주 큰 순방향</td><td>전압이 저항에 먹혀 곡선이 꺾임</td></tr>
+    </table>
+    <div class="note">이 효과들은 "이상 인자 n"으로 요약되어 기울기를 바꿉니다 — 다음 슬라이드에서.</div>
+  </section>
+
+  <!-- 7. 고준위 주입 + 이상 인자 n -->
+  <section class="slide">
+    <div class="kicker">비이상 ①</div>
+    <h2>고준위 주입과 이상 인자 n</h2>
+    <p>저준위 주입에서는 "주입된 소수 캐리어 ≪ 다수 캐리어"라서 다수 캐리어 농도를 상수로 봤습니다.
+      그런데 순방향이 아주 세지면 주입량이 다수 캐리어에 <strong>맞먹을</strong> 만큼 커집니다.
+      그러면 가한 전압이 소수 캐리어만이 아니라 다수 캐리어까지 움직이는 데 나눠 쓰여,
+      전류 형성에 기여하는 몫이 줄어듭니다.</p>
+    <div class="eq">I ∝ e<span class="sup">qV/(<span class="var">n</span>·kT)</span><span class="dim"> ,   n: 이상 인자(ideality factor), 1 ≤ n ≤ 2</span></div>
+    <div class="eqcap">분모에 n이 끼어들면 지수가 둔해집니다 → 같은 전압에서 전류가 줄어듦.</div>
+    <div class="grid2 mt">
+      <div class="physnote">
+        <p style="margin:0">np 곱에 √ 가 씌워지면서 농도 의존이 e<span class="sup">qV/kT</span> 대신
+        e<span class="sup">qV/2kT</span> 처럼 바뀝니다 → 고준위 극단에서 <span class="hl">n → 2</span> 에 가까워집니다.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">📈</span> log I–V에서</h3>
+        <p style="margin:0">이상 구간은 기울기 1(n=1). 고준위에서 기울기가 완만해지며
+          곡선이 이상선 아래로 휩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 공핍층 재결합 (저전압) -->
+  <section class="slide">
+    <div class="kicker">비이상 ②</div>
+    <h2>공핍층 속 재결합 (작은 순방향)</h2>
+    <p>이상 모델은 "공핍층 안에서는 생성·재결합이 없다"고 가정했습니다.
+      실제로는 접합을 건너던 전자와 정공이 공핍층 안에서 만나 <strong>재결합</strong>해 사라집니다.
+      사라진 캐리어는 전류에 기여하지 못하므로, 전류가 모델보다 작아집니다.</p>
+    <div class="band"><svg viewBox="0 0 600 200" width="600">
+      <text x="20" y="22" fill="#9fb0c7" font-size="12">공핍층(접합부)에서의 재결합</text>
+      <rect x="250" y="50" width="100" height="110" fill="rgba(245,166,35,.08)" stroke="#22304a"/>
+      <text x="262" y="180" fill="#6c7c95" font-size="11">공핍층 W</text>
+      <text x="120" y="180" fill="#6c7c95" font-size="11">p형</text>
+      <text x="450" y="180" fill="#6c7c95" font-size="11">n형</text>
+      <!-- 전자 → -->
+      <line x1="120" y1="90" x2="290" y2="90" stroke="#5b9cff" stroke-width="2" marker-end="url(#a8)"/>
+      <text x="120" y="80" fill="#5b9cff" font-size="11">전자 →</text>
+      <!-- 정공 ← -->
+      <line x1="480" y1="120" x2="310" y2="120" stroke="#b388ff" stroke-width="2" marker-end="url(#a8)"/>
+      <text x="430" y="140" fill="#b388ff" font-size="11">← 정공</text>
+      <!-- 만나서 소멸 -->
+      <text x="288" y="108" fill="#f5a623" font-size="16">✷</text>
+      <text x="245" y="44" fill="#f5a623" font-size="11">여기서 만나 소멸</text>
+      <defs><marker id="a8" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#9fb0c7"/></marker></defs>
+    </svg></div>
+    <div class="physnote">전압이 <span class="hl">낮을수록</span> 건너가는 캐리어 자체가 적어서, 한두 개만 사라져도 비율로는 큰 손실.
+      → 저전압 구간에서 두드러지며, 이 구간의 기울기는 <span class="hl">n ≈ 2</span> 로 나타납니다.</div>
+  </section>
+
+  <!-- 9. 역방향 생성 전류 -->
+  <section class="slide">
+    <div class="kicker">비이상 ③</div>
+    <h2>역방향의 생성 전류</h2>
+    <p>역방향에서는 캐리어가 접합을 막 건너지 않습니다. 대신 공핍층 안에서
+      전자–정공 쌍이 <strong>저절로 생성</strong>되고, 강한 역방향 전계가 이들을 양쪽으로 끌어내
+      추가 전류를 만듭니다.</p>
+    <div class="band"><svg viewBox="0 0 600 200" width="600">
+      <text x="20" y="22" fill="#9fb0c7" font-size="12">역방향: 공핍층에서 e⁻·h⁺ 생성 → 드리프트</text>
+      <rect x="240" y="50" width="120" height="110" fill="rgba(91,156,255,.08)" stroke="#22304a"/>
+      <text x="262" y="180" fill="#6c7c95" font-size="11">넓어진 공핍층</text>
+      <text x="120" y="180" fill="#6c7c95" font-size="11">p형</text>
+      <text x="460" y="180" fill="#6c7c95" font-size="11">n형</text>
+      <!-- 생성 지점 -->
+      <text x="293" y="110" fill="#5ee6a0" font-size="16">⚡</text>
+      <text x="270" y="44" fill="#5ee6a0" font-size="11">쌍 생성</text>
+      <!-- 전자 → n쪽 -->
+      <line x1="305" y1="95" x2="470" y2="95" stroke="#5b9cff" stroke-width="2" marker-end="url(#a9)"/>
+      <text x="400" y="86" fill="#5b9cff" font-size="11">전자 → n</text>
+      <!-- 정공 → p쪽 -->
+      <line x1="295" y1="125" x2="130" y2="125" stroke="#b388ff" stroke-width="2" marker-end="url(#a9)"/>
+      <text x="150" y="145" fill="#b388ff" font-size="11">정공 → p</text>
+      <defs><marker id="a9" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#9fb0c7"/></marker></defs>
+    </svg></div>
+    <p>그래서 실제 역방향 전류는 <span class="hl">−I<span class="sub">s</span> 로 평평하게 고정되지 않고</span>,
+      역전압이 커질수록(공핍층이 넓어질수록) 생성량이 늘어 <strong>천천히 증가</strong>합니다.
+      아주 큰 역전압에서는 항복(breakdown)으로 전류가 급증합니다.</p>
+  </section>
+
+  <!-- 10. 직렬 저항 + 한 줄 모델 -->
+  <section class="slide">
+    <div class="kicker">비이상 ④</div>
+    <h2>직렬 저항: 큰 순방향에서의 꺾임</h2>
+    <p>중성 영역(p, n 벌크)과 금속 접촉은 0 저항이 아닙니다.
+      전류가 커지면 이 <strong>직렬 저항 R<span class="sub">s</span></strong> 에 전압이 떨어져,
+      정작 접합에 걸리는 전압은 줄어듭니다. 그래서 큰 순방향에서 지수 상승이 꺾여 직선처럼 됩니다.</p>
+    <div class="eq">I = <span class="var">I</span><span class="sub">s</span> · ( e<span class="sup">q(V − I·R<span class="sub">s</span>)/nkT</span> − 1 )</div>
+    <div class="eqcap">접합 전압 = 가한 전압 − I·R<span class="sub">s</span>. 전류가 클수록 보정항이 커진다.</div>
+    <div class="flow mt">
+      <span class="box on">저전압<br><span class="dim">재결합(n≈2)</span></span>
+      <span class="arrow">→</span>
+      <span class="box on">중간<br><span class="dim">이상(n≈1)</span></span>
+      <span class="arrow">→</span>
+      <span class="box on">고전압<br><span class="dim">고준위·Rₛ로 꺾임</span></span>
+    </div>
+  </section>
+
+  <!-- 11. 확산 용량 -->
+  <section class="slide">
+    <div class="kicker">순방향의 용량</div>
+    <h2>확산 용량 (diffusion capacitance)</h2>
+    <p>역방향에서 다이오드는 공핍층의 고정 전하 때문에 평행판 축전기처럼 보였고,
+      이를 <strong>공핍 용량 C<span class="sub">dep</span></strong> 이라 했습니다(역방향이 셀수록 W가 넓어져 감소).
+      순방향에서는 전혀 다른 용량이 새로 생깁니다.</p>
+    <div class="keyq">
+      <p style="margin:0">순방향에서는 건너간 소수 캐리어가 중성 영역에 <strong>저장</strong>됩니다.
+      AC 전압을 흔들면 이 저장 전하 Q가 따라서 늘었다 줄었다 합니다.
+      "전압 변화에 대한 저장 전하의 변화"가 곧 <span class="hl">확산 용량</span>입니다.</p>
+    </div>
+    <div class="eq">C<span class="sub">diff</span> = dQ / dV<span class="dim"> ,   Q = ∫ q·Δp(x) dx  (저장된 초과 캐리어 전하)</span></div>
+    <div class="eqcap">Q는 중성 영역에 쌓인 초과 정공·전자 전하를 적분한 것 — 평행판 축전기와 달리 전류가 실제로 흐른다.</div>
+  </section>
+
+  <!-- 12. 두 용량 비교 + 전체 용량 -->
+  <section class="slide">
+    <div class="kicker">정리</div>
+    <h2>공핍 용량 vs 확산 용량</h2>
+    <table class="compare">
+      <tr><th></th><th>공핍 용량 C<span class="sub">dep</span></th><th>확산 용량 C<span class="sub">diff</span></th></tr>
+      <tr><td>주된 영역</td><td>역방향</td><td>순방향</td></tr>
+      <tr><td>전하의 출처</td><td>공핍층 고정 전하</td><td>저장된 소수 캐리어</td></tr>
+      <tr><td>전압 의존</td><td>√(역전압)에 반비례 → 감소</td><td>주입 전류(≈e<span class="sup">qV/kT</span>)에 비례 → 급증</td></tr>
+      <tr><td>전류 흐름</td><td>거의 없음(평행판 닮음)</td><td>실제로 흐름</td></tr>
+    </table>
+    <div class="physnote">두 용량은 다이오드 안에서 <strong>병렬</strong>로 존재합니다. 전체 용량 = C<span class="sub">dep</span> + C<span class="sub">diff</span>.
+      역방향에서는 C<span class="sub">dep</span> 가, 순방향에서는 C<span class="sub">diff</span> 가 지배합니다.</div>
+    <div class="dev-bridge mt">
+      <p style="margin:0">스위칭 속도를 정하는 게 바로 이 저장 전하입니다.
+      순방향으로 켜진 다이오드를 끄려면 저장된 C<span class="sub">diff</span> 전하를 먼저 빼내야 해서
+      <strong>역회복 시간</strong>이 생깁니다 — 고속 스위칭 회로의 골칫거리.</p>
+    </div>
+  </section>
+
+  <!-- 13. 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해보기</h2>
+    <div class="qa">
+      <div class="q">역방향에서 전류가 −I<span class="sub">s</span> 로 "포화"하는 이유는?</div>
+      <div class="a">지수 항 e<span class="sup">qV/kT</span> 가 0으로 수렴해 식에 −1만 남기 때문입니다.
+        그래서 I ≈ −I<span class="sub">s</span> 로 거의 일정. 단, 실제로는 공핍층 생성 전류 때문에 완전히 평평하진 않고 조금 증가합니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">log I–V 그래프에서 저전압 구간의 기울기가 작아지는(n≈2) 이유는?</div>
+      <div class="a">공핍층 안의 재결합이 전압이 낮을수록 비율적으로 크게 작용하기 때문입니다.
+        반대로 아주 큰 순방향에서는 고준위 주입과 직렬 저항이 곡선을 다시 꺾어 내립니다.</div>
+    </div>
+    <div class="qa">
+      <div class="q">확산 용량은 평행판 축전기와 무엇이 결정적으로 다른가?</div>
+      <div class="a">평행판은 전류가 흐르지 않고 전계만 전달되지만, 확산 용량은 순방향이라 전류가 실제로 흐릅니다.
+        "저장된 소수 캐리어 전하의 전압 변화율(dQ/dV)"로 정의되는, 전하 저장 기반의 용량입니다.</div>
+    </div>
+  </section>
+
+  <!-- 14. 요약 -->
+  <section class="slide">
+    <div class="kicker">핵심 요약</div>
+    <h2>오늘 챙길 것</h2>
+    <ul>
+      <li>이상 다이오드: <strong>I = I<span class="sub">s</span>(e<span class="sup">qV/kT</span> − 1)</strong> — 순방향 지수 상승, 역방향 −I<span class="sub">s</span> 포화.</li>
+      <li>I<span class="sub">s</span> 는 두 중성 영역 경계의 <strong>소수 캐리어 확산 전류</strong>의 합.</li>
+      <li>비이상: 고준위 주입·공핍층 재결합·생성·직렬 저항 → <strong>이상 인자 n(1~2)</strong> 으로 요약.</li>
+      <li>순방향엔 저장 전하 기반의 <strong>확산 용량</strong>, 역방향엔 <strong>공핍 용량</strong>이 지배.</li>
+    </ul>
+    <div class="takeaway">
+      "I = I<span class="sub">s</span>(e<span class="sup">qV/kT</span>−1)는 소수 캐리어 확산의 합이고,
+      n은 재결합·고준위 주입이 그 지수를 둔하게 만든 정도다. 순방향 스위칭 속도는 확산 용량(저장 전하)이 좌우한다."
+    </div>
+    <div class="note mt">다음 → BJT/MOS로 넘어가기 전, pn 접합을 회로 소자(저항·용량·전류원)로 보는 소신호 모델 →</div>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>

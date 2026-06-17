@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소자물리 5-3 · 비이상 효과·스케일링</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+</head>
+<body data-title="소자물리 · Part 5 · 5-3 비이상 효과·스케일링">
+<div class="deck">
+
+  <!-- 1. 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics</div>
+    <h1>비이상 효과와 스케일링</h1>
+    <p class="hook">"교과서의 깔끔한 MOSFET 식은 거짓말까지는 아니지만, <strong>긴 채널</strong>일 때만 맞습니다.<br>채널을 나노미터로 줄이는 순간, 식이 무너지기 시작합니다."</p>
+    <p class="hint">문턱 아래 누설 · 서브문턱 스윙 · 단채널 효과(DIBL) · 스케일링의 동기와 한계 → FinFET까지</p>
+  </section>
+
+  <!-- 2. 무엇을 / 왜 -->
+  <section class="slide">
+    <div class="kicker">이 장의 질문</div>
+    <h2>"좋은 트랜지스터"란 무엇인가?</h2>
+    <p class="lead">MOSFET는 결국 <strong>전류를 켜고 끄는 스위치</strong>입니다. 좋은 스위치의 조건은 직관적으로 딱 둘입니다.</p>
+    <ul>
+      <li><span class="hl">켤 때(ON)는 세게</span> — 온 전류 <code>I<sub>on</sub></code>가 클수록 좋다. 회로 곳곳의 기생 커패시터를 빨리 충전해서 빠르게 스위칭된다.</li>
+      <li><span class="hl2">끌 때(OFF)는 확실히</span> — 오프 전류 <code>I<sub>off</sub></code>가 작을수록 좋다. 꺼져 있는데도 새는 전류는 그냥 전력 낭비다.</li>
+    </ul>
+    <div class="keyq">📌 좋은 MOSFET = <strong>I<sub>on</sub> 크고</strong> + <strong>I<sub>off</sub> 작다</strong>. 이 장에서 다루는 모든 "비이상 효과"는 이 둘 중 하나(주로 I<sub>off</sub>)를 망가뜨리는 현상들이다.</p></div>
+  </section>
+
+  <!-- 3. 개발자 비유 -->
+  <section class="slide">
+    <div class="kicker">먼저 감 잡기</div>
+    <h2>왜 ON 전류가 크면 "빠른" 걸까?</h2>
+    <p>게이트에 전압을 딱 걸어도 드레인 전류는 즉시 안 나옵니다. 게이트-소스, 게이트-드레인, 채널-바디 사이에 깔린 <strong>기생 커패시턴스</strong>들을 먼저 충전해야 하거든요. 충전이 끝나야 비로소 동작합니다.</p>
+    <div class="eq">t<span class="sub">delay</span> ≈ R · C  ∝  C / <span class="var">I</span><span class="sub">on</span></div>
+    <div class="eqcap">전류는 "초당 옮기는 전하량". 전류가 크면 같은 전하를 더 빨리 채워 → 지연이 짧아진다.</div>
+    <div class="dev-bridge">👨‍💻 개발자라면: 커패시터는 <strong>버퍼/캐시</strong>, 온 전류는 <strong>대역폭(throughput)</strong>이라고 보세요. 버퍼 크기가 같다면 대역폭이 클수록 채우는 시간이 짧죠. CPU 클럭이 GHz로 도는 건, 트랜지스터 하나하나가 이 기생 커패시터를 충/방전하는 일을 초당 수십억 번 해내기 때문입니다.</div>
+    <div class="physnote">⚛️ 물리 직관: 그래서 "성능 = 속도"의 가장 근본적 레버는 <strong>온 전류 키우기</strong>입니다. 배선/구조 튜닝보다 더 본질적이에요.</div>
+  </section>
+
+  <!-- 4. 로그 스케일 I-V와 오프 전류 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ①</div>
+    <h2>로그 스케일로 봐야 보이는 누설</h2>
+    <p>드레인 전류를 게이트 전압에 대해 <span class="hl">선형(linear)</span> 스케일로 그리면, <code>V<sub>GS</sub> &lt; V<sub>T</sub></code> 구간은 그냥 "0"처럼 깔려서 안 보입니다. 그래서 보통 <span class="hl2">로그 스케일</span>로 그립니다. 그러면 숨어 있던 작은 전류가 드러나죠.</p>
+    <div class="diagram"><svg viewBox="0 0 600 270" width="600">
+      <!-- axes -->
+      <line x1="70" y1="30" x2="70" y2="220" stroke="#22304a" stroke-width="1.5"/>
+      <line x1="70" y1="220" x2="560" y2="220" stroke="#22304a" stroke-width="1.5"/>
+      <text x="20" y="40" fill="#9fb0c7" font-size="12">log I_D</text>
+      <text x="500" y="245" fill="#9fb0c7" font-size="12">V_GS →</text>
+      <!-- V_T marker -->
+      <line x1="300" y1="40" x2="300" y2="220" stroke="#6c7c95" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="285" y="238" fill="#6c7c95" font-size="12">V_T</text>
+      <!-- log-scale curve: flat-ish low at left (subthreshold straight line), bends up after V_T -->
+      <path d="M90,190 L300,90 Q360,60 420,55 L540,52" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="120" y="178" fill="#f5a623" font-size="12">서브문턱(직선 구간)</text>
+      <!-- I_off marker at VGS=0 -->
+      <circle cx="90" cy="190" r="4" fill="#5ee6a0"/>
+      <text x="96" y="208" fill="#5ee6a0" font-size="12">I_off (V_GS=0)</text>
+      <!-- I_on marker -->
+      <circle cx="540" cy="52" r="4" fill="#5b9cff"/>
+      <text x="470" y="44" fill="#5b9cff" font-size="12">I_on</text>
+    </svg></div>
+    <p class="dim">게이트를 0V로 내려 "꺼도" 전류가 완전히 0이 아니라 <strong>바닥에 일정량</strong> 남아 있습니다. 이것이 오프 전류이자 <strong>누설(leakage)</strong>입니다.</p>
+  </section>
+
+  <!-- 5. 오프 상태 밴드다이어그램 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ① — 왜 새는가</div>
+    <h2>꺼진 채널의 에너지 장벽</h2>
+    <p>OFF 상태에서 채널은 p형이라, 소스(n⁺) → 채널(p) → 드레인(n⁺)으로 보면 전자 입장에선 가운데에 <strong>에너지 언덕(장벽)</strong>이 솟아 있습니다. 전자는 이 언덕을 쉽게 못 넘습니다.</p>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <text x="20" y="20" fill="#9fb0c7" font-size="12">E (전자 에너지) ↑</text>
+      <!-- conduction band: low at source, hump in channel, low at drain -->
+      <path d="M40,150 L180,150 Q300,150 300,70 Q300,150 420,150 L560,150" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="50" y="142" fill="#5b9cff" font-size="12">E_c</text>
+      <!-- a couple of electrons climbing -->
+      <circle cx="170" cy="150" r="4" fill="#5ee6a0"/>
+      <circle cx="300" cy="78" r="4" fill="#5ee6a0"/>
+      <text x="312" y="74" fill="#5ee6a0" font-size="11">소수의 전자가 넘어감 → 누설</text>
+      <!-- labels -->
+      <text x="95" y="195" fill="#6c7c95" font-size="12">소스 n⁺</text>
+      <text x="270" y="195" fill="#6c7c95" font-size="12">채널 p (장벽)</text>
+      <text x="455" y="195" fill="#6c7c95" font-size="12">드레인 n⁺</text>
+    </svg></div>
+    <div class="physnote">⚛️ 물리 직관: 장벽이 높아도 <strong>온도(열에너지)</strong>로 들떠서 꼭대기를 넘는 전자가 항상 조금은 있습니다(양자역학적 통과까지 더하면 더더욱). 수는 적지만 0은 아니라서, 그 전자들이 오프 전류를 만듭니다. 이 동작 영역을 <strong>약반전(weak inversion)</strong>, 그 전류를 <strong>서브문턱 전류(subthreshold current)</strong>라 부릅니다.</div>
+  </section>
+
+  <!-- 6. 서브문턱 전류는 지수함수 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ① — 식의 의미</div>
+    <h2>장벽을 넘는 전자 = 지수함수</h2>
+    <p>"열로 장벽 꼭대기를 넘는 전자 수"는 통계물리에서 익숙한 <strong>볼츠만 꼴(지수함수)</strong>을 따릅니다. 그래서 서브문턱 전류는 게이트 전압에 <span class="hl">지수적으로</span> 반응합니다.</p>
+    <div class="eq"><span class="var">I</span><span class="sub">D</span>  ∝  exp( q·<span class="var">V</span><span class="sub">GS</span> / (n·kT) )</div>
+    <div class="eqcap">V_GS가 게이트로 장벽을 낮추면, 넘는 전자 수가 지수적으로 늘어난다. (n: 1보다 약간 큰 보정계수)</div>
+    <div class="card">
+      <div class="ico">🔎</div>
+      <h3>지수함수 → 로그 그래프에서 직선</h3>
+      <p>지수 곡선에 log를 씌우면 <strong>직선</strong>이 됩니다. 그래서 앞 슬라이드 로그 그래프의 서브문턱 구간이 곧은 직선으로 보였던 거예요. 이 <strong>직선의 기울기</strong>가 다음 슬라이드의 주인공입니다.</p>
+    </div>
+    <div class="dev-bridge">👨‍💻 개발자라면: 누설은 "off인데 멈추지 않는 백그라운드 스레드"입니다. 한 개는 미미해도 칩 안에 수십억 개면 무시 못 할 상시 전력이 됩니다. 스마트폰 대기시간이 이 I<sub>off</sub>에 직결돼요.</div>
+  </section>
+
+  <!-- 7. 서브문턱 스윙 SS -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ② — 스위치의 "예리함"</div>
+    <h2>서브문턱 스윙 (SS)</h2>
+    <p class="lead">스위치가 얼마나 <strong>칼같이</strong> 켜지고 꺼지는지를 재는 숫자입니다.</p>
+    <div class="keyq">📌 SS = 드레인 전류를 <strong>10배(1 decade)</strong> 바꾸는 데 필요한 게이트 전압. 단위는 <strong>mV/dec</strong>. 즉 로그 I-V 직선 기울기의 <strong>역수</strong>다.</p></div>
+    <div class="eq">SS  =  d<span class="var">V</span><span class="sub">GS</span> / d( log<span class="sub">10</span> <span class="var">I</span><span class="sub">D</span> )   [ mV / dec ]</div>
+    <div class="eqcap">작을수록 좋다 — 적은 전압 변화로 전류가 10배 휙 변한다 = 예리한 스위치.</div>
+    <div class="analogy">💡 비유: 수도꼭지를 생각하세요. SS가 작다는 건 "조금만 돌려도 물이 10배로 콸콸/뚝 끊긴다"는 뜻. SS가 크면 "한참 돌려야 겨우 10배" — 둔한 꼭지입니다. 둔한 꼭지는 잠가도 물이 찔끔찔끔 새요(= 누설).</div>
+    <div class="physnote">⚛️ 왜 기울기가 아니라 역수(SS)를 쓸까? 우리가 실제로 궁금한 건 "전류를 10배 바꾸려면 전압을 몇 mV 더 줘야 하나"이기 때문. 설계자에게는 전압이 입력, 전류가 출력이라 역수가 더 직관적입니다.</div>
+  </section>
+
+  <!-- 8. 60mV/dec 한계 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ② — 깰 수 없는 벽</div>
+    <h2>왜 60 mV/dec가 한계인가</h2>
+    <p>서브문턱 전류가 <code>exp(qV/kT)</code> 꼴이라는 데서 한계가 나옵니다. 상온(T≈300K)에서 이 지수의 자연스러운 가파름을 10배(=ln10≈2.3) 단위로 환산하면:</p>
+    <div class="eq">SS<span class="sub">min</span>  =  (kT/q) · ln(10)  ≈  60 mV/dec  &nbsp;(상온)</div>
+    <div class="eqcap">"열에 들뜬 전자 분포"가 정하는 물리적 하한. 일반 MOSFET는 이보다 작아질 수 없다.</div>
+    <table class="compare">
+      <tr><th>SS 값</th><th>의미</th><th>I<sub>off</sub></th></tr>
+      <tr><td><span class="hl">≈ 60 mV/dec</span></td><td>이상적 한계(상온)</td><td>가장 낮춤 가능</td></tr>
+      <tr><td>80~100 mV/dec</td><td>현실 소자(단채널이면 더 나빠짐)</td><td>더 큼</td></tr>
+    </table>
+    <div class="note">이 "60 mV 벽"을 깨려고 터널 FET, 음의 커패시턴스 FET 같은 차세대 소자를 연구합니다. 기초 과정에서는 "상온 MOSFET의 SS는 60 아래로 못 간다"만 기억하면 충분합니다.</div>
+  </section>
+
+  <!-- 9. V_T 낮추기의 딜레마 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ② — 트레이드오프</div>
+    <h2>V<sub>T</sub>를 낮추면 누설이 따라온다</h2>
+    <p>온 전류 식 <code>I<sub>on</sub> ∝ (V<sub>GS</sub> − V<sub>T</sub>)²</code>을 보면, <strong>문턱 전압 V<sub>T</sub>를 낮추면 온 전류가 커집니다.</strong> 좋아 보이죠? 그런데 로그 I-V 곡선이 통째로 <span class="hl2">왼쪽으로 평행 이동</span>합니다.</p>
+    <div class="diagram"><svg viewBox="0 0 600 260" width="600">
+      <line x1="70" y1="30" x2="70" y2="210" stroke="#22304a" stroke-width="1.5"/>
+      <line x1="70" y1="210" x2="560" y2="210" stroke="#22304a" stroke-width="1.5"/>
+      <text x="20" y="40" fill="#9fb0c7" font-size="12">log I_D</text>
+      <text x="500" y="235" fill="#9fb0c7" font-size="12">V_GS →</text>
+      <!-- original curve -->
+      <path d="M150,185 L330,70 L540,55" fill="none" stroke="#9fb0c7" stroke-width="2"/>
+      <text x="345" y="68" fill="#9fb0c7" font-size="11">원래</text>
+      <!-- shifted-left curve (lower VT), same slope -->
+      <path d="M90,150 L270,40 L470,30" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="160" y="40" fill="#f5a623" font-size="11">V_T ↓ (왼쪽 이동)</text>
+      <!-- VGS=0 vertical -->
+      <line x1="90" y1="30" x2="90" y2="210" stroke="#6c7c95" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="78" y="225" fill="#6c7c95" font-size="11">0V</text>
+      <!-- I_off points at 0V -->
+      <circle cx="90" cy="150" r="4" fill="#ff6b6b"/>
+      <text x="98" y="148" fill="#ff6b6b" font-size="11">I_off ↑ (커짐!)</text>
+    </svg></div>
+    <p>같은 0V(OFF)에서 곡선이 위로 올라가니, <span class="hl">오프 전류가 같이 증가</span>합니다. 온 전류를 얻으려다 누설을 얻는 셈이죠. <strong>그래서 V<sub>T</sub>를 마음대로 못 낮춥니다.</strong></p>
+    <div class="takeaway">🎯 진짜 해법은 따로 있다: 곡선을 옮기는 게 아니라, <strong>SS를 작게(직선을 더 가파르게)</strong> 만드는 것. 그래야 V<sub>T</sub>를 낮춰 I<sub>on</sub>을 키우면서도 I<sub>off</sub>는 낮게 유지된다.</div>
+  </section>
+
+  <!-- 10. 이상적 식의 가정 -->
+  <section class="slide">
+    <div class="kicker">핵심 개념 ③ — 가정이 깨진다</div>
+    <h2>"긴 채널"이라는 숨은 가정</h2>
+    <p>앞에서 유도한 깔끔한 I-V 식은 <strong>점진 채널 근사(gradual-channel approximation)</strong> 위에 세워져 있었습니다. 이 근사의 속뜻은 단 하나:</p>
+    <div class="keyq">📌 "채널 길이 <code>L</code>이 충분히 길다" — 그래서 드레인 근처에서 일어나는 자잘한 일들(공핍 영역 길이 ΔL 등)을 통째로 무시할 수 있다.</p></div>
+    <div class="eq">L = 10 μm,  ΔL ≈ 0.1 μm  →  ΔL/L = 1%  (무시 OK)</div>
+    <div class="eq">L = 0.5 μm, ΔL ≈ 0.1 μm  →  ΔL/L = 20% (무시 불가!)</div>
+    <div class="eqcap">같은 ΔL이라도 채널이 짧아지면 비중이 폭발적으로 커진다.</div>
+    <p class="dim">채널을 나노미터로 줄이는 순간 이 무시가 더 이상 안 통합니다. 이렇게 채널이 짧아서 생기는 모든 현상을 묶어 <strong>단채널 효과(Short-Channel Effects, SCE)</strong>라고 부릅니다. 대부분 <span class="hl2">성능에 안 좋은 방향</span>으로 작용합니다.</p>
+  </section>
+
+  <!-- 11. 채널 길이 변조 -->
+  <section class="slide">
+    <div class="kicker">단채널 효과 ⓐ</div>
+    <h2>채널 길이 변조 (Channel Length Modulation)</h2>
+    <p>포화 영역에서 드레인 쪽엔 공핍 영역이 생기고, 진짜 전류가 흐르는 유효 채널은 <code>L − ΔL</code>로 줄어듭니다. 드레인 전압을 더 올리면 ΔL이 더 자라서 유효 채널이 더 짧아져요.</p>
+    <div class="diagram"><svg viewBox="0 0 600 200" width="600">
+      <!-- substrate bar -->
+      <rect x="60" y="80" width="480" height="50" fill="#172236" stroke="#22304a"/>
+      <!-- source / drain -->
+      <rect x="60" y="80" width="80" height="50" fill="#1f3354" stroke="#22304a"/>
+      <rect x="460" y="80" width="80" height="50" fill="#1f3354" stroke="#22304a"/>
+      <text x="80" y="150" fill="#6c7c95" font-size="12">소스</text>
+      <text x="478" y="150" fill="#6c7c95" font-size="12">드레인</text>
+      <!-- channel region -->
+      <line x1="140" y1="78" x2="430" y2="78" stroke="#5ee6a0" stroke-width="3"/>
+      <text x="230" y="70" fill="#5ee6a0" font-size="12">유효 채널 L − ΔL</text>
+      <!-- pinch-off / depletion near drain -->
+      <line x1="430" y1="78" x2="460" y2="78" stroke="#f5a623" stroke-width="3"/>
+      <text x="408" y="100" fill="#f5a623" font-size="11">ΔL (공핍)</text>
+      <!-- gate -->
+      <rect x="140" y="55" width="320" height="14" fill="#5b9cff" opacity="0.5"/>
+      <text x="270" y="48" fill="#5b9cff" font-size="12">게이트</text>
+    </svg></div>
+    <p>온 전류 식의 분모에 채널 길이가 들어가니까:</p>
+    <div class="eq"><span class="var">I</span><span class="sub">D,sat</span>  ∝  1 / (L − ΔL)  →  L 짧아지면 <span class="var">I</span><span class="sub">D</span> ↑</div>
+    <div class="eqcap">포화에서 일정해야 할 전류가, 드레인 전압이 오를수록 슬금슬금 더 증가한다.</div>
+    <div class="physnote">⚛️ 결과: 이상적으로는 포화 영역에서 I_D가 평평해야 하는데, 단채널에서는 <strong>우상향으로 기울어집니다.</strong> 깔끔한 정전류원이 아니게 되는 거죠.</div>
+  </section>
+
+  <!-- 12. DIBL / 수도꼭지 비유 -->
+  <section class="slide">
+    <div class="kicker">단채널 효과 ⓑ — 가장 골치 아픈 것</div>
+    <h2>DIBL: 드레인이 장벽을 낮춘다</h2>
+    <p>MOSFET의 꿈은 "오직 게이트만으로 채널을 켜고 끄는 것"입니다. 그런데 채널이 짧아지면 드레인 전압이 채널 한가운데까지 손을 뻗어, OFF여야 할 <span class="hl2">소스-채널 장벽을 멋대로 낮춰</span> 버립니다. 이를 <strong>DIBL(Drain-Induced Barrier Lowering)</strong>이라 합니다.</p>
+    <div class="band"><svg viewBox="0 0 600 230" width="600">
+      <text x="20" y="20" fill="#9fb0c7" font-size="12">E_c (전자 장벽) ↑</text>
+      <!-- long channel: high barrier (dashed) -->
+      <path d="M40,150 L180,150 Q300,150 300,60 Q300,150 420,150 L560,150" fill="none" stroke="#6c7c95" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="305" y="56" fill="#6c7c95" font-size="11">긴 채널: 장벽 높음</text>
+      <!-- short channel + high VDS: barrier lowered, tilted down toward drain -->
+      <path d="M40,150 L170,150 Q290,150 300,100 Q310,150 430,170 L560,185" fill="none" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="320" y="112" fill="#f5a623" font-size="11">단채널+높은 V_DS: 장벽 ↓</text>
+      <text x="95" y="205" fill="#6c7c95" font-size="12">소스</text>
+      <text x="455" y="205" fill="#6c7c95" font-size="12">드레인</text>
+    </svg></div>
+    <div class="analogy">💡 비유: 게이트는 수도꼭지 밸브, 드레인은 수도관 끝. 원래는 밸브만 잠그면 물이 멈춰야 하는데, 관이 너무 짧으니 <strong>관 끝(드레인)에서 끌어당기는 힘이 밸브까지 영향</strong>을 줘서 꽉 안 잠깁니다. 결국 누설이 더 늘고, V<sub>T</sub>가 드레인 전압에 따라 들쭉날쭉해집니다.</div>
+    <div class="note">관련 형제 효과 <strong>V<sub>T</sub> roll-off</strong>: 채널이 짧아질수록 문턱 전압 V<sub>T</sub> 자체가 점점 떨어지는 현상. 소스/드레인 공핍 영역이 채널 제어 지분을 갉아먹어 게이트가 켜야 할 일이 줄어든 탓입니다. 둘 다 "게이트의 통제권 상실"이라는 같은 뿌리.</div>
+  </section>
+
+  <!-- 13. 스케일링: 동기 -->
+  <section class="slide">
+    <div class="kicker">스케일링 ① — 왜 줄이나</div>
+    <h2>게이트 길이를 줄이면 좋은 이유</h2>
+    <p>스케일링(scaling)은 말 그대로 <strong>소자 크기, 특히 게이트 길이 L을 줄이는 것</strong>입니다. 1970년대 수 μm였던 게이트 길이가 지금 CPU/AP 안에선 수 nm까지 내려왔습니다. 줄이면 두 가지 큰 이득이 있어요.</p>
+    <div class="card">
+      <div class="ico">⚡</div>
+      <h3>1) 더 빠르다</h3>
+      <p><code>I<sub>on</sub> ∝ 1/L</code> 이므로 L을 줄이면 온 전류가 커지고 → 기생 커패시터 충전이 빨라져 → 동작 속도(클럭)가 올라간다.</p>
+    </div>
+    <div class="card">
+      <div class="ico">💰</div>
+      <h3>2) 더 싸다</h3>
+      <p>공정 비용은 <strong>웨이퍼 한 장 단위</strong>로 발생한다. 트랜지스터가 작아지면 칩이 작아지고 → 웨이퍼 한 장에서 칩을 더 많이 찍어내 → <strong>칩 하나당 단가</strong>가 내려간다.</p>
+    </div>
+    <div class="dev-bridge">👨‍💻 개발자라면: "반도체 발전사 ≈ 스케일링의 역사"입니다. 무어의 법칙(같은 면적에 트랜지스터 수가 주기적으로 2배)은 본질적으로 이 L 줄이기의 누적 효과예요. 여러분이 해마다 더 빠르고 싼 칩을 쓰는 이유가 이것입니다.</div>
+  </section>
+
+  <!-- 14. 스케일링: 한계 -->
+  <section class="slide">
+    <div class="kicker">스케일링 ② — 줄이면 줄일수록</div>
+    <h2>"줄이기만 하면 항상 좋을까?"</h2>
+    <p>공학에 공짜는 없습니다. 게이트 길이를 줄이면 앞에서 본 <strong>단채널 효과(SCE)</strong>가 점점 심해집니다. 핵심은 <span class="hl2">드레인 전압의 영향이 상대적으로 커진다</span>는 것.</p>
+    <table class="compare">
+      <tr><th></th><th>긴 채널 (L = 2 μm)</th><th>짧은 채널 (L = 20 nm)</th></tr>
+      <tr><td>드레인 영향</td><td>거의 무시</td><td><span class="hl2">지배적</span></td></tr>
+      <tr><td>게이트 제어</td><td>온전함</td><td>약해짐 (DIBL)</td></tr>
+      <tr><td>SS / I<sub>off</sub></td><td>양호</td><td>나빠짐 (누설↑)</td></tr>
+      <tr><td>전력</td><td>낮음</td><td>대기 전력↑</td></tr>
+    </table>
+    <p class="dim">스케일링의 실제 역사는 이런 반복입니다: ① 더 작은 게이트 공정을 개발 → ② SCE가 터짐 → ③ 새 공정/구조 테크닉으로 SCE를 억제 → ④ 다시 더 작게. 이 사이클이 50년을 돌았습니다.</p>
+    <div class="physnote">⚛️ 핵심 한 줄: 미세화의 한계는 "더 못 만들어서"가 아니라, <strong>게이트가 드레인에게 채널 통제권을 빼앗기기 때문</strong>이다.</div>
+  </section>
+
+  <!-- 15. 3D / FinFET 해법 -->
+  <section class="slide">
+    <div class="kicker">스케일링 ③ — 현대 칩의 답</div>
+    <h2>통제권을 되찾는 법: 게이트를 늘려라</h2>
+    <p>대략 <strong>10 nm 이하</strong>에선 평면(planar) 구조로는 아무리 튜닝해도 SCE를 못 잡습니다. 그래서 2011년 인텔을 시작으로 산업은 <strong>3D 구조(FinFET)</strong>로 넘어갔습니다. 아이디어는 단순합니다: <span class="hl">밸브(게이트)를 채널 여러 면에서 감싸자.</span></p>
+    <div class="diagram"><svg viewBox="0 0 600 200" width="600">
+      <!-- planar -->
+      <text x="60" y="30" fill="#9fb0c7" font-size="13">평면 (게이트 1면)</text>
+      <rect x="60" y="70" width="180" height="40" fill="#172236" stroke="#22304a"/>
+      <rect x="60" y="56" width="180" height="14" fill="#5b9cff" opacity="0.6"/>
+      <text x="100" y="135" fill="#6c7c95" font-size="11">위에서만 제어 → 약함</text>
+      <!-- FinFET: fin wrapped on 3 sides -->
+      <text x="370" y="30" fill="#9fb0c7" font-size="13">FinFET (게이트 3면)</text>
+      <!-- fin (vertical channel) -->
+      <rect x="430" y="55" width="26" height="70" fill="#1f3354" stroke="#22304a"/>
+      <text x="420" y="140" fill="#5ee6a0" font-size="11">채널(핀)</text>
+      <!-- gate wrapping: left, top, right -->
+      <rect x="416" y="60" width="10" height="60" fill="#5b9cff" opacity="0.7"/>
+      <rect x="460" y="60" width="10" height="60" fill="#5b9cff" opacity="0.7"/>
+      <rect x="416" y="45" width="54" height="12" fill="#5b9cff" opacity="0.7"/>
+      <text x="478" y="80" fill="#5b9cff" font-size="11">게이트가</text>
+      <text x="478" y="96" fill="#5b9cff" font-size="11">감쌈 → 강함</text>
+    </svg></div>
+    <p>게이트가 채널을 여러 면에서 둘러싸면, 드레인의 간섭을 줄이고 <strong>오직 게이트만으로</strong> 채널을 다시 꽉 잡을 수 있습니다. 더 나아가면 채널을 사방으로 감싸는 <span class="hl3">GAA(Gate-All-Around)</span> 구조로 발전합니다. 삼성·TSMC가 준비하는 옹스트롬(sub-nm 급) 공정이 이 흐름이에요.</p>
+  </section>
+
+  <!-- 16. 이해 점검 Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해보기</h2>
+    <div class="qa">
+      <div class="q">Q1. SS(서브문턱 스윙)가 "작을수록 좋다"는 건 무슨 뜻인가요?</div>
+      <div class="a">A. 적은 게이트 전압 변화로 드레인 전류를 10배 바꿀 수 있다는 뜻 = 예리한 스위치. 그러면 V<sub>T</sub>를 낮춰 온 전류를 키우면서도 오프 전류를 낮게 유지할 수 있습니다. 상온 일반 MOSFET의 한계는 약 60 mV/dec.</div>
+    </div>
+    <div class="qa">
+      <div class="q">Q2. V<sub>T</sub>를 낮추면 온 전류가 커지는데, 왜 마냥 낮추지 않나요?</div>
+      <div class="a">A. 로그 I-V 곡선이 통째로 왼쪽으로 이동해서, 같은 0V(OFF)에서 오프 전류(누설)도 같이 커지기 때문입니다. 온 전류와 누설이 한 몸으로 움직이는 트레이드오프예요.</div>
+    </div>
+    <div class="qa">
+      <div class="q">Q3. 채널을 줄였을 때 DIBL이 문제가 되는 근본 이유는?</div>
+      <div class="a">A. 채널이 짧으면 드레인 전압이 소스-채널 장벽까지 영향을 줘서 장벽을 낮춥니다. 즉 게이트가 가져야 할 채널 통제권을 드레인이 빼앗아, OFF에서도 전류가 새고 V<sub>T</sub>가 드레인 전압에 흔들립니다. (수도꼭지 비유: 관이 짧아 밸브가 안 잠김.)</div>
+    </div>
+  </section>
+
+  <!-- 17. 요약 -->
+  <section class="slide">
+    <div class="kicker">정리</div>
+    <h2>한눈에 보기</h2>
+    <ul>
+      <li><strong>좋은 스위치</strong> = I<sub>on</sub> 크고 + I<sub>off</sub> 작다. 비이상 효과는 주로 I<sub>off</sub>를 망친다.</li>
+      <li><strong>서브문턱/약반전</strong>: V<sub>T</sub> 아래에서도 열로 장벽을 넘는 전자가 만드는 누설. 로그 그래프에서 직선으로 보인다.</li>
+      <li><strong>SS</strong>: 전류 10배에 필요한 전압(mV/dec). 작을수록 예리. 상온 한계 <span class="hl">≈ 60 mV/dec</span>.</li>
+      <li><strong>단채널 효과(SCE)</strong>: 채널 길이 변조, DIBL, V<sub>T</sub> roll-off — "게이트의 통제권 상실".</li>
+      <li><strong>스케일링</strong>: L↓ → 빠르고(I∝1/L) 싸다(칩/웨이퍼↑). 그러나 SCE가 한계. 답은 <strong>FinFET → GAA</strong>로 게이트 면을 늘리는 것.</li>
+    </ul>
+    <div class="takeaway">🎯 미세화의 본질은 "게이트가 드레인에게서 채널을 지켜내는 싸움"이다. 식이 무너지는 지점을 이해하면, 왜 현대 칩이 평면을 떠나 3D로 갔는지가 한 줄로 설명된다.</div>
+    <div class="note">다음 → MOSFET을 떠나, 이 스위치들을 모아 만드는 논리 게이트와 CMOS의 세계로. "왜 CMOS는 멈춰 있을 때 전력을 거의 안 쓰는가?"가 핵심 질문입니다.</div>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>
