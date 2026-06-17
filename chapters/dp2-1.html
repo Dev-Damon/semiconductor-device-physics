@@ -76,7 +76,7 @@
       <li>가해준 전압 V는 <span class="hl">100% 공핍층</span>에서 소모된다고 본다 → 내부전위가 (V<span class="sub">bi</span> − V<span class="sub">a</span>)로 바뀜.</li>
       <li>따라서 양쪽 <strong>중성영역</strong>에서는 전기장 E ≈ 0, 전위 ≈ 0 으로 간주.</li>
     </ul>
-    <div class="dev-bridge">중성영역에 E-field가 0이라는 건, 그 구역에서 캐리어를 미는 "전기적 추진력"이 없다는 뜻입니다. 그럼 캐리어는 무엇으로 움직일까요? <strong>오직 농도 차이 = 확산(diffusion)뿐</strong>입니다. 이 가정 덕분에 중성영역 문제가 "확산 단 하나"로 깔끔히 줄어듭니다. 변수 하나만 남기고 나머지를 0으로 두는 리팩터링이라고 보면 됩니다.</div>
+    <div class="physnote">중성영역에 E-field가 0이라는 건, 그 구역에서 캐리어를 미는 "전기적 추진력"이 없다는 뜻입니다. 그럼 캐리어는 무엇으로 움직일까요? <strong>오직 농도 차이 = 확산(diffusion)뿐</strong>입니다. 이 가정 덕분에 중성영역 문제가 "확산 단 하나"로 깔끔히 줄어듭니다. 여러 요인을 한꺼번에 따질 필요 없이, 나머지 효과를 모두 0으로 꺼 두고 확산이라는 한 가지 원인만 남겨 두는 셈이에요.</div>
   </section>
 
   <!-- 5. 나머지 가정들 -->
@@ -195,7 +195,7 @@
     <p>양변을 D<span class="sub">n</span>으로 나누면 익숙한 2계 미분방정식이 됩니다.</p>
     <div class="eq">d<span class="sup">2</span>Δn<span class="sub">p</span> / dx<span class="sup">2</span> = Δn<span class="sub">p</span> / L<span class="sub">n</span><span class="sup">2</span> &nbsp;&nbsp;&nbsp; ( L<span class="sub">n</span> = √( D<span class="sub">n</span> · τ<span class="sub">n</span> ) )</div>
     <div class="eqcap">"2계 도함수 = 자기 자신" 꼴 → 해는 지수함수의 조합.</div>
-    <div class="dev-bridge">형태가 y″ = y/L² 이면 일반해는 y = A·e<span class="sup">−x/L</span> + B·e<span class="sup">+x/L</span> 입니다. 안으로 들어갈수록(x→∞) 캐리어는 사라져야 하니 발산하는 e<span class="sup">+x/L</span> 항은 버립니다(B=0). 경계조건으로 상수 A까지 정하면 끝 — 부울 플래그로 한쪽 가지를 쳐내는 것과 똑같아요.</div>
+    <div class="physnote">형태가 y″ = y/L² 이면 일반해는 y = A·e<span class="sup">−x/L</span> + B·e<span class="sup">+x/L</span> 입니다. 안으로 들어갈수록(x→∞) 캐리어는 사라져야 하니, 무한대로 커지는 e<span class="sup">+x/L</span> 항은 물리적으로 말이 안 돼서 버립니다(B=0). 남은 상수 A는 경계조건(경계에서의 농도)으로 정하면 끝입니다.</div>
   </section>
 
   <!-- 12. 확산 길이 -->

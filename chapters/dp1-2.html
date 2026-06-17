@@ -31,19 +31,13 @@
     </div>
   </section>
 
-  <!-- 3) 직관 + 개발자 비유 -->
+  <!-- 3) 직관 -->
   <section class="slide">
     <div class="kicker">직관</div>
     <h2>왜 "건드리지도 않았는데" 전위차가 생길까</h2>
-    <div class="grid2">
-      <div class="analogy">
-        <p style="margin:0">방 두 개를 문으로 연결한다고 하자. 한 방엔 향수(전자), 옆 방엔 연기(홀)가 가득하다. 문을 열면 서로 <strong>확산</strong>해 섞이려 한다. 하지만 입자가 <strong class="hl">전하</strong>를 띠고 있어서, 빠져나간 자리에 <strong>반대 부호의 고정 전하</strong>가 드러난다. 이 고정 전하가 만든 전기장이 확산을 막아설 때까지 평형이 잡힌다.</p>
-        <p style="margin:10px 0 0">그 "막아서는 힘"을 전위로 환산한 게 바로 <strong class="hl3">V<sub>bi</sub></strong>다.</p>
-      </div>
-      <div class="dev-bridge">
-        <p style="margin:0">두 DB 노드를 처음 연결한 직후를 떠올려 보자. 데이터가 한쪽으로 쏠려 있으면 <strong>리밸런싱(확산)</strong>이 일어난다. 하지만 무한정 흐르지 않는다 — 흐를수록 <strong class="hl2">역압(backpressure)</strong>이 쌓여 결국 net flow가 0이 되는 정상상태에 안착한다.</p>
-        <p style="margin:10px 0 0">V<sub>bi</sub>는 그 backpressure의 평형값이고, 외부에서 <code>write</code>(전압)를 안 줘도 시스템이 알아서 잡아 둔 값이다.</p>
-      </div>
+    <div class="analogy">
+      <p style="margin:0">방 두 개를 문으로 연결한다고 하자. 한 방엔 향수(전자), 옆 방엔 연기(홀)가 가득하다. 문을 열면 서로 <strong>확산</strong>해 섞이려 한다. 하지만 입자가 <strong class="hl">전하</strong>를 띠고 있어서, 빠져나간 자리에 <strong>반대 부호의 고정 전하</strong>가 드러난다. 이 고정 전하가 만든 전기장이 확산을 막아설 때까지 평형이 잡힌다.</p>
+      <p style="margin:10px 0 0">그 "막아서는 힘"을 전위로 환산한 게 바로 <strong class="hl3">V<sub>bi</sub></strong>다. 외부에서 전압을 하나도 안 걸어도, 접합이 스스로 잡아 둔 평형값이다.</p>
     </div>
     <div class="note mt">핵심: 평형은 "아무 일도 안 일어나는" 게 아니라, 확산 흐름과 드리프트(전기장) 흐름이 <strong>정확히 상쇄</strong>되는 상태다.</div>
   </section>
@@ -119,7 +113,7 @@
     </div>
     <div class="eq mt">dE/dx = ρ / ε<span class="sub">s</span> &nbsp;&nbsp;(푸아송)&nbsp;&nbsp;|&nbsp;&nbsp; E = −dV/dx</div>
     <div class="eqcap">ρ를 한 번 적분 → E. E를 한 번 더 적분하고 부호 뒤집기 → V. V에 −q 곱하면 밴드.</div>
-    <div class="dev-bridge mt"><p style="margin:0">파이프라인이라고 보면 된다: <code>ρ</code> 가 입력, 적분이 변환 단계, 출력이 <code>밴드</code>. 각 단계는 순수 함수고, 경계조건이 그 적분의 "초기값"이다.</p></div>
+    <div class="note mt">컨베이어 벨트처럼, ρ가 맨 앞에 들어가면 적분이라는 단계를 차례로 거쳐 맨 끝에서 밴드가 나온다. 적분할 때마다 필요한 상수는 <strong>경계조건</strong>이 정해 준다(각 적분의 "출발값").</div>
   </section>
 
   <!-- 8) 전하밀도 프로파일 + 공핍근사 -->

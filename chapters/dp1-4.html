@@ -34,22 +34,18 @@
     <p class="note mt">교재 본문에는 없는 "응용 맛보기" 파트입니다. 식보다 에너지밴드 그림으로 직관을 잡는 게 목표예요.</p>
   </section>
 
-  <!-- 3. 개발자 비유 -->
+  <!-- 3. 큰 그림 -->
   <section class="slide">
     <div class="kicker">큰 그림</div>
-    <h2>같은 코어, 다른 모드</h2>
-    <div class="grid2">
-      <div class="dev-bridge">
-        <p style="margin:0">하나의 범용 IP 블록을 두고, <code>config</code> 레지스터 값만 바꿔
-        다른 기능으로 쓰는 것과 똑같습니다. 하드웨어 코어(pn접합)는 그대로,
-        동작 "설정"만 달라집니다.</p>
-      </div>
-      <div class="physnote">
-        <p style="margin:0">반도체에서 그 "설정"은 딱 세 가지예요 —
-        <span class="hl">바이어스 방향</span>(forward/reverse),
-        <span class="hl">빛 입사 여부</span>,
-        <span class="hl">도핑 농도</span>. 이 셋이 소자의 성격을 결정합니다.</p>
-      </div>
+    <h2>같은 몸체, 다른 사용법</h2>
+    <p class="lead">하나의 악기를 어떻게 부느냐에 따라 전혀 다른 소리가 나듯,
+      똑같은 pn접합도 "사용 조건"만 바꾸면 완전히 다른 소자가 됩니다.
+      하드웨어 몸체(pn접합)는 그대로 두고, 동작 "조건"만 달라지는 거죠.</p>
+    <div class="physnote">
+      <p style="margin:0">반도체에서 그 "조건"은 딱 세 가지예요 —
+      <span class="hl">바이어스 방향</span>(forward/reverse),
+      <span class="hl">빛 입사 여부</span>,
+      <span class="hl">도핑 농도</span>. 이 셋이 소자의 성격을 결정합니다.</p>
     </div>
     <table class="compare mt">
       <tr><th>소자</th><th>설정 포인트</th><th>핵심 현상</th></tr>
@@ -214,10 +210,10 @@
         <p><strong>② 하강(NDR)</strong> — 정렬이 어긋나며 터널링 막힘, 전류 감소 (→ valley).</p>
         <p><strong>③ 재상승</strong> — 더 키우면 전자가 장벽 <span class="hl2">위로 넘어가는</span>
         열전자 방출(thermionic emission)이 시작돼 다시 보통 다이오드처럼 전류 증가.</p>
-        <div class="dev-bridge">
-          <p style="margin:0">NDR은 보통의 저항(전압↑→전류↑)과 반대라
-          <span class="hl2">발진기·초고속 스위칭</span> 같은
-          일반 디지털 로직과 다른 회로를 만들 수 있게 해줍니다.</p>
+        <div class="physnote">
+          <p style="margin:0">NDR은 보통의 저항(전압↑→전류↑)과 반대로 동작하기 때문에,
+          이 특성을 이용하면 <span class="hl2">발진기(신호를 스스로 떨게 하는 회로)나
+          초고속 스위칭</span>처럼 일반 저항으로는 만들 수 없는 회로를 구현할 수 있습니다.</p>
         </div>
       </div>
     </div>

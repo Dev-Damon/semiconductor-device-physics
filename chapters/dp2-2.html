@@ -35,21 +35,16 @@
     <div class="eqcap">V: 가한 전압 · q: 전하량 · k: 볼츠만 상수 · T: 온도 · I<span class="sub">s</span>: 포화 전류</div>
   </section>
 
-  <!-- 3. 비유 / 개발자 다리 -->
+  <!-- 3. 비유 / 직관 -->
   <section class="slide">
     <div class="kicker">직관부터</div>
     <h2>왜 하필 "지수 함수"일까</h2>
-    <div class="grid2">
-      <div class="analogy">
-        <p style="margin:0">접합의 <strong>전위 장벽</strong>은 언덕입니다. 순방향 전압을 주면 언덕이 낮아져요.
-        그런데 언덕을 넘을 수 있는 캐리어 수는 언덕 높이에 <strong>지수적으로</strong> 민감합니다.
-        조금만 낮춰도 넘는 놈이 폭발적으로 늘죠. 그래서 전류가 지수로 치솟습니다.</p>
-      </div>
-      <div class="dev-bridge">
-        <p style="margin:0">정류기를 <code>if (V &gt; 0) currentRises() else currentFlat()</code> 로 본다고 합시다.
-        순방향은 <code>exp(V/Vt)</code> 처럼 급격히 커지고, 역방향은 작은 상수 <code>-Is</code> 로 포화합니다.
-        한 줄의 식에 분기 두 개가 자연스럽게 들어 있는 셈입니다.</p>
-      </div>
+    <div class="analogy">
+      <p style="margin:0">접합의 <strong>전위 장벽</strong>은 언덕입니다. 순방향 전압을 주면 언덕이 낮아져요.
+      그런데 언덕을 넘을 수 있는 캐리어 수는 언덕 높이에 <strong>지수적으로</strong> 민감합니다.
+      조금만 낮춰도 넘는 놈이 폭발적으로 늘죠. 그래서 전류가 지수로 치솟습니다.
+      이 한 식 안에 두 가지 거동이 함께 들어 있다는 점도 눈여겨보세요 — 순방향에서는 지수적으로 치솟고,
+      역방향에서는 작은 값 −I<span class="sub">s</span> 로 가라앉습니다.</p>
     </div>
     <div class="physnote mt">
       열전압 V<span class="sub">t</span> = kT/q 는 상온에서 약 <span class="hl">26&nbsp;mV</span>.
@@ -249,11 +244,9 @@
     </table>
     <div class="physnote">두 용량은 다이오드 안에서 <strong>병렬</strong>로 존재합니다. 전체 용량 = C<span class="sub">dep</span> + C<span class="sub">diff</span>.
       역방향에서는 C<span class="sub">dep</span> 가, 순방향에서는 C<span class="sub">diff</span> 가 지배합니다.</div>
-    <div class="dev-bridge mt">
-      <p style="margin:0">스위칭 속도를 정하는 게 바로 이 저장 전하입니다.
-      순방향으로 켜진 다이오드를 끄려면 저장된 C<span class="sub">diff</span> 전하를 먼저 빼내야 해서
-      <strong>역회복 시간</strong>이 생깁니다 — 고속 스위칭 회로의 골칫거리.</p>
-    </div>
+    <div class="note mt">다이오드를 순방향에서 역방향으로 빠르게 전환할 때의 속도를 정하는 것도 바로 이 저장 전하입니다.
+      순방향으로 켜진 다이오드를 끄려면 저장된 C<span class="sub">diff</span> 전하를 먼저 빼내야 하고, 그 시간이
+      <strong>역회복 시간</strong>으로 나타납니다 — 빠르게 켜고 끄는 동작에서 응답을 늦추는 요인입니다.</div>
   </section>
 
   <!-- 13. 이해 점검 Q&A -->

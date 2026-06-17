@@ -28,22 +28,15 @@
     <p class="mt dim">약속: 앞으로 인가 전압은 항상 <strong>p형 단자 기준</strong>으로 말한다. "p에 +" = forward, "p에 −" = reverse.</p>
   </section>
 
-  <!-- 3. 평형 복습 + 개발자 비유 -->
+  <!-- 3. 평형 복습 -->
   <section class="slide">
     <div class="kicker">출발점 — 전압이 0일 때(평형)</div>
     <h2>아무 일도 안 일어나는 게 아니라, 완벽히 비기는 중</h2>
-    <div class="grid2">
-      <div class="physnote">
-        <p style="margin:0 0 8px">평형(thermal equilibrium)에서는 페르미 레벨 E<span class="sub">F</span>가 접합 전체에 <strong>하나의 수평선</strong>으로 이어진다. n쪽 전자는 농도가 높으니 p쪽으로 <strong>확산(diffusion)</strong>하려 하지만, 접합에 생긴 <strong>built-in 전기장</strong>이 전자를 다시 n쪽으로 끌어당기는 <strong>드리프트(drift)</strong>를 만든다.</p>
-        <p style="margin:8px 0 0">두 힘이 <span class="hl">정확히 상쇄</span> → 알짜 전류 = 0.</p>
-      </div>
-      <div class="dev-bridge">
-        <p style="margin:0">두 가지 시선은 같은 말이다.<br>
-        ① <strong>힘의 균형</strong>: 확산 ↔ 드리프트가 비긴다.<br>
-        ② <strong>장벽</strong>: V<span class="sub">bi</span>라는 언덕이 너무 높아 전자가 못 넘는다.<br><br>
-        try/catch처럼 — 던지려는 예외(확산)를 정확히 받아내는(드리프트) 상태. 겉으론 조용하지만 내부에선 둘이 팽팽하게 맞서고 있다.</p>
-      </div>
+    <div class="physnote">
+      <p style="margin:0 0 8px">평형(thermal equilibrium)에서는 페르미 레벨 E<span class="sub">F</span>가 접합 전체에 <strong>하나의 수평선</strong>으로 이어진다. n쪽 전자는 농도가 높으니 p쪽으로 <strong>확산(diffusion)</strong>하려 하지만, 접합에 생긴 <strong>built-in 전기장</strong>이 전자를 다시 n쪽으로 끌어당기는 <strong>드리프트(drift)</strong>를 만든다.</p>
+      <p style="margin:8px 0 0">두 힘이 <span class="hl">정확히 상쇄</span> → 알짜 전류 = 0.</p>
     </div>
+    <div class="note mt"><p style="margin:0">같은 상황을 두 가지 시선으로 볼 수 있다. ① <strong>힘의 균형</strong>: 확산 ↔ 드리프트가 비긴다. ② <strong>장벽</strong>: V<span class="sub">bi</span>라는 언덕이 너무 높아 전자가 못 넘는다. 겉으론 조용하지만 내부에선 두 흐름이 팽팽하게 맞서고 있는 동적 평형이다.</p></div>
   </section>
 
   <!-- 4. 밴드는 -qV 그림이다 (핵심 부호 규칙) -->
@@ -98,7 +91,7 @@
     <p>장벽이 V<span class="sub">F</span>만큼 낮아지면, 넘는 전자 수는 <strong>지수적으로</strong> 늘어난다. 그래서 전류도 가해준 전압에 지수적으로 비례한다.</p>
     <div class="eq">I ∝ exp( <span class="var">q</span>V<span class="sub">F</span> / kT ) − 1</div>
     <div class="eqcap">정밀한 다이오드 전류식은 다음 챕터에서 — 지금은 "지수"라는 감각만.</div>
-    <div class="dev-bridge"><p style="margin:0">선형이 아니라 <code>exp()</code>다. 0.6 V 부근에서 전압을 0.06 V만 더 올려도 전류가 약 10배로 뛴다. LED를 전압으로 직접 구동하면 안 되고 전류 제한 저항을 다는 이유가 여기 있다.</p></div>
+    <div class="physnote"><p style="margin:0">전압에 비례하는 직선이 아니라 지수 곡선이다. 0.6 V 부근에서 전압을 0.06 V만 더 올려도 전류가 약 10배로 뛴다. 그래서 LED 같은 다이오드는 전압을 직접 정해 걸기 어렵고, 보통 전류 제한 저항을 함께 달아 전류를 다스린다.</p></div>
   </section>
 
   <!-- 7. Reverse bias 밴드 -->
@@ -210,7 +203,7 @@
     <p class="dim">Q<span class="sub">dep</span>↔x<span class="sub">n</span>, x<span class="sub">n</span>↔W, W↔V<span class="sub">R</span> 세 관계를 각각 미분해 곱하면(체인 룰):</p>
     <div class="eq">C<span class="sub">dep</span> = dQ<span class="sub">dep</span>/dx<span class="sub">n</span> · dx<span class="sub">n</span>/dW · dW/dV<span class="sub">R</span> &nbsp;=&nbsp; <span class="hl">ε<span class="sub">s</span> / W</span></div>
     <div class="eqcap">반도체의 유전율 ε<span class="sub">s</span>를 공핍폭 W로 나눈 값 — 평행판 커패시터의 ε/d 와 판박이.</div>
-    <div class="dev-bridge"><p style="margin:0">유전체 간격 d 자리에 <strong>공핍폭 W</strong>가 들어간 것. 그런데 W는 전압에 따라 변한다 → 이 커패시터는 <strong>전압으로 용량을 조절</strong>할 수 있다(가변 커패시터, varactor). reverse bias↑ → W↑ → C<span class="sub">dep</span>↓. 이게 FM 라디오 동조나 PLL VCO의 핵심 부품이다.</p></div>
+    <div class="physnote"><p style="margin:0">유전체 간격 d 자리에 <strong>공핍폭 W</strong>가 들어간 것. 그런데 W는 전압에 따라 변한다 → 이 커패시터는 <strong>전압으로 용량을 조절</strong>할 수 있다(가변 커패시터, varactor). reverse bias↑ → W↑ → C<span class="sub">dep</span>↓. 전압을 바꿔 라디오 주파수를 맞추는 동조 회로 등에 쓰인다.</p></div>
     <div class="physnote mt"><p style="margin:0">forward bias에서는 다른 종류인 <strong>diffusion capacitance</strong>가 지배적이다. 그건 전류를 먼저 이해해야 하므로 다음 챕터로 미룬다.</p></div>
   </section>
 
@@ -305,7 +298,7 @@
     <h2>"전압을 V<span class="sub">B</span> 이상으로 못 올라가게 붙잡는" 부품</h2>
     <p>제너 다이오드는 일반 다이오드처럼 forward에선 잘 흐르고 reverse에선 막는다. 다만 <strong>breakdown 구간을 동작점으로 사용</strong>한다.</p>
     <div class="physnote"><p style="margin:0">핵심 성질: breakdown 구간에서는 전류가 아무리 크게 흘러도 <strong>다이오드 양단 전압은 V<span class="sub">B</span>에 거의 고정</strong>된다. 큰 전류를 흘려주는 능력 + 전압을 묶어두는 능력.</p></div>
-    <div class="dev-bridge mt"><p style="margin:0"><strong>회로 보호(클램핑):</strong> 정전기 같은 과전압이 들어오면, 제너가 먼저 항복하며 그 큰 전류를 자기 쪽으로 받아낸다. 그 결과 보호하려는 회로의 입력 전압은 V<span class="sub">B</span> 위로 못 올라간다 → 회로가 안 탄다. 소프트웨어의 <code>Math.min(input, MAX)</code> 같은 클램프를 하드웨어가 물리적으로 해주는 셈.</p></div>
+    <div class="physnote mt"><p style="margin:0"><strong>회로 보호(클램핑):</strong> 정전기 같은 과전압이 들어오면, 제너가 먼저 항복하며 그 큰 전류를 자기 쪽으로 받아낸다. 그 결과 보호하려는 회로의 입력 전압은 V<span class="sub">B</span> 위로 못 올라간다 → 회로가 안 탄다. 압력이 일정 값을 넘으면 열려서 넘치는 양을 빼주는 안전밸브처럼, 전압의 상한을 물리적으로 잡아주는 셈이다.</p></div>
   </section>
 
   <!-- 17. Avalanche effect -->

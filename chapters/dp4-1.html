@@ -34,7 +34,7 @@
     <p class="dim">MOS 커패시터의 동작을 손에 익히면, 거기에 소스·드레인만 더한 MOSFET은 훨씬 쉽게 따라온다.</p>
   </section>
 
-  <!-- 3. 구조 + 개발자 비유 -->
+  <!-- 3. 구조 -->
   <section class="slide">
     <div class="kicker">구조 한눈에</div>
     <h2>세 층, 두 전극, 그리고 절대 안 흐르는 가운데</h2>
@@ -69,10 +69,10 @@
         </ul>
       </div>
     </div>
-    <div class="dev-bridge mt">
+    <div class="physnote mt">
       <p style="margin:0">가운데 산화막은 <strong>완전 절연</strong>이라 DC 전류가 0이다. 그럼 게이트는 뭘 하나?
         커패시터의 한쪽 판처럼 <span class="hl2">전기장</span>으로 반대편(반도체 표면)의 전하 분포를 원격 제어한다.
-        값을 직접 쓰지 않고 <em>참조로 상태를 바꾸는</em> 느낌 — 전선이 아니라 <code>field</code>로 제어한다.</p>
+        전하가 직접 건너가지는 못하지만, 마주 보는 두 판 사이의 전기장이 반대편 전하를 끌어오거나 밀어내는 셈 — <em>전선이 아니라 전기장으로 제어한다</em>.</p>
     </div>
   </section>
 
@@ -258,9 +258,9 @@
       <p style="margin:0"><strong>강반전(문턱) 조건</strong>: 표면이 휜 양이 벌크 휨의 2배가 될 때 →
         <span class="hl">ψ<span class="sub">s</span> = 2·φ<span class="sub">Fp</span></span>. 이때의 게이트 전압이 <strong>문턱전압 V<span class="sub">T</span></strong>다.</p>
     </div>
-    <div class="dev-bridge mt">
-      <p style="margin:0">V<span class="sub">T</span>는 디지털 회로의 <code>if (V_G &gt; V_T)</code> 임계값이라 보면 된다.
-        넘으면 채널 ON(전류 통로 형성), 못 넘으면 OFF. 0/1을 가르는 물리적 문턱이 바로 여기서 정해진다.</p>
+    <div class="physnote mt">
+      <p style="margin:0">V<span class="sub">T</span>는 채널을 켜고 끄는 <strong>문턱</strong>이다. 수도꼭지를 일정 각도 이상 돌려야 비로소 물이 나오듯,
+        V<span class="sub">G</span>가 V<span class="sub">T</span>를 넘으면 채널 ON(전류 통로 형성), 못 넘으면 OFF. 디지털 회로에서 켜짐과 꺼짐을 가르는 물리적 기준선이 바로 여기서 정해진다.</p>
     </div>
   </section>
 

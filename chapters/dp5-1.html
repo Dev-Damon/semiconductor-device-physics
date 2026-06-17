@@ -34,19 +34,14 @@
     </div>
   </section>
 
-  <!-- 3. 비유 + 개발자 -->
+  <!-- 3. 비유 (수도꼭지) -->
   <section class="slide">
     <div class="kicker">직관부터 잡고 가자</div>
     <h2>게이트는 수도꼭지다</h2>
-    <div class="grid2">
-      <div class="analogy">
-        <p style="margin:0">소스(Source)는 <strong>물이 나오는 곳</strong>, 드레인(Drain)은 <strong>물이 빠지는 곳</strong>(싱크대 배수구를 떠올리자). 그 사이를 잇는 관이 <strong>채널</strong>이고, <span class="hl">게이트 전압</span>은 그 관을 잠그고 여는 <strong>밸브</strong>다.</p>
-        <p style="margin:8px 0 0">밸브를 열면(게이트 ON) 물이 흐르고, 잠그면(게이트 OFF) 멈춘다. <span class="hl2">드레인 전압</span>은 두 수조의 <strong>높이 차이</strong> — 차이가 클수록 물이 세게 흐른다.</p>
-      </div>
-      <div class="dev-bridge">
-        <p style="margin:0">트랜지스터를 코드로 보면 <code>if (Vgs &gt; Vth) channel = ON</code> 에 가깝다. 게이트는 <strong>제어 신호(control)</strong>, 소스→드레인은 <strong>데이터 패스</strong>.</p>
-        <p style="margin:8px 0 0">게이트엔 전류가 거의 안 흐른다(전압만 본다). 그래서 입력 임피던스가 매우 높은 <strong>전압 제어 스위치</strong> — 디지털 회로가 0/1을 이걸로 만든다.</p>
-      </div>
+    <div class="analogy">
+      <p style="margin:0">소스(Source)는 <strong>물이 나오는 곳</strong>, 드레인(Drain)은 <strong>물이 빠지는 곳</strong>(싱크대 배수구를 떠올리자). 그 사이를 잇는 관이 <strong>채널</strong>이고, <span class="hl">게이트 전압</span>은 그 관을 잠그고 여는 <strong>밸브</strong>다.</p>
+      <p style="margin:8px 0 0">밸브를 열면(게이트 ON) 물이 흐르고, 잠그면(게이트 OFF) 멈춘다. <span class="hl2">드레인 전압</span>은 두 수조의 <strong>높이 차이</strong> — 차이가 클수록 물이 세게 흐른다.</p>
+      <p style="margin:8px 0 0">중요한 점: 밸브 손잡이(게이트)에는 물이 거의 흐르지 않는다. 게이트는 <strong>전압만</strong> 걸어 채널을 여닫을 뿐 전류를 거의 쓰지 않는다 — 그래서 MOSFET은 전력을 거의 안 들이고 켜고 끄는 <strong>전압 제어 스위치</strong>가 된다.</p>
     </div>
   </section>
 
