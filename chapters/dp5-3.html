@@ -87,7 +87,7 @@
       <text x="270" y="195" fill="#6c7c95" font-size="12">채널 p (장벽)</text>
       <text x="455" y="195" fill="#6c7c95" font-size="12">드레인 n⁺</text>
     </svg></div>
-    <div class="physnote">⚛️ 물리 직관: 장벽이 높아도 <strong>온도(열에너지)</strong>로 들떠서 꼭대기를 넘는 전자가 항상 조금은 있습니다(양자역학적 통과까지 더하면 더더욱). 수는 적지만 0은 아니라서, 그 전자들이 오프 전류를 만듭니다. 이 동작 영역을 <strong>약반전(weak inversion)</strong>, 그 전류를 <strong>서브문턱 전류(subthreshold current)</strong>라 부릅니다.</div>
+    <div class="physnote">⚛️ 물리 직관: 장벽이 높아도 <strong>온도(열에너지)</strong>로 들떠서 꼭대기를 넘는 전자가 항상 조금은 있습니다. 수는 적지만 0은 아니라서, 그 전자들이 오프 전류를 만듭니다. 이 동작 영역을 <strong>약반전(weak inversion)</strong>, 그 전류를 <strong>서브문턱 전류(subthreshold current)</strong>라 부릅니다.<br>※ 채널이 극단적으로 짧아지면(대략 5nm 이하) 소스-드레인 직접 터널링이 추가로 기여하지만, 일반적인 서브문턱 누설의 주역은 어디까지나 장벽을 '넘어가는' 열방출이다.</div>
   </section>
 
   <!-- 6. 서브문턱 전류는 지수함수 -->
@@ -228,7 +228,8 @@
     <div class="card">
       <div class="ico">⚡</div>
       <h3>1) 더 빠르다</h3>
-      <p><code>I<sub>on</sub> ∝ 1/L</code> 이므로 L을 줄이면 온 전류가 커지고 → 기생 커패시터 충전이 빨라져 → 동작 속도(클럭)가 올라간다.</p>
+      <p><code>I<sub>on</sub> ∝ 1/L</code> (긴 채널 근사) 이므로 L을 줄이면 온 전류가 커지고 → 기생 커패시터 충전이 빨라져 → 동작 속도(클럭)가 올라간다.</p>
+      <p class="eqcap">※ 실제 단채널에서는 속도포화(velocity saturation)로 I_on의 L 의존이 1/L보다 약해지지만(I_on,sat ≈ W·C_ox·(V_GS−V_T)·v_sat, L에 거의 무관), L을 줄이면 빨라지는 방향은 그대로다.</p>
     </div>
     <div class="card">
       <div class="ico">💰</div>
@@ -307,7 +308,7 @@
       <li><strong>서브문턱/약반전</strong>: V<sub>T</sub> 아래에서도 열로 장벽을 넘는 전자가 만드는 누설. 로그 그래프에서 직선으로 보인다.</li>
       <li><strong>SS</strong>: 전류 10배에 필요한 전압(mV/dec). 작을수록 예리. 상온 한계 <span class="hl">≈ 60 mV/dec</span>.</li>
       <li><strong>단채널 효과(SCE)</strong>: 채널 길이 변조, DIBL, V<sub>T</sub> roll-off — "게이트의 통제권 상실".</li>
-      <li><strong>스케일링</strong>: L↓ → 빠르고(I∝1/L) 싸다(칩/웨이퍼↑). 그러나 SCE가 한계. 답은 <strong>FinFET → GAA</strong>로 게이트 면을 늘리는 것.</li>
+      <li><strong>스케일링</strong>: L↓ → 빠르고(긴 채널 근사 I∝1/L) 싸다(칩/웨이퍼↑). 그러나 SCE가 한계. 답은 <strong>FinFET → GAA</strong>로 게이트 면을 늘리는 것.</li>
     </ul>
     <div class="takeaway">🎯 미세화의 본질은 "게이트가 드레인에게서 채널을 지켜내는 싸움"이다. 식이 무너지는 지점을 이해하면, 왜 현대 칩이 평면을 떠나 3D로 갔는지가 한 줄로 설명된다.</div>
     <div class="note">다음 → MOSFET을 떠나, 이 스위치들을 모아 만드는 논리 게이트와 CMOS의 세계로. "왜 CMOS는 멈춰 있을 때 전력을 거의 안 쓰는가?"가 핵심 질문입니다.</div>

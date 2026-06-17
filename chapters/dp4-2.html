@@ -68,15 +68,15 @@
       <text x="70"  y="50" fill="#6c7c95" font-size="12">금속(게이트)</text>
       <text x="172" y="50" fill="#6c7c95" font-size="12">산화막</text>
       <text x="400" y="50" fill="#6c7c95" font-size="12">p형 실리콘</text>
-      <!-- 금속 페르미 -->
-      <line x1="40" y1="120" x2="150" y2="120" stroke="#f5a623" stroke-width="2"/>
-      <text x="45" y="113" fill="#f5a623" font-size="12">E_F(금속)</text>
+      <!-- 금속 페르미 : 평형이므로 실리콘 E_F와 같은 높이(y=168)로 정렬 -->
+      <line x1="40" y1="168" x2="150" y2="168" stroke="#f5a623" stroke-width="2"/>
+      <text x="45" y="161" fill="#f5a623" font-size="12">E_F(금속)</text>
       <!-- 산화막 E_c (위), E_v(아래) : 산화막 안에서 기울어짐 -->
       <path d="M150,80 L250,100" fill="none" stroke="#5b9cff" stroke-width="2"/>
       <path d="M150,175 L250,190" fill="none" stroke="#b388ff" stroke-width="2"/>
       <text x="158" y="74" fill="#5b9cff" font-size="11">산화막 E_c</text>
-      <!-- 실리콘 E_c : 표면에서 아래로 휘어 평탄해짐 -->
-      <path d="M250,100 Q300,118 340,128 L560,128" fill="none" stroke="#5b9cff" stroke-width="2"/>
+      <!-- 실리콘 E_c : 표면에서 아래로(E_F 쪽으로) 휘어 — E_v와 평행, 밴드갭 일정 -->
+      <path d="M250,138 Q300,132 340,128 L560,128" fill="none" stroke="#5b9cff" stroke-width="2"/>
       <text x="520" y="120" fill="#5b9cff" font-size="12">E_c</text>
       <!-- 실리콘 E_F (수평, p형이라 E_v에 가깝게) -->
       <line x1="250" y1="168" x2="560" y2="168" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="5 4"/>
@@ -85,6 +85,8 @@
       <path d="M250,190 Q300,182 340,180 L560,180" fill="none" stroke="#b388ff" stroke-width="2"/>
       <text x="520" y="200" fill="#b388ff" font-size="12">E_v</text>
     </svg></div>
+    <p class="dim">그림은 대표 사례 — n+ 폴리(또는 Al) 게이트 위 p형 Si, 즉 φ<span class="sub">ms</span> &lt; 0 인 경우입니다.
+       φ<span class="sub">ms</span>의 부호(게이트·도핑에 따라 결정)가 반대면 표면 밴드는 위로 휩니다(축적 방향).</p>
     <p class="dim">밴드가 휜 총량 = φ<span class="sub">ms</span> = (산화막 휘어짐 V<span class="sub">ox0</span>) + (실리콘 표면 휘어짐 ψ<span class="sub">s0</span>).
        평형에서는 외부 전압이 0인데도 이미 이만큼 휘어 있습니다.</p>
   </section>
@@ -160,6 +162,10 @@
       + <span class="var">Q</span><span class="sub">dep</span> / C<span class="sub">ox</span>
     </div>
     <div class="eqcap">문턱전압 = 일함수 차 + 표면을 반전시키는 데 필요한 휘어짐(2φ<span class="sub">F</span>) + 공핍전하를 받치는 산화막 전압.</div>
+    <p class="dim">여기서 Q<span class="sub">dep</span>는 <strong>크기(절댓값)</strong>로 둔 값입니다:
+       Q<span class="sub">dep</span> = qN<span class="sub">A</span>·W<span class="sub">max</span> = √(2 ε<span class="sub">si</span> q N<span class="sub">A</span> · 2φ<span class="sub">F</span>).
+       p형의 공핍전하는 물리적으로 음수이므로 표준형은 V<span class="sub">T</span> = V<span class="sub">FB</span> + 2φ<span class="sub">F</span> − Q<span class="sub">dep</span>/C<span class="sub">ox</span> (Q<span class="sub">dep</span>&lt;0),
+       즉 +|Q<span class="sub">dep</span>|/C<span class="sub">ox</span>와 같습니다.</p>
     <ul>
       <li><strong>φ<span class="sub">ms</span></strong> — 출발선 보정(고정).</li>
       <li><strong>2φ<span class="sub">F</span></strong> — 표면을 "n형처럼" 뒤집기 위해 휘어야 하는 양. 도핑이 진할수록 커짐.</li>
@@ -272,9 +278,10 @@
         다시 <strong>C = C<span class="sub">ox</span></strong>로 올라감 (그림의 초록 복귀 곡선).</p>
       </div>
       <div class="card">
-        <h3><span class="ico">🐇</span> 고주파 (HF, ~수십 kHz↑)</h3>
+        <h3><span class="ico">🐇</span> 고주파 (HF, 보통 100 kHz~1 MHz에서 측정)</h3>
         <p style="margin:0;font-size:15px">전자가 빠른 변화를 <strong>못 따라감</strong>. 대신 공핍층 끝이 출렁이며 대응 →
-        C<span class="sub">ox</span>와 C<span class="sub">dep</span>(max)가 직렬 → <strong>최솟값에서 평탄</strong>.</p>
+        C<span class="sub">ox</span>와 C<span class="sub">dep</span>(max)가 직렬 → <strong>최솟값에서 평탄</strong>.
+        (저주파와의 경계는 소수캐리어 생성속도·온도에 의존 — 실온 Si에서 대략 수 Hz~kHz.)</p>
       </div>
     </div>
     <div class="band mt"><svg viewBox="0 0 480 200" width="480">
@@ -313,6 +320,9 @@
       <li>이동 방향은 산화막 전하의 <strong>부호</strong>에 따라 결정 (양전하면 보통 음의 방향으로).</li>
     </ul>
     <div class="note">정리: 산화막 전하는 곡선 모양은 그대로 두고, 가로축 위치만 미는 효과.</div>
+    <div class="physnote mt"><p style="margin:0">슬라이드 8과의 연결: 비이상(산화막 전하 포함) 시
+       V<span class="sub">T</span> = V<span class="sub">FB</span> + 2φ<span class="sub">F</span> + Q<span class="sub">dep</span>/C<span class="sub">ox</span> 이고,
+       이상적이면 V<span class="sub">FB</span> = φ<span class="sub">ms</span> 이므로 슬라이드 8 식으로 환원됩니다.</p></div>
   </section>
 
   <!-- 14. 비이상 ②③④ -->
@@ -326,9 +336,10 @@
         C-V 곡선이 옆으로 밀립니다. V<span class="sub">FB</span>의 출발 항.</p>
       </div>
       <div class="card">
-        <h3><span class="ico">🌫️</span> 양자효과 (축적)</h3>
-        <p style="margin:0;font-size:14.5px">정공이 경계면에 딱 붙지 못하고 <strong>약간 떨어진</strong> 곳에 분포.
-        추가 커패시터가 직렬로 붙어 축적 용량이 <strong>C<span class="sub">ox</span>보다 작게</strong> 측정됨.</p>
+        <h3><span class="ico">🌫️</span> 양자효과 (축적·반전)</h3>
+        <p style="margin:0;font-size:14.5px">캐리어(축적의 정공·반전층의 전자)의 전하 무게중심이 양자화로 경계면에서 <strong>약간 후퇴</strong>하고
+        양자 커패시턴스가 더해져 유효 산화막 두께(EOT)가 증가. 박막 산화막에서 축적·반전 용량 모두
+        <strong>C<span class="sub">ox</span>보다 작게</strong> 측정됨.</p>
       </div>
       <div class="card">
         <h3><span class="ico">🧊</span> 폴리 공핍</h3>

@@ -123,8 +123,11 @@
     <h2>고준위 주입과 이상 인자 n</h2>
     <p>저준위 주입에서는 "주입된 소수 캐리어 ≪ 다수 캐리어"라서 다수 캐리어 농도를 상수로 봤습니다.
       그런데 순방향이 아주 세지면 주입량이 다수 캐리어에 <strong>맞먹을</strong> 만큼 커집니다.
-      그러면 가한 전압이 소수 캐리어만이 아니라 다수 캐리어까지 움직이는 데 나눠 쓰여,
-      전류 형성에 기여하는 몫이 줄어듭니다.</p>
+      그러면 전하중성을 지키기 위해 다수 캐리어 농도도 함께 늘어야 해서 양쪽 농도가 같이 증가합니다(n≈p).
+      그 결과 접합 경계의 캐리어 농도가 e<span class="sup">qV/kT</span>가 아니라 e<span class="sup">qV/2kT</span>로만 증가해,
+      같은 전압을 더 줘도 전류 증가가 둔해집니다(→ n이 2 쪽으로).
+      여기에 더해, 주입이 커지면 준중성영역 자체의 전도도 변조로 그 영역에 전압이 떨어져 접합에 걸리는 유효전압이 줄어듭니다.
+      (이 후자의 효과는 슬라이드 10의 직렬저항과는 다른 별개 메커니즘입니다.)</p>
     <div class="eq">I ∝ e<span class="sup">qV/(<span class="var">n</span>·kT)</span><span class="dim"> ,   n: 이상 인자(ideality factor), 1 ≤ n ≤ 2</span></div>
     <div class="eqcap">분모에 n이 끼어들면 지수가 둔해집니다 → 같은 전압에서 전류가 줄어듦.</div>
     <div class="grid2 mt">
@@ -134,7 +137,7 @@
       </div>
       <div class="card">
         <h3><span class="ico">📈</span> log I–V에서</h3>
-        <p style="margin:0">이상 구간은 기울기 1(n=1). 고준위에서 기울기가 완만해지며
+        <p style="margin:0">이상 구간은 n=1 (한 데케이드 올리는 데 약 60 mV, 상온). 고준위에서 기울기가 완만해지며
           곡선이 이상선 아래로 휩니다.</p>
       </div>
     </div>
@@ -173,8 +176,8 @@
     <div class="kicker">비이상 ③</div>
     <h2>역방향의 생성 전류</h2>
     <p>역방향에서는 캐리어가 접합을 막 건너지 않습니다. 대신 공핍층 안에서
-      전자–정공 쌍이 <strong>저절로 생성</strong>되고, 강한 역방향 전계가 이들을 양쪽으로 끌어내
-      추가 전류를 만듭니다.</p>
+      전자–정공 쌍이 <strong>저절로 생성</strong>되고, 공핍층 전계가 생성된 쌍을 곧바로 양쪽으로 끌어내 수집합니다.
+      역전압이 커져 공핍폭 W가 넓어질수록 생성이 일어나는 부피가 늘어 전류가 천천히 증가합니다.</p>
     <div class="band"><svg viewBox="0 0 600 200" width="600">
       <text x="20" y="22" fill="#9fb0c7" font-size="12">역방향: 공핍층에서 e⁻·h⁺ 생성 → 드리프트</text>
       <rect x="240" y="50" width="120" height="110" fill="rgba(91,156,255,.08)" stroke="#22304a"/>
@@ -194,6 +197,7 @@
     </svg></div>
     <p>그래서 실제 역방향 전류는 <span class="hl">−I<span class="sub">s</span> 로 평평하게 고정되지 않고</span>,
       역전압이 커질수록(공핍층이 넓어질수록) 생성량이 늘어 <strong>천천히 증가</strong>합니다.
+      특히 실리콘에서는 상온에서도 이 생성전류가 확산성 I<span class="sub">s</span>보다 더 커서, 측정되는 역방향 전류의 대부분을 차지하기도 합니다.
       아주 큰 역전압에서는 항복(breakdown)으로 전류가 급증합니다.</p>
   </section>
 
@@ -239,7 +243,7 @@
       <tr><th></th><th>공핍 용량 C<span class="sub">dep</span></th><th>확산 용량 C<span class="sub">diff</span></th></tr>
       <tr><td>주된 영역</td><td>역방향</td><td>순방향</td></tr>
       <tr><td>전하의 출처</td><td>공핍층 고정 전하</td><td>저장된 소수 캐리어</td></tr>
-      <tr><td>전압 의존</td><td>√(역전압)에 반비례 → 감소</td><td>주입 전류(≈e<span class="sup">qV/kT</span>)에 비례 → 급증</td></tr>
+      <tr><td>전압 의존</td><td>√(V<span class="sub">bi</span> − V)에 반비례 → 감소 (역방향일수록 V&lt;0이라 분모↑ → 감소)</td><td>주입 전류(≈e<span class="sup">qV/kT</span>)에 비례 → 급증</td></tr>
       <tr><td>전류 흐름</td><td>거의 없음(평행판 닮음)</td><td>실제로 흐름</td></tr>
     </table>
     <div class="physnote">두 용량은 다이오드 안에서 <strong>병렬</strong>로 존재합니다. 전체 용량 = C<span class="sub">dep</span> + C<span class="sub">diff</span>.

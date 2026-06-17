@@ -24,7 +24,7 @@
     <h2>전선을 칩에 어떻게 붙일까?</h2>
     <p class="lead">트랜지스터를 아무리 잘 만들어도, 결국 <strong>금속 배선</strong>을 반도체에 붙여서 전기를 넣고 빼야 한다. 그 <span class="hl">금속–반도체 경계면</span>이 바로 이번 챕터의 주인공이다.</p>
     <div class="keyq mt">
-      <p style="margin:0"><strong>MS 접합(=Schottky 접합)</strong>이란, 금속과 반도체를 붙여 만든 접합이다. 두 재료의 <span class="hl">일함수 차이</span>에 따라 경계면에 에너지 장벽이 생기고, 이 장벽의 성격이 소자 전체의 동작을 결정한다.</p>
+      <p style="margin:0"><strong>MS 접합</strong>이란 금속과 반도체를 붙여 만든 접합이다. (정류성이면 <strong>Schottky 접합</strong>, 비정류성이면 Ohmic 접합으로 갈린다 — 다음 슬라이드) 두 재료의 <span class="hl">일함수 차이</span>에 따라 경계면에 에너지 장벽이 생기고, 이 장벽의 성격이 소자 전체의 동작을 결정한다.</p>
     </div>
     <div class="note mt">
       <p style="margin:0">칩 안에서 소자끼리 신호를 주고받으려면 금속 배선으로 연결해야 한다. 그런데 이 연결 지점이 의도치 않게 <span class="hl2">다이오드</span>가 되어버리면 회로가 망가진다. MS 접합을 이해한다는 건, 이 연결부를 <strong>의도한 대로</strong> 만든다는 뜻이다.</p>
@@ -101,24 +101,26 @@
       <line x1="160" y1="150" x2="160" y2="92" stroke="#ff7a85" stroke-width="1.5"/>
       <text x="166" y="120" fill="#ff7a85" font-size="12">qφ_B</text>
       <!-- 전도대 Ec : 경계(160)에서 위로 휘었다가 벌크로 -->
-      <path d="M160,92 Q200,92 230,118 T340,150 L580,150" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
-      <text x="540" y="142" fill="#5b9cff" font-size="12">E_c</text>
+      <path d="M160,92 Q200,92 230,118 T340,138 L580,138" fill="none" stroke="#5b9cff" stroke-width="2.5"/>
+      <text x="540" y="130" fill="#5b9cff" font-size="12">E_c</text>
       <!-- 페르미 준위 : 수평 (평형) -->
       <line x1="40" y1="150" x2="580" y2="150" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="6 4"/>
       <text x="500" y="166" fill="#5ee6a0" font-size="12">E_F (수평)</text>
       <!-- 가전자대 Ev : 같은 형태로 아래에서 휨 -->
       <path d="M160,150 Q200,150 230,176 T340,208 L580,208" fill="none" stroke="#b388ff" stroke-width="2.5"/>
       <text x="540" y="200" fill="#b388ff" font-size="12">E_v</text>
-      <!-- 빌트인 전위 qVbi 표시 -->
-      <line x1="230" y1="118" x2="230" y2="150" stroke="#ffce6b" stroke-width="1.3"/>
-      <text x="234" y="138" fill="#ffce6b" font-size="11">qV_bi</text>
+      <!-- 빌트인 전위 qVbi 표시 : 벌크 Ec − 계면 Ec (밴드 휜 양) -->
+      <line x1="375" y1="92" x2="375" y2="138" stroke="#ffce6b" stroke-width="1.3"/>
+      <line x1="370" y1="92" x2="380" y2="92" stroke="#ffce6b" stroke-width="1.3"/>
+      <line x1="370" y1="138" x2="380" y2="138" stroke="#ffce6b" stroke-width="1.3"/>
+      <text x="384" y="118" fill="#ffce6b" font-size="11">qV_bi</text>
       <!-- 공핍폭 W -->
       <line x1="160" y1="232" x2="335" y2="232" stroke="#9fb0c7" stroke-width="1" marker-start="" />
       <text x="225" y="228" fill="#9fb0c7" font-size="11">W (공핍층)</text>
       <text x="80" y="258" fill="#6c7c95" font-size="11">금속</text>
       <text x="440" y="258" fill="#6c7c95" font-size="11">n형 반도체</text>
     </svg></div>
-    <p class="dim" style="margin-top:8px">평형에서 E<span class="sub">F</span>는 수평. 반도체 밴드가 경계에서 위로 휜 양이 곧 <strong>빌트인 전위 qV<span class="sub">bi</span></strong>이고, 금속 E<span class="sub">F</span>에서 본 전도대 턱이 <strong>Schottky 장벽 qφ<span class="sub">B</span></strong>다.</p>
+    <p class="dim" style="margin-top:8px">평형에서 E<span class="sub">F</span>는 수평. <strong>qV<span class="sub">bi</span></strong> = 벌크 E<span class="sub">c</span> − 계면 E<span class="sub">c</span>(=밴드 휜 양), <strong>qφ<span class="sub">B</span></strong> = 금속 E<span class="sub">F</span> − 계면 E<span class="sub">c</span>로 두 높이는 다르다. V<span class="sub">bi</span> = φ<span class="sub">B</span> − (E<span class="sub">c</span>−E<span class="sub">F</span>)이므로 φ<span class="sub">B</span>보다 작다. (E<span class="sub">c</span>−E<span class="sub">F</span>)=kT·ln(N<span class="sub">c</span>/N<span class="sub">D</span>).</p>
   </section>
 
   <!-- 7. 두 가지 장벽 + 식 -->
@@ -252,8 +254,8 @@
     <h2>서로 다른 두 반도체를 붙이면</h2>
     <p>같은 재료끼리 붙이면 동종접합(homojunction), <strong>다른 반도체끼리</strong> 붙이면 이종접합. 밴드갭이 다른 두 물질이 만나면 경계에서 밴드에 <span class="hl">계단(band offset)</span>이 생긴다.</p>
     <ul>
-      <li><strong>그리는 법:</strong> 진공준위 기준으로 각 물질의 χ(전자친화도)로 E<span class="sub">c</span> 위치를 고정 → 나머지는 E<span class="sub">F</span>를 수평으로 맞추면 끝. (지금까지와 같은 방법)</li>
-      <li><strong>제약 — 격자 정합:</strong> 두 결정의 격자상수 a가 거의 같아야 한다. 미스매치가 대략 <span class="hl2">0.2% 이내</span>가 아니면 접합부에 응력이 쌓여 필름이 깨진다. 그래서 화합물 조성을 미세 조정해 a를 맞춘다.</li>
+      <li><strong>그리는 법:</strong> 진공준위 기준으로 각 물질의 χ로 E<span class="sub">c</span> 위치를 고정 → E<span class="sub">F</span>를 수평으로 맞춘다. 이것이 전자친화도 규칙(Anderson 모델)이다 — 학부 수준의 1차 근사이며, 실제 band offset은 계면 쌍극자·계면상태 때문에 다소 어긋날 수 있다.</li>
+      <li><strong>제약 — 격자 정합:</strong> 두 결정의 격자상수 a가 거의 같아야 한다. 미스매치가 작을수록, 그리고 층이 얇을수록 결함 없이 성장할 수 있다. 변형을 탄성으로 수용하는 의사정합(pseudomorphic) 한계인 임계두께(Matthews–Blakeslee)를 넘으면 미스핏 전위가 생긴다. GaAs/AlGaAs는 미스매치가 ~0.1% 수준(순수 AlAs/GaAs 기준 약 0.16%이고 Al 분율이 낮으면 더 작음)으로 매우 작아 사실상 자유롭게 두껍게 성장된다. 그래서 화합물 조성을 미세 조정해 a를 맞춘다.</li>
     </ul>
     <div class="physnote mt">
       <p style="margin:0"><strong>활용 — 2DEG / HEMT:</strong> 밴드 계단으로 만든 좁은 "우물"에 전자를 가두면, 도핑된 불순물과 떨어져 산란이 줄어 <span class="hl">이동도(mobility)가 급상승</span>한다. 도핑은 옆 물질(AlGaAs)에만 하고 전자는 무도핑 GaAs 우물을 달리게 하는 구조 → 고속 트랜지스터. 핵심은 "밴드 다이어그램만 잘 그리면 어떤 접합이든 해석된다"는 것.</p>

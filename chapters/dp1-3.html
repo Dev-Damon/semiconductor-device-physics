@@ -66,10 +66,10 @@
       <path d="M40,95 L255,95 Q300,95 300,135 L300,135 Q300,170 350,170 L560,170" fill="none" stroke="#5b9cff" stroke-width="2.4"/>
       <text x="48" y="88" fill="#5b9cff" font-size="12">E_c</text>
       <!-- 분리된 quasi-Fermi 레벨 -->
-      <line x1="40" y1="148" x2="300" y2="148" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
-      <text x="120" y="143" fill="#5ee6a0" font-size="11">E_Fp</text>
-      <line x1="300" y1="158" x2="560" y2="158" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
-      <text x="430" y="153" fill="#5ee6a0" font-size="11">E_Fn</text>
+      <line x1="40" y1="158" x2="300" y2="158" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="120" y="153" fill="#5ee6a0" font-size="11">E_Fp</text>
+      <line x1="300" y1="148" x2="560" y2="148" stroke="#5ee6a0" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="430" y="143" fill="#5ee6a0" font-size="11">E_Fn</text>
       <!-- qVF 격차 표시 -->
       <line x1="295" y1="148" x2="295" y2="158" stroke="#f5a623" stroke-width="1.2"/>
       <text x="232" y="200" fill="#f5a623" font-size="11">qV_F (분리)</text>
@@ -79,6 +79,7 @@
       <text x="150" y="222" fill="#6c7c95" font-size="12">p형 (+V)</text>
       <text x="440" y="222" fill="#6c7c95" font-size="12">n형 (0)</text>
     </svg></div>
+    <div class="eqcap">forward에서는 p쪽 밴드가 내려간다(n쪽 0V 기준). 그래서 n쪽 E_Fn이 p쪽 E_Fp보다 qV_F만큼 위에 놓인다 → E_Fn − E_Fp = qV_F &gt; 0.</div>
     <p style="margin-top:12px">밴드가 내려오면서 <strong>장벽 높이가 V<span class="sub">bi</span> → V<span class="sub">bi</span> − V<span class="sub">F</span></strong>로 줄어든다. 낮아진 언덕은 전자가 훨씬 쉽게 넘는다 → 전류가 잘 흐른다.</p>
   </section>
 
@@ -146,7 +147,7 @@
     <h2>V<span class="sub">bi</span>만 갈아끼우면 끝</h2>
     <div class="eq">forward: V<span class="sub">bi</span> → V<span class="sub">bi</span> − <span class="var">V</span><span class="sub">F</span> &nbsp;&nbsp; reverse: V<span class="sub">bi</span> → V<span class="sub">bi</span> + <span class="var">V</span><span class="sub">R</span></div>
     <div class="eqcap">지난 챕터에서 유도한 x<span class="sub">n</span>, x<span class="sub">p</span>, E<span class="sub">max</span>, W 식의 V<span class="sub">bi</span> 자리에 위 값을 넣기만 하면 된다.</div>
-    <div class="eq">W ∝ √( V<span class="sub">bi</span> ∓ <span class="var">V</span> )  ·  ( 1/<span class="var">N</span><span class="sub">A</span> + 1/<span class="var">N</span><span class="sub">D</span> )</div>
+    <div class="eq">W ∝ √[ ( V<span class="sub">bi</span> ∓ <span class="var">V</span> )  ·  ( 1/<span class="var">N</span><span class="sub">A</span> + 1/<span class="var">N</span><span class="sub">D</span> ) ]</div>
     <div class="eqcap">장벽(괄호 안)이 커지면 W가 커진다. → reverse: W↑, forward: W↓.</div>
     <table class="compare mt">
       <tr><th>항목</th><th>Forward (p에 +)</th><th>Reverse (p에 −)</th></tr>
@@ -339,11 +340,11 @@
     <div class="kicker">언제 충돌 이온화가 시작되나</div>
     <h2>전자의 운동에너지가 밴드갭을 넘을 만큼 — 결국 E-field 문제</h2>
     <p>가전자대 전자 하나를 전도대로 끌어올리려면(=쌍 하나 만들려면) 적어도 밴드갭 E<span class="sub">g</span>만큼의 에너지가 필요하다.</p>
-    <div class="eq">(전자 운동에너지) &gt; E<span class="sub">g</span></div>
-    <div class="eqcap">이 조건을 만족해야 충돌로 새 전자-홀 쌍이 생긴다.</div>
+    <div class="eq">(전자 운동에너지) ≳ E<span class="sub">g</span></div>
+    <div class="eqcap">이 조건을 만족해야 충돌로 새 전자-홀 쌍이 생긴다. (엄밀히는 운동량 보존 때문에 문턱이 E<span class="sub">g</span>보다 다소 큼 — 이론상 ~1.5 E<span class="sub">g</span>.)</div>
     <p>운동에너지는 속도가, 속도는 가속시키는 <strong>E-field 세기</strong>가 결정한다. 그래서 임계 E-field만 넘으면 avalanche가 터진다.</p>
-    <div class="eq">E<span class="sub">max</span>(reverse) &gt; E<span class="sub">crit</span> &nbsp;≈&nbsp; 1×10<span class="sup">6</span> [V/cm]  (Si)</div>
-    <div class="eqcap">실리콘 기준 임계 전기장 — reverse bias로 E<span class="sub">max</span>가 이 값을 넘으면 항복. MOSFET 단계에서 다시 만난다(hot carrier).</div>
+    <div class="eq">E<span class="sub">max</span>(reverse) &gt; E<span class="sub">crit</span> &nbsp;≈&nbsp; 2~3×10<span class="sup">5</span> [V/cm]  (Si, 도핑에 약하게 의존)</div>
+    <div class="eqcap">실리콘 기준 충돌 이온화 임계 전기장 — reverse bias로 E<span class="sub">max</span>가 이 값을 넘으면 항복. 약 10<span class="sup">6</span> V/cm는 avalanche가 아니라 band-to-band 터널링(Zener) 임계장으로, 두 문턱은 거의 한 자릿수 차이. MOSFET 단계에서 다시 만난다(hot carrier).</div>
   </section>
 
   <!-- 19. Zener vs Avalanche 비교 -->
@@ -387,7 +388,7 @@
       <li><strong>바이어스(p 기준):</strong> forward(+)는 장벽 V<span class="sub">bi</span>−V<span class="sub">F</span>로 낮아져 W↓·E↓·전류 지수 증가. reverse(−)는 V<span class="sub">bi</span>+V<span class="sub">R</span>로 높아져 W↑·E↑·전류 차단.</li>
       <li><strong>전압의 위치:</strong> 외부 전압은 거의 전부 공핍층에 걸린다 → 식에서 V<span class="sub">bi</span> 항만 갈아끼우면 끝.</li>
       <li><strong>Depletion capacitance:</strong> 역바이어스 접합 = 커패시터. <span class="hl">C<span class="sub">dep</span>=ε<span class="sub">s</span>/W</span>. 1/C² vs V<span class="sub">R</span> 직선의 기울기→도핑, x절편→−V<span class="sub">bi</span>.</li>
-      <li><strong>Breakdown:</strong> Zener=얇은 장벽 터널링(고농도) / Avalanche=충돌 이온화 연쇄(강한 E-field, Si≈10⁶ V/cm).</li>
+      <li><strong>Breakdown:</strong> Zener=얇은 장벽 터널링(고농도) / Avalanche=충돌 이온화 연쇄(강한 E-field, Si≈2~3×10⁵ V/cm).</li>
     </ul>
     <div class="takeaway mt"><p style="margin:0">다이오드의 비대칭 정류는 "바이어스 방향이 장벽을 올리거나 내린다"에서 나온다. 역바이어스는 정전용량(C-V로 도핑 측정)과 항복(Zener/Avalanche)이라는 두 얼굴을 더 가진다.</p></div>
     <p class="note mt">다음 → forward bias에서 실제로 <strong>전류가 얼마나</strong> 흐르는지(다이오드 전류식, 소수 캐리어 확산), 그리고 그때 생기는 <strong>diffusion capacitance</strong>.</p>

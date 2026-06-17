@@ -86,6 +86,8 @@
     <div class="band">
       <svg viewBox="0 0 620 240" width="620">
         <text x="20" y="22" fill="#9fb0c7" font-size="12">E (에너지) ↑</text>
+        <!-- 겹침 구간 음영 띠: n측 E_c 바닥(y≈160) ~ p측 E_v 꼭대기(y≈108) -->
+        <rect x="40" y="108" width="540" height="52" fill="#5ee6a0" opacity="0.08"/>
         <!-- E_F : 수평 점선 -->
         <line x1="40" y1="120" x2="580" y2="120" stroke="#5ee6a0" stroke-width="1.5" stroke-dasharray="6 4"/>
         <text x="44" y="114" fill="#5ee6a0" font-size="12">E_F (평형, 수평)</text>
@@ -106,7 +108,8 @@
     </div>
     <div class="physnote mt">
       <p style="margin:0">도핑이 진하면 공핍층(장벽)이 아주 <span class="hl">얇아집니다</span>.
-      게다가 p쪽 가전자대와 n쪽 전도대가 에너지축에서 <strong>겹칩니다</strong>.
+      게다가 p쪽 가전자대와 n쪽 전도대가 에너지축에서 <strong>겹칩니다</strong>(위 그림의 회색 음영 띠).
+      이 겹침 구간에서만 같은 에너지의 채운자리(n측 E<sub>c</sub>)↔빈자리(p측 E<sub>v</sub>)가 마주 봐 터널링이 가능합니다.
       얇은 장벽 + 마주 보는 빈자리/채운자리 → 터널링 무대 완성.</p>
     </div>
   </section>
@@ -168,9 +171,9 @@
       <div>
         <p>전압을 더 키우면 p쪽 밴드가 더 내려갑니다. 이제 n쪽 전도대 전자가 마주 보는 건
         p쪽 <span class="hl3">가전자대가 아니라 금지대(밴드갭)</span> — 갈 자리가 없습니다.</p>
-        <p>게다가 정렬이 어긋나면서 전자가 실제로 건너야 할
-        <span class="hl">유효 장벽이 더 두꺼워집니다</span>.
-        터널링 확률은 두께에 지수적으로 민감해 뚝 떨어지죠.</p>
+        <p>핵심은 전자가 갈 빈 상태(겹치는 상태)가 사라지는 것 —
+        n쪽 전도대 채운자리와 마주 보는 <span class="hl">p쪽 가전자대 빈자리가 줄어들수록</span>
+        터널링이 급감합니다. (공핍폭이 약간 넓어지긴 하나, 지배 원인은 마주 보는 상태의 소멸입니다.)</p>
         <div class="takeaway">
           <p style="margin:0"><strong>전압을 올렸는데 전류가 줄어드는 구간</strong> =
           음의 미분저항(NDR, Negative Differential Resistance).
@@ -202,14 +205,14 @@
           <text x="200" y="198" fill="#ff7a85" font-size="11">valley</text>
           <!-- NDR 구간 음영 표시 -->
           <text x="150" y="120" fill="#ff7a85" font-size="11">NDR (dI/dV&lt;0)</text>
-          <text x="290" y="100" fill="#5b9cff" font-size="11">thermionic</text>
+          <text x="290" y="100" fill="#5b9cff" font-size="11">normal diode (diffusion)</text>
         </svg>
       </div>
       <div>
         <p><strong>① 상승</strong> — 약 forward, 터널링 전류 증가 (→ peak).</p>
         <p><strong>② 하강(NDR)</strong> — 정렬이 어긋나며 터널링 막힘, 전류 감소 (→ valley).</p>
-        <p><strong>③ 재상승</strong> — 더 키우면 전자가 장벽 <span class="hl2">위로 넘어가는</span>
-        열전자 방출(thermionic emission)이 시작돼 다시 보통 다이오드처럼 전류 증가.</p>
+        <p><strong>③ 재상승</strong> — 더 키우면 보통 pn 다이오드의 정상 순방향
+        <span class="hl2">확산·주입 전류</span>가 살아나(장벽을 열적으로 넘는 성분) 다시 전류가 증가.</p>
         <div class="physnote">
           <p style="margin:0">NDR은 보통의 저항(전압↑→전류↑)과 반대로 동작하기 때문에,
           이 특성을 이용하면 <span class="hl2">발진기(신호를 스스로 떨게 하는 회로)나
@@ -250,7 +253,7 @@
         <p>forward를 걸면 내부전위 V<sub>bi</sub>가 낮아져, n쪽 전자와 p쪽 홀이 접합부로
         밀려 들어옵니다. 거기서 만나면 <span class="hl2">전자가 전도대에서 가전자대의 홀로 떨어집니다</span>
         (재결합).</p>
-        <p>떨어질 때 잃는 위치에너지(≈ 밴드갭)는 사라지지 않습니다 —
+        <p>떨어질 때 잃는 에너지(전도대–가전자대 에너지차 ≈ 밴드갭)는 사라지지 않습니다 —
         <span class="hl">광자(빛)</span>로 튀어나옵니다.</p>
       </div>
     </div>
@@ -292,9 +295,12 @@
     <table class="compare mt">
       <tr><th>물질</th><th>유형</th><th>대략 색</th></tr>
       <tr><td>GaAs / AlGaAs</td><td>직접</td><td>적외선~빨강</td></tr>
-      <tr><td>GaP / GaAsP</td><td>직·간접</td><td>빨강~노랑~초록</td></tr>
+      <tr><td>GaP / GaAsP</td><td>간접*(일부 조성만 직접)</td><td>빨강~노랑~초록</td></tr>
       <tr><td>InGaN / GaN</td><td>직접</td><td>초록~파랑~자외선</td></tr>
     </table>
+    <p class="note">*GaP는 간접천이(E<sub>g</sub>≈2.26 eV), GaAsP도 P조성 x≳0.45~0.49부터 간접천이.
+      이들의 빨강·노랑·초록 발광은 진정한 직접천이가 아니라 질소(N) 등전자(isoelectronic) 재결합 중심으로
+      운동량 보존 제약을 우회해 얻은 것.</p>
     <p class="note">화합물 반도체는 광학 특성이 좋지만, 대면적 웨이퍼 제조가 Si보다 어려워 비쌉니다.</p>
   </section>
 
@@ -387,7 +393,7 @@
     <div class="qa">
       <div class="q">터널 다이오드에서 NDR(음의 미분저항)이 나타나는 이유는?</div>
       <div class="a">forward를 키우면 처음엔 n쪽 전도대 전자와 p쪽 가전자대 빈자리가 정렬돼 터널링 전류가 늘지만,
-      더 키우면 전자가 마주 보는 곳이 p쪽 밴드갭(금지대)이 되고 유효 장벽도 두꺼워져 터널링이 막힙니다.
+      더 키우면 전자가 마주 보는 곳이 p쪽 밴드갭(금지대)이 되어 갈 수 있는 빈 상태가 사라져 터널링이 급감합니다.
       그래서 전압↑인데 전류↓ — dI/dV &lt; 0.</div>
     </div>
     <div class="qa">

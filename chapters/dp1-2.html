@@ -89,11 +89,12 @@
   <section class="slide">
     <div class="kicker">주의</div>
     <h2>이 식은 "너무 진하면" 못 쓴다</h2>
-    <p>위 V<sub>bi</sub> 식은 캐리어 농도를 구할 때 <strong class="hl">볼츠만 근사</strong>를 깔고 유도됐다. 도핑이 약 10<sup>18</sup> cm<sup>−3</sup>를 넘어 <strong>축퇴(degenerate)</strong> 영역에 들어가면 이 근사가 깨진다.</p>
+    <p>위 V<sub>bi</sub> 식은 캐리어 농도를 구할 때 <strong class="hl">볼츠만 근사</strong>를 깔고 유도됐다. 대략 10<sup>18</sup> cm<sup>−3</sup> 부근부터 이 근사가 흔들리기 시작하고(엄밀히는 n형·p형이 약간 비대칭: Si 300K에서 n형 ~1.6×10<sup>18</sup>, p형 ~9×10<sup>17</sup>), 약 10<sup>19</sup> cm<sup>−3</sup>(N<sub>c</sub>≈2.8×10<sup>19</sup>, N<sub>v</sub>≈1.0×10<sup>19</sup>에 접근)에 이르면 E<sub>F</sub>가 밴드 안으로 들어가 본격 <strong>축퇴(degenerate)</strong>가 된다. 단일 칼선이 아니라 <strong>전이 구간</strong>이다.</p>
     <table class="compare">
       <tr><th>상황</th><th>도핑 농도(대략)</th><th>볼츠만 근사 / V<sub>bi</sub> 식</th></tr>
       <tr><td>비축퇴</td><td>≲ 10<sup>18</sup> cm<sup>−3</sup></td><td>유효 ✔ — 위 식 그대로 사용</td></tr>
-      <tr><td>축퇴</td><td>≳ 10<sup>18</sup> cm<sup>−3</sup></td><td>깨짐 ✘ — E<sub>F</sub>가 밴드 안으로, 다른 근사 필요</td></tr>
+      <tr><td>전이 구간</td><td>≳ 10<sup>18</sup> cm<sup>−3</sup></td><td>근사가 흔들리기 시작 ⚠️ — 주의 필요</td></tr>
+      <tr><td>본격 축퇴</td><td>~ 10<sup>19</sup> cm<sup>−3</sup></td><td>깨짐 ✘ — E<sub>F</sub>가 밴드 안으로, 다른 근사 필요</td></tr>
     </table>
     <div class="analogy mt"><p style="margin:0">실리콘에 도펀트를 무한정 못 녹인다(고용한계, 약 10<sup>20</sup> cm<sup>−3</sup>). 물에 소금 녹이기와 같다 — 일정 농도 넘으면 더는 "들어가지" 않는다.</p></div>
     <div class="note mt">앞으로의 유도는 모두 <strong>비축퇴(도핑 적당)</strong>를 전제로 한다.</div>
@@ -199,7 +200,7 @@
         <p style="margin:0">진한 p+쪽은 높이(qN<sub>A</sub>)는 크지만 폭(x<sub>p</sub>)이 0에 가까운 <strong>가느다란 막대</strong>. 옅은 n쪽은 낮고 <strong>넓게</strong> 퍼진다. 두 박스 면적은 여전히 같다.</p>
       </div>
     </div>
-    <div class="warnbox mt"><p style="margin:0">⚠️ 진한 p+쪽은 <strong>축퇴</strong>라 V<sub>bi</sub> 로그식을 못 쓴다. 그쪽 휨은 <strong>E<sub>F</sub> ≈ E<sub>v</sub></strong>로 보고 E<sub>F</sub>−E<sub>i</sub> ≈ E<sub>g</sub>/2로 근사한다(n+p면 n쪽을 E<sub>g</sub>/2). 옅은 쪽 휨만 원래 로그식으로 계산해 더한다.</p></div>
+    <div class="warnbox mt"><p style="margin:0">⚠️ 진한 p+쪽은 E<sub>F</sub>가 E<sub>v</sub>에 거의 붙어 있어, 그쪽 휨 (E<sub>i</sub>−E<sub>F</sub>) ≈ (E<sub>i</sub>−E<sub>v</sub>) ≈ E<sub>g</sub>/2 로 근사한다(n+p면 n쪽을 E<sub>g</sub>/2). 옅은 쪽 휨만 원래 로그식으로 계산해 더한다.</p></div>
   </section>
 
   <!-- 12) E_max (관계 활용) -->

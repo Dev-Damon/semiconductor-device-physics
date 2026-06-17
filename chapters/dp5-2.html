@@ -92,6 +92,7 @@
     <div class="eq">I<span class="sub">D,sat</span> = ½ · μ<span class="sub">n</span> C<span class="sub">ox</span> · (<span class="var">W</span>/<span class="var">L</span>) · ( <span class="var">V</span><span class="sub">GS</span> − <span class="var">V</span><span class="sub">T</span> )<span class="sup">2</span></div>
     <div class="eqcap">포화 전류. V<span class="sub">DS</span>가 빠지고 <strong>I<span class="sub">D</span> ∝ (V<span class="sub">GS</span>−V<span class="sub">T</span>)<span class="sup">2</span></strong> — 게이트 전압만으로 전류가 정해진다.</div>
     <div class="analogy">💡 비유: 관 출구가 닫혀버린 게 아니라 <strong>꼭 짜인 목</strong>이 생긴 것. 그 뒤로 수압을 더 올려도 목을 통과하는 물의 양은 더 늘지 않는다 → 전류가 평평하게 "포화".</div>
+    <div class="physnote">⚛️ 드레인 끝 전하가 0이어도 전류는 끊기지 않는다 — 핀치오프 지점부터 드레인까지의 짧은 공핍영역에 걸린 강한 전계가, 채널을 통해 도달한 전자를 드레인으로 쓸어 보내기 때문이다.</div>
     <div class="note">포화 영역의 MOSFET은 V<span class="sub">GS</span>로 그 값을 정하는 <strong>정전류원</strong>(전압을 더 올려도 흐르는 전류가 거의 일정한 전원)에 가깝다. 회로에서 "켜진 트랜지스터"는 보통 이 영역에서 쓴다.</div>
   </section>
 
@@ -172,20 +173,20 @@
     <div class="band"><svg viewBox="0 0 600 210" width="600">
       <text x="14" y="18" fill="#9fb0c7" font-size="12">E ↑</text>
       <!-- V_SB = 0 (얕은 휘어짐, 점선) -->
-      <path d="M70,150 Q150,150 175,110 L300,110" fill="none" stroke="#6c7c95" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <path d="M70,70 Q150,70 175,110 L300,110" fill="none" stroke="#6c7c95" stroke-width="1.6" stroke-dasharray="5 4"/>
       <text x="305" y="112" fill="#6c7c95" font-size="11">V_SB = 0</text>
       <!-- V_SB > 0 (더 깊은 휘어짐, 실선) -->
-      <path d="M70,150 Q160,150 205,75 L320,75" fill="none" stroke="#5b9cff" stroke-width="2.4"/>
-      <text x="325" y="77" fill="#5b9cff" font-size="11">V_SB &gt; 0 (밴드밴딩 ↑)</text>
+      <path d="M70,70 Q160,70 205,150 L320,150" fill="none" stroke="#5b9cff" stroke-width="2.4"/>
+      <text x="325" y="152" fill="#5b9cff" font-size="11">V_SB &gt; 0 (아래 휘어짐 ↑, 공핍↑)</text>
       <!-- 표면 위치 표시 -->
       <line x1="70" y1="30" x2="70" y2="185" stroke="#22304a" stroke-width="1.2"/>
       <text x="40" y="200" fill="#6c7c95" font-size="11">표면(산화막 경계)</text>
       <text x="430" y="200" fill="#6c7c95" font-size="11">기판 깊숙이</text>
-      <!-- 화살표: 더 큰 밴드밴딩 -->
-      <line x1="205" y1="110" x2="205" y2="78" stroke="#5ee6a0" stroke-width="1.5" marker-end=""/>
-      <text x="212" y="98" fill="#5ee6a0" font-size="11">Δ 더 큰 휘어짐</text>
+      <!-- 화살표: 더 큰 밴드밴딩 (아래 방향) -->
+      <line x1="205" y1="110" x2="205" y2="148" stroke="#5ee6a0" stroke-width="1.5" marker-end=""/>
+      <text x="212" y="135" fill="#5ee6a0" font-size="11">Δ 더 큰 휘어짐</text>
     </svg></div>
-    <p class="dim">바디에 −전압을 추가하면 기판 쪽 밴드가 더 위로 올라가 표면 밴드밴딩이 더 심해진다 → 공핍층이 더 넓어진다.</p>
+    <p class="dim">게이트 (+)바이어스에서 밴드는 표면(산화막 경계)으로 갈수록 아래로 휜다(E<span class="sub">c</span>가 E<span class="sub">F</span>에 접근 → 표면에 전자가 모인다). 바디에 −전압을 더 걸면(V<span class="sub">SB</span>↑) 이 아래쪽 휘어짐이 더 깊어지고 공핍층이 더 넓어진다 → V<span class="sub">T</span> 증가.</p>
   </section>
 
   <!-- 13. 바디 효과 물리 + 식 -->

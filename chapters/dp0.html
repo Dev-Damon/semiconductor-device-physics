@@ -116,7 +116,7 @@
       <strong>전위 V</strong> — 즉 "단위 전하당 위치에너지"다.</p>
     <div class="eq"><span class="var">V</span> = U / q = <span class="var">E</span>·d
       &nbsp;&nbsp;&nbsp; [ 단위: J/C = <span class="hl">볼트(V)</span> ]</div>
-    <div class="eqcap">1 V = "1 C을 옮기는 데 1 J이 드는 두 지점 사이의 전위차".</div>
+    <div class="eqcap">1 V = "1 C을 옮기는 데 1 J이 드는 두 지점 사이의 전위차". 여기서는 (장을 거슬러 옮기는 경우의) 크기만 본 것이다. 방향까지 따지면 전위는 전기장 방향으로 갈수록 낮아지므로, 일반식은 V = &minus;∫E dx (다음 슬라이드)로 이어진다.</div>
     <div class="note mt">
       엄밀히 "전위(한 점의 값)"와 "전압 = 전위차(두 점의 차)"는 다른 개념이다. 다만 보통 기준점 B를
       <strong>0 V</strong>로 약속하기 때문에, 실무에서는 "A점 전압 = A의 전위"처럼 두 말을 섞어 쓴다.
@@ -131,7 +131,7 @@
       이 한 줄이 앞으로 밴드다이어그램을 읽을 때 가장 많이 쓰일 도구다.</p>
     <div class="eq"><span class="var">V</span> = &minus;∫ <span class="var">E</span> dx
       &nbsp;&nbsp;&nbsp;⟺&nbsp;&nbsp;&nbsp; <span class="var">E</span> = &minus;dV/dx</div>
-    <div class="eqcap">전위 기울기의 반대 방향이 전기장. (&minus;) 부호는 기준점을 0 V로 잡은 약속에서 나온다.</div>
+    <div class="eqcap">전위 기울기의 반대 방향이 전기장. (&minus;) 부호는 전기장이 항상 전위가 낮아지는 방향(내리막)을 가리킨다는 물리적 사실에서 나온다 — 양전하는 위치에너지(=전위)가 낮은 쪽으로 힘을 받기 때문이다. 기준점(0 V)을 어디에 두든 모든 점의 V에 같은 상수가 더해질 뿐 기울기 dV/dx는 변하지 않으므로, 부호는 그대로다.</div>
     <div class="grid2 mt">
       <div class="physnote">
         <strong>해석:</strong> 전위 곡선이 <strong>가파를수록</strong> 전기장이 세다.
@@ -231,10 +231,12 @@
         </defs>
       </svg>
     </div>
+    <div class="physnote mt">이 그림은 대표 예시다. 실제 E_F 위치는 도핑에 따라 달라져 n형이면 E_c 쪽, p형이면 E_v 쪽으로 치우친다(다음 장). 진성에서도 엄밀히는 유효질량 차이로 정확한 중앙은 아니다.</div>
     <ul class="mt">
       <li><strong>세로축은 전자의 에너지</strong>다 — 위로 갈수록 전자가 에너지가 높다(불안정).</li>
       <li><span class="hl3">E<span class="sub">v</span> 위쪽 가까이</span>가 정공, <span class="hl2">E<span class="sub">c</span> 위쪽</span>에 전자가 자유롭게 산다.</li>
-      <li><strong>E<span class="sub">F</span>(페르미 준위)</strong>는 "전자가 어디까지 차 있느냐"의 기준선. 평형에서는 수평이다.</li>
+      <li><strong>E<span class="sub">F</span>(페르미 준위)</strong>는 "전자가 어디까지 차 있느냐"의 기준선. 평형에서는 수평이다.
+        (이 '차 있는 기준선' 직관은 0K 그림이다. 유한 온도에서는 그 자리를 전자가 차지할 확률이 정확히 50%가 되는 에너지로 정의된다 — 다음 장에서 페르미 분포로 정밀화)</li>
     </ul>
   </section>
 
@@ -269,7 +271,7 @@
         <dl class="kv">
           <dt>q</dt><dd>전자 1개 전하량 ≈ 1.6×10⁻¹⁹ C</dd>
           <dt>k</dt><dd>볼츠만 상수 [J/K] — 온도↔에너지 변환</dd>
-          <dt>ε</dt><dd>유전율 — 매질이 전기장을 얼마나 잘 전달하나 (C = ε·A/d)</dd>
+          <dt>ε</dt><dd>유전율(매질의 절대유전율 = ε<span class="sub">r</span>·ε<span class="sub">0</span>) — 매질이 전기장을 얼마나 잘 전달하나 (C = ε·A/d)</dd>
           <dt>h</dt><dd>플랑크 상수 — 양자역학에서 등장</dd>
         </dl>
       </div>

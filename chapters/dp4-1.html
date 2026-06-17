@@ -85,7 +85,7 @@
     <p>산화막–실리콘 경계면을 표면(surface), 거기서 멀리 떨어진 안쪽을 벌크(bulk)라 부르자.
       벌크는 게이트 전압의 영향이 닿지 않아 밴드가 평평하다.</p>
     <div class="keyq">
-      <p style="margin:0">ψ<span class="sub">s</span> = (벌크의 진성준위 E<span class="sub">i</span>) − (표면의 진성준위 E<span class="sub">i</span>) ÷ q.
+      <p style="margin:0">ψ<span class="sub">s</span> = [(벌크 E<span class="sub">i</span>) − (표면 E<span class="sub">i</span>)] / q  (= (E<span class="sub">i,bulk</span> − E<span class="sub">i,surface</span>)/q).
         쉽게 말해 <strong>벌크 대비 표면에서 밴드가 휜 양</strong>. 평평하면 ψ<span class="sub">s</span> = 0.</p>
     </div>
     <div class="physnote mt">
@@ -241,7 +241,11 @@
         </svg>
       </div>
     </div>
-    <p class="dim">표면에서 E<span class="sub">i</span>가 E<span class="sub">F</span>를 가로질러 내려가는 순간이 "p형 → n형 반전"의 신호. 그 지점부터 채널이 생긴다.</p>
+    <p class="dim">표면에서 E<span class="sub">i</span>가 E<span class="sub">F</span>를 가로질러 내려가는 순간이 "p형 → n형 반전"의 신호. 강반전(2φ<span class="sub">Fp</span>)에서 도통 채널이 완성된다.</p>
+    <div class="physnote mt">
+      <p style="margin:0">엄밀히는, E<span class="sub">i</span>가 E<span class="sub">F</span>를 지나는 ψ<span class="sub">s</span>=φ<span class="sub">Fp</span>부터 표면은 이미 약하게 n형(약반전, 표면 전자농도 &lt; N<span class="sub">A</span>)이며,
+        표면 전자가 벌크 홀농도(N<span class="sub">A</span>)만큼 쌓이는 ψ<span class="sub">s</span>=2φ<span class="sub">Fp</span>부터를 강반전(=문턱)으로 본다.</p>
+    </div>
   </section>
 
   <!-- 9. 문턱전압 정의 -->
@@ -270,8 +274,10 @@
     <h2>걸어준 V<span class="sub" style="font-size:.6em">G</span>는 산화막과 표면이 나눠 갖는다</h2>
     <p>게이트에 건 전압은 두 군데로 나뉜다: 절연체인 <span class="hl3">산화막에 걸리는 전압</span>과,
       반도체 표면을 휘게 만드는 <span class="hl">ψ<span class="sub">s</span></span>.</p>
-    <div class="eq"><span class="var">V</span><span class="sub">G</span> = V<span class="sub">ox</span> + ψ<span class="sub">s</span> <span class="dim">( + 이상적이지 않을 땐 일·함수차 보정 )</span></div>
+    <div class="eq"><span class="var">V</span><span class="sub">G</span> = V<span class="sub">FB</span> + ψ<span class="sub">s</span> + V<span class="sub">ox</span></div>
+    <p class="dim" style="text-align:center;margin-top:.4em">실제 소자에서는 금속–반도체 일함수차 φ<span class="sub">ms</span>와 산화막 고정전하에서 비롯된 플랫밴드 전압 V<span class="sub">FB</span> = φ<span class="sub">ms</span> − Q<span class="sub">ox</span>/C<span class="sub">ox</span> 가 항상 더해진다. 본 챕터는 이상적 MOS 가정이라 V<span class="sub">FB</span> = 0.</p>
     <div class="eqcap">전압 분배 — 표면이 충분히 휘려면(ψ<span class="sub">s</span>=2φ<span class="sub">Fp</span>) 산화막 쪽 몫까지 더해 V<span class="sub">T</span>가 정해진다.</div>
+    <p class="dim" style="text-align:center;margin-top:.4em">V<span class="sub">ox</span>=−Q<span class="sub">s</span>/C<span class="sub">ox</span> (Q<span class="sub">s</span>=반도체 전체 면전하)이며, V<span class="sub">ox</span>와 ψ<span class="sub">s</span>는 부호 있는 양이다 — 축적(V<span class="sub">G</span>&lt;0)에서는 Q<span class="sub">s</span>&gt;0이라 둘 다 음수, 공핍·반전(V<span class="sub">G</span>&gt;0)에서는 Q<span class="sub">s</span>&lt;0이라 둘 다 양수로 식이 일관되게 성립한다.</p>
     <div class="physnote">
       <p style="margin:0">반전이 시작된 뒤로는 표면에 전자가 워낙 빠르게 쌓여서, ψ<span class="sub">s</span>는 거의 2φ<span class="sub">Fp</span>에 묶여 더 안 휜다.
         그래서 V<span class="sub">T</span>를 넘는 추가 전압은 대부분 <strong>산화막</strong>에 걸리며, 그만큼 반전층 전자가 늘어난다 —
