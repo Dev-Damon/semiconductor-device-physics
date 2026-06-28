@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>부록 · 트랜지스터 기초 — 종류·동작·구동·스위치</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/physics.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+</head>
+<body data-title="소자물리 · 부록 · 트랜지스터 기초">
+<div class="deck">
+
+  <!-- 1) 제목 -->
+  <section class="slide title-slide">
+    <div class="phys-badge">⚛️ Device Physics · 부록</div>
+    <h1>트랜지스터 <span class="hl">기초</span></h1>
+    <p class="hook">BJT·MOSFET·IGBT는 결국 "작은 신호로 큰 전류를 켜고 끄는 3단자 스위치"다.
+      종류와 동작 구조, 구동 방식, 그리고 Low/High-Side·H-Bridge까지 — 회로에서 바로 쓰는 직관으로 정리한다.</p>
+    <p class="hint">방향키 <kbd>→</kbd> <kbd>←</kbd> 또는 화면 좌우 클릭으로 이동</p>
+  </section>
+
+  <!-- 2) 지도 -->
+  <section class="slide">
+    <div class="kicker">이 부록의 지도</div>
+    <h2>네 갈래로 본다</h2>
+    <p class="lead">소자물리(0~5장)에서 "왜 동작하나"를 봤다면, 여기서는 <strong>회로에서 어떻게 쓰나</strong>를 본다.</p>
+    <div class="flow mt">
+      <div class="box">기본 구조</div><div class="arrow">→</div>
+      <div class="box">종류(BJT·MOS·IGBT)</div><div class="arrow">→</div>
+      <div class="box">구동 방식</div><div class="arrow">→</div>
+      <div class="box on">Low/High-Side · H-Bridge</div>
+    </div>
+    <div class="note mt">소자물리 5장(MOSFET)에서 이어지는 <strong>응용·회로</strong> 관점이다. 밴드·문턱전압을 몰라도 따라올 수 있게 직관 위주로 간다.</div>
+  </section>
+
+  <!-- 3) 명칭 -->
+  <section class="slide">
+    <div class="kicker">이름에 답이 있다</div>
+    <h2>트랜지스터 = <span class="hl">Transfer + Resistor</span></h2>
+    <p>트랜지스터(transistor)는 <strong>트랜스퍼(transfer)</strong>와 <strong>레지스터(resistor)</strong>의 합성어다.
+      "전송 저항" 혹은 "변신 저항" — 즉 <span class="hl">어떤 제어에 의해 값이 변하는 저항 소자</span>라는 뜻이다.</p>
+    <div class="keyq">
+      핵심은 <strong>가변저항</strong>이다. 작은 제어 신호(전류 또는 전압)로 <strong>채널의 저항</strong>을 바꿔,
+      그 채널에 흐르는 <strong>큰 전류</strong>를 켜고(ON)·끄거나(OFF)·조절(증폭)한다.
+    </div>
+    <div class="analogy mt">
+      수도 <strong>밸브</strong>를 떠올리면 된다. 손잡이(제어 단자)를 살짝 돌리는 힘만으로, 굵은 파이프(채널)에 흐르는
+      많은 물(전류)을 통째로 막거나 흘릴 수 있다. 트랜지스터가 바로 이 "전기 밸브"다.
+    </div>
+  </section>
+
+  <!-- 4) BJT 구조 -->
+  <section class="slide">
+    <div class="kicker">소자 ① 바이폴라 트랜지스터(BJT)</div>
+    <h2>베이스 <span class="hl2">전류</span>로 채널을 여는 3단자 소자</h2>
+    <div class="grid2">
+      <div>
+        <p>BJT는 3단자 소자다.</p>
+        <ul>
+          <li><strong>콜렉터(C) · 에미터(E)</strong> — 큰 전류가 흐르는 <span class="hl2">채널</span>을 이룬다.</li>
+          <li><strong>베이스(B)</strong> — 채널 전류량을 <span class="hl">제어</span>하는 단자.</li>
+          <li>베이스에 흘리는 <strong>작은 전류</strong>로 C–E 간 저항이 바뀌어 큰 전류가 조정된다.</li>
+        </ul>
+        <div class="eqcap">제어 수단이 <strong>전류</strong> — 이게 MOSFET과의 결정적 차이(뒤에서).</div>
+      </div>
+      <div class="band">
+        <svg viewBox="0 0 320 220" width="320">
+          <text x="14" y="18" fill="#9fb0c7" font-size="12">NPN BJT</text>
+          <!-- base line -->
+          <line x1="60" y1="110" x2="120" y2="110" stroke="#5b9cff" stroke-width="2.5"/>
+          <text x="34" y="114" fill="#5b9cff" font-size="13">B</text>
+          <line x1="120" y1="70" x2="120" y2="150" stroke="#e8eef7" stroke-width="3"/>
+          <!-- collector -->
+          <line x1="120" y1="92" x2="175" y2="60" stroke="#5ee6a0" stroke-width="2.5"/>
+          <line x1="175" y1="60" x2="175" y2="30" stroke="#5ee6a0" stroke-width="2.5"/>
+          <text x="185" y="34" fill="#5ee6a0" font-size="13">C</text>
+          <!-- emitter with arrow (out = NPN) -->
+          <line x1="120" y1="128" x2="175" y2="160" stroke="#f5a623" stroke-width="2.5"/>
+          <line x1="175" y1="160" x2="175" y2="190" stroke="#f5a623" stroke-width="2.5"/>
+          <path d="M163,150 L175,160 L161,162 Z" fill="#f5a623"/>
+          <text x="185" y="190" fill="#f5a623" font-size="13">E</text>
+          <text x="40" y="205" fill="#6c7c95" font-size="11">에미터 화살표 = 전류 방향(바깥) → NPN</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5) BJT 3상태 -->
+  <section class="slide">
+    <div class="kicker">밸브로 보는 BJT</div>
+    <h2>세 가지 상태: <span class="hl">컷오프 · 포화 · 액티브</span></h2>
+    <table class="compare mt">
+      <thead><tr><th>밸브 상태</th><th>BJT 상태</th><th>채널(C–E)</th><th>쓰임</th></tr></thead>
+      <tbody>
+        <tr><td>완전히 닫힘</td><td class="hl3">컷오프(Cut-off)</td><td>전류 없음 = <strong>OFF</strong></td><td rowspan="2">스위칭</td></tr>
+        <tr><td>완전히 열림</td><td class="hl3">포화(Saturation)</td><td>도통 = <strong>ON</strong></td></tr>
+        <tr><td>중간쯤 열고 미세 조정</td><td class="hl2">액티브(Active)</td><td>리니어하게 가변</td><td>증폭</td></tr>
+      </tbody>
+    </table>
+    <div class="physnote mt">
+      <strong>스위칭</strong>은 컷오프↔포화 두 상태만 쓰고, <strong>증폭</strong>은 액티브에서 작동시킨다.
+      세 상태는 <strong>베이스 전류</strong>와 C–E <strong>바이어싱</strong>으로 결정된다.
+    </div>
+  </section>
+
+  <!-- 6) MOSFET 구조 -->
+  <section class="slide">
+    <div class="kicker">소자 ② 모스펫(MOSFET)</div>
+    <h2>게이트 <span class="hl">전압</span>으로 채널을 여는 3단자 소자</h2>
+    <div class="grid2">
+      <div>
+        <p><strong>MOSFET</strong> = <span class="hl">M</span>etal–<span class="hl">O</span>xide–<span class="hl">S</span>emiconductor
+          <span class="hl">F</span>ield <span class="hl">E</span>ffect <span class="hl">T</span>ransistor.</p>
+        <ul>
+          <li><strong>드레인(D) · 소스(S)</strong> — 큰 전류가 흐르는 <span class="hl2">채널</span>.</li>
+          <li><strong>게이트(G)</strong> — 채널을 <span class="hl">제어</span>. 산화막으로 <strong>절연</strong>돼 있다.</li>
+          <li>게이트의 <strong>전압</strong>으로 D–S 저항이 바뀌어 채널 전류가 조정된다.</li>
+        </ul>
+        <div class="eqcap">게이트 전압 0이면 채널 닫힘(OFF), 전압 인가 시 채널 도통(ON).</div>
+      </div>
+      <div class="band">
+        <svg viewBox="0 0 320 220" width="320">
+          <text x="14" y="18" fill="#9fb0c7" font-size="12">N-channel MOSFET</text>
+          <!-- gate -->
+          <line x1="50" y1="110" x2="105" y2="110" stroke="#f5a623" stroke-width="2.5"/>
+          <text x="30" y="114" fill="#f5a623" font-size="13">G</text>
+          <line x1="113" y1="70" x2="113" y2="150" stroke="#9fb0c7" stroke-width="2.5"/>
+          <!-- channel bars -->
+          <line x1="125" y1="66" x2="125" y2="92" stroke="#e8eef7" stroke-width="4"/>
+          <line x1="125" y1="98" x2="125" y2="122" stroke="#e8eef7" stroke-width="4"/>
+          <line x1="125" y1="128" x2="125" y2="154" stroke="#e8eef7" stroke-width="4"/>
+          <!-- drain -->
+          <line x1="125" y1="79" x2="180" y2="79" stroke="#5ee6a0" stroke-width="2.5"/>
+          <line x1="180" y1="79" x2="180" y2="34" stroke="#5ee6a0" stroke-width="2.5"/>
+          <text x="190" y="38" fill="#5ee6a0" font-size="13">D</text>
+          <!-- source -->
+          <line x1="125" y1="141" x2="180" y2="141" stroke="#5b9cff" stroke-width="2.5"/>
+          <line x1="180" y1="141" x2="180" y2="186" stroke="#5b9cff" stroke-width="2.5"/>
+          <text x="190" y="186" fill="#5b9cff" font-size="13">S</text>
+          <!-- body arrow (N-ch: points in) -->
+          <line x1="125" y1="110" x2="160" y2="110" stroke="#5b9cff" stroke-width="2"/>
+          <path d="M139,104 L127,110 L139,116 Z" fill="#5b9cff"/>
+          <text x="36" y="205" fill="#6c7c95" font-size="11">게이트는 산화막으로 절연 — 전류 거의 0</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7) BJT vs MOSFET -->
+  <section class="slide">
+    <div class="kicker">결정적 차이</div>
+    <h2><span class="hl2">전류</span> 구동 vs <span class="hl">전압</span> 구동</h2>
+    <table class="compare mt">
+      <thead><tr><th>항목</th><th>BJT</th><th>MOSFET</th></tr></thead>
+      <tbody>
+        <tr><td>제어 단자</td><td>베이스(B)</td><td>게이트(G)</td></tr>
+        <tr><td>채널 단자</td><td>콜렉터·에미터(C·E)</td><td>드레인·소스(D·S)</td></tr>
+        <tr><td>제어 방식</td><td class="hl2">전류 드라이브</td><td class="hl">전압 드라이브</td></tr>
+        <tr><td>제어 단자 소비</td><td>베이스 전류 필요</td><td>거의 0(절연 게이트)</td></tr>
+        <tr><td>대전류 스위칭</td><td>가능</td><td>더 폭넓게 적용 ✔</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway mt">
+      "BJT는 베이스 <strong>전류</strong>로, MOSFET은 게이트 <strong>전압</strong>으로 채널 저항을 조정한다." — 면접 단골 한 줄.
+    </div>
+  </section>
+
+  <!-- 8) 방향성 -->
+  <section class="slide">
+    <div class="kicker">반도체 스위치의 속성</div>
+    <h2>채널 전류는 <span class="hl">한 방향</span>으로만</h2>
+    <p>두 소자 모두 "작은 제어 신호로 채널 전류를 도통/차단하는 <strong>3단자 스위치</strong>"다.
+      단, 일반 기계식 스위치와 달리 반도체 스위치는 <span class="hl">한쪽 방향으로만</span> 큰 전류가 제어된다.</p>
+    <div class="keyq mt">
+      그래서 <strong>채널 전류 방향</strong>에 따라 종류가 갈린다:
+      BJT는 <strong>NPN / PNP</strong>, MOSFET은 <strong>NMOS / PMOS</strong>.
+      이때 제어 전류·전압의 <strong>극성</strong>도 함께 바뀐다.
+    </div>
+  </section>
+
+  <!-- 9) NPN vs PNP -->
+  <section class="slide">
+    <div class="kicker">BJT 두 종류</div>
+    <h2><span class="hl3">NPN</span> vs <span class="hl">PNP</span> — 에미터 화살표로 구분</h2>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 300 200" width="300">
+          <text x="120" y="18" fill="#5ee6a0" font-size="13" font-weight="700">NPN</text>
+          <line x1="40" y1="100" x2="100" y2="100" stroke="#5b9cff" stroke-width="2.5"/>
+          <line x1="100" y1="65" x2="100" y2="135" stroke="#e8eef7" stroke-width="3"/>
+          <line x1="100" y1="85" x2="150" y2="55" stroke="#9fb0c7" stroke-width="2.5"/><text x="156" y="50" fill="#5ee6a0" font-size="12">C</text>
+          <line x1="100" y1="115" x2="150" y2="145" stroke="#9fb0c7" stroke-width="2.5"/>
+          <path d="M138,135 L150,145 L136,147 Z" fill="#f5a623"/><text x="156" y="150" fill="#f5a623" font-size="12">E</text>
+          <text x="14" y="104" fill="#5b9cff" font-size="12">B</text>
+          <text x="20" y="185" fill="#6c7c95" font-size="11">화살표 바깥 → 베이스로 전류 IN, C→E</text>
+        </svg>
+      </div>
+      <div class="band">
+        <svg viewBox="0 0 300 200" width="300">
+          <text x="120" y="18" fill="#f5a623" font-size="13" font-weight="700">PNP</text>
+          <line x1="40" y1="100" x2="100" y2="100" stroke="#5b9cff" stroke-width="2.5"/>
+          <line x1="100" y1="65" x2="100" y2="135" stroke="#e8eef7" stroke-width="3"/>
+          <line x1="100" y1="85" x2="150" y2="55" stroke="#9fb0c7" stroke-width="2.5"/><text x="156" y="50" fill="#5ee6a0" font-size="12">C</text>
+          <line x1="100" y1="115" x2="150" y2="145" stroke="#9fb0c7" stroke-width="2.5"/>
+          <path d="M112,123 L100,115 L114,111 Z" fill="#f5a623"/><text x="156" y="150" fill="#f5a623" font-size="12">E</text>
+          <text x="14" y="104" fill="#5b9cff" font-size="12">B</text>
+          <text x="20" y="185" fill="#6c7c95" font-size="11">화살표 안쪽 → 베이스에서 전류 OUT, E→C</text>
+        </svg>
+      </div>
+    </div>
+    <div class="physnote mt">에미터 화살표 = (다이오드처럼) <strong>전류 방향</strong>. 화살표만 보면 제어 전류·채널 전류 방향을 직관적으로 읽을 수 있다.</div>
+  </section>
+
+  <!-- 10) NPN/PNP 켜기 -->
+  <section class="slide">
+    <div class="kicker">켜는 법</div>
+    <h2>NPN은 <span class="hl3">HIGH</span>, PNP는 <span class="hl">LOW</span>로 켠다</h2>
+    <table class="compare mt">
+      <thead><tr><th>타입</th><th>제어 전류</th><th>채널 전류</th><th>ON 시키려면</th></tr></thead>
+      <tbody>
+        <tr><td class="hl3">NPN</td><td>베이스로 <strong>들어감</strong></td><td>C → E</td><td>베이스에 <strong>HIGH</strong></td></tr>
+        <tr><td class="hl">PNP</td><td>베이스에서 <strong>빠져나옴</strong></td><td>E → C</td><td>베이스에 <strong>LOW</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="note mt">제어 전류의 방향은 결국 <strong>전압</strong>이 결정한다. 그래서 "NPN=하이로 ON, PNP=로우로 ON"으로 외우면 회로가 빨리 읽힌다.</div>
+  </section>
+
+  <!-- 11) NMOS vs PMOS -->
+  <section class="slide">
+    <div class="kicker">MOSFET 두 종류</div>
+    <h2><span class="hl3">NMOS</span> vs <span class="hl">PMOS</span></h2>
+    <table class="compare mt">
+      <thead><tr><th>타입</th><th>켜지는 조건</th><th>채널 전류</th><th>BJT 대응</th></tr></thead>
+      <tbody>
+        <tr><td class="hl3">NMOS</td><td>V<span class="sub">GS</span> &gt; 0 (게이트 HIGH)</td><td>D → S</td><td>≈ NPN</td></tr>
+        <tr><td class="hl">PMOS</td><td>V<span class="sub">GS</span> &lt; 0 (게이트 LOW)</td><td>S → D</td><td>≈ PNP</td></tr>
+      </tbody>
+    </table>
+    <div class="keyq mt">
+      <strong>NMOS ≈ NPN, PMOS ≈ PNP</strong> — 채널 전기 특성은 같다고 보고, <strong>제어 수단만 전류→전압</strong>으로 바뀌었다고 생각하면 된다.
+      ON/OFF 기준 전압은 스펙의 <strong>문턱전압 V<span class="sub">th</span></strong>.
+    </div>
+  </section>
+
+  <!-- 12) 매칭 -->
+  <section class="slide">
+    <div class="kicker">한 장으로 외우기</div>
+    <h2>단자 <span class="hl">매칭</span>으로 통째 이해</h2>
+    <div class="flow mt">
+      <div class="box">D ↔ C</div><div class="arrow">·</div>
+      <div class="box">S ↔ E</div><div class="arrow">·</div>
+      <div class="box">G ↔ B</div>
+    </div>
+    <p class="mt">드레인↔콜렉터, 소스↔에미터, 게이트↔베이스가 각각 대응된다.
+      그래서 <strong>MOSFET을 BJT에 얹어</strong> 이해하면 직관이 빨라진다 — "제어가 전압이라는 점"만 갈아끼우면 된다.</p>
+    <div class="takeaway mt">NMOS는 NPN처럼, PMOS는 PNP처럼 — 단 게이트는 <strong>전압</strong>으로 민다.</div>
+  </section>
+
+  <!-- 13) IGBT -->
+  <section class="slide">
+    <div class="kicker">소자 ③ IGBT</div>
+    <h2>MOSFET과 BJT의 <span class="hl">장점 결합</span></h2>
+    <p><strong>IGBT</strong> = <span class="hl">I</span>nsulated <span class="hl">G</span>ate <span class="hl">B</span>ipolar <span class="hl">T</span>ransistor,
+      "절연 게이트 바이폴라 트랜지스터".</p>
+    <div class="grid2 mt">
+      <div class="card">
+        <h3><span class="ico">⚙️</span> 구조</h3>
+        <p>MOSFET의 <strong>전압 제어 게이트</strong> + BJT의 <strong>채널 구조</strong>를 혼합.
+          게이트는 모스처럼 전압으로 몰고, 채널은 바이폴라처럼 큰 전류를 흘린다.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">⚡</span> 쓰임</h3>
+        <p>주로 <strong>대전력 인버터</strong> 같은 <span class="hl">고압·고전류 스위칭</span> 소자.
+          전기차·산업용 모터 구동 등.</p>
+      </div>
+    </div>
+    <div class="note mt">"전압으로 편하게 몰면서(MOS), 큰 전류를 견딘다(BJT)" — 두 마리 토끼.</div>
+  </section>
+
+  <!-- 14) 분류 -->
+  <section class="slide">
+    <div class="kicker">정리</div>
+    <h2>트랜지스터 <span class="hl">분류 지도</span></h2>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="ico">🔀</span> 구조/동작</h3>
+        <ul>
+          <li><strong>BJT</strong> — NPN / PNP (증폭도 가능하나, 요즘은 전용 IC·OP앰프로 대체 → 주로 스위칭)</li>
+          <li><strong>MOSFET</strong> — NMOS / PMOS</li>
+          <li><strong>IGBT</strong> — MOS+BJT 혼합, 대전력</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ico">📦</span> 그 외 기준</h3>
+        <ul>
+          <li>허용 전력: <strong>소신호(&lt;1W)</strong> / <strong>파워(≥1W)</strong></li>
+          <li>실장: <strong>리드(through-hole)</strong> / <strong>SMT</strong></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note mt">세 소자 모두 공통점: <strong>제어 단자 신호로 채널 저항을 바꿔 ON/OFF</strong> 하는 스위칭 소자.</p>
+  </section>
+
+  <!-- 15) 구동회로: 부하 위치 -->
+  <section class="slide">
+    <div class="kicker">구동회로 ① 부하 위치 규칙</div>
+    <h2>부하는 반드시 <span class="hl">컬렉터 / 드레인</span> 단에</h2>
+    <p>NPN·PNP·NMOS·PMOS 어느 것이든, <strong>구동할 부하</strong>는 컬렉터(C) 또는 드레인(D) 단에 연결한다.</p>
+    <div class="warnbox mt">
+      <strong>왜?</strong> 제어 신호는 <strong>B–E(또는 G–S) 간 전압 조건</strong>으로 결정된다.
+      만약 부하를 <strong>에미터/소스</strong> 쪽에 달면, 그 전압이 부하 때문에 흔들려
+      <strong>적절한 제어가 불가</strong>해진다. 그래서 제어와 <strong>독립된 단자</strong>인 C/D에 부하를 둔다.
+    </div>
+    <div class="eqcap mt">달리 말해: 이미터/소스를 기준(접지 또는 전원)에 고정해 두어야 제어 전압이 안정적으로 걸린다.</div>
+  </section>
+
+  <!-- 16) 구동회로: PNP/PMOS 전압레벨 주의 -->
+  <section class="slide">
+    <div class="kicker">구동회로 ② 흔한 함정</div>
+    <h2>PNP·PMOS는 제어 전압 레벨 = <span class="hl">V<span class="sub">CC</span></span></h2>
+    <p>하이사이드에 쓰는 <strong>PNP/PMOS</strong>는 제어 전압 레벨이 전원 전압 V<span class="sub">CC</span>와 <strong>같아야</strong> 한다.</p>
+    <table class="compare mt">
+      <thead><tr><th>상황</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td>V<span class="sub">CC</span>=5V, 제어=5V 로직</td><td class="hl3">정상 제어 ✔</td></tr>
+        <tr><td>V<span class="sub">CC</span>=12V, 제어=5V 로직</td><td class="hl">로우/하이 무관 항상 ON ✘ → 레벨시프트 등 추가회로 필요</td></tr>
+      </tbody>
+    </table>
+    <div class="physnote mt">
+      <strong>NPN/NMOS</strong>(로우사이드)는 이런 제약이 없다. 단 NPN은 <strong>베이스 전류량 튜닝</strong>,
+      NMOS는 <strong>V<span class="sub">GS</span> &gt; V<span class="sub">th</span></strong>가 되도록 게이트 전압만 충분히 주면 된다.
+    </div>
+  </section>
+
+  <!-- 17) Low/High-Side 정의 -->
+  <section class="slide">
+    <div class="kicker">스위치 배치</div>
+    <h2><span class="hl3">Low-Side</span> vs <span class="hl">High-Side</span></h2>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 280 200" width="280">
+          <text x="80" y="16" fill="#5ee6a0" font-size="13" font-weight="700">Low-Side</text>
+          <line x1="140" y1="28" x2="140" y2="50" stroke="#ff7a85" stroke-width="2.5"/><text x="148" y="34" fill="#ff7a85" font-size="11">V+</text>
+          <rect x="115" y="50" width="50" height="40" rx="6" fill="none" stroke="#9fb0c7" stroke-width="2"/><text x="124" y="75" fill="#9fb0c7" font-size="12">LOAD</text>
+          <line x1="140" y1="90" x2="140" y2="115" stroke="#9fb0c7" stroke-width="2.5"/>
+          <rect x="118" y="115" width="44" height="34" rx="6" fill="none" stroke="#5ee6a0" stroke-width="2.5"/><text x="126" y="137" fill="#5ee6a0" font-size="11">SW</text>
+          <line x1="140" y1="149" x2="140" y2="172" stroke="#9fb0c7" stroke-width="2.5"/>
+          <line x1="122" y1="172" x2="158" y2="172" stroke="#9fb0c7" stroke-width="2.5"/><text x="146" y="188" fill="#6c7c95" font-size="11">GND</text>
+        </svg>
+        <div class="eqcap">부하 <strong>아래(접지측)</strong>에 스위치 → NPN/NMOS, 액티브 HIGH</div>
+      </div>
+      <div class="band">
+        <svg viewBox="0 0 280 200" width="280">
+          <text x="80" y="16" fill="#f5a623" font-size="13" font-weight="700">High-Side</text>
+          <line x1="140" y1="28" x2="140" y2="50" stroke="#ff7a85" stroke-width="2.5"/><text x="148" y="34" fill="#ff7a85" font-size="11">V+</text>
+          <rect x="118" y="50" width="44" height="34" rx="6" fill="none" stroke="#f5a623" stroke-width="2.5"/><text x="126" y="72" fill="#f5a623" font-size="11">SW</text>
+          <line x1="140" y1="84" x2="140" y2="109" stroke="#9fb0c7" stroke-width="2.5"/>
+          <rect x="115" y="109" width="50" height="40" rx="6" fill="none" stroke="#9fb0c7" stroke-width="2"/><text x="124" y="134" fill="#9fb0c7" font-size="12">LOAD</text>
+          <line x1="140" y1="149" x2="140" y2="172" stroke="#9fb0c7" stroke-width="2.5"/>
+          <line x1="122" y1="172" x2="158" y2="172" stroke="#9fb0c7" stroke-width="2.5"/><text x="146" y="188" fill="#6c7c95" font-size="11">GND</text>
+        </svg>
+        <div class="eqcap">부하 <strong>위(전원측)</strong>에 스위치 → PNP/PMOS, 액티브 LOW</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18) Low/High-Side 선택 -->
+  <section class="slide">
+    <div class="kicker">언제 무엇을</div>
+    <h2>선택 기준</h2>
+    <table class="compare mt">
+      <thead><tr><th>구분</th><th>Low-Side</th><th>High-Side</th></tr></thead>
+      <tbody>
+        <tr><td>스위치 위치</td><td>부하–접지 사이</td><td>전원–부하 사이</td></tr>
+        <tr><td>제어 기준</td><td>접지(GND) 기준</td><td>전원(V<span class="sub">CC</span>) 기준</td></tr>
+        <tr><td>소자</td><td class="hl3">NPN / NMOS</td><td class="hl">PNP / PMOS</td></tr>
+        <tr><td>구동 논리</td><td>액티브 HIGH</td><td>액티브 LOW</td></tr>
+        <tr><td>적합한 경우</td><td>전원전압이 <strong>여러 가지</strong>인 부하</td><td><strong>동일 전원</strong>의 부하 여러 개</td></tr>
+      </tbody>
+    </table>
+    <div class="note mt">로우사이드가 일반적으로 더 많이 쓰인다(접지 기준이라 제어가 단순). 하이사이드는 위 함정(전압 레벨)을 주의.</div>
+  </section>
+
+  <!-- 19) H-Bridge -->
+  <section class="slide">
+    <div class="kicker">응용</div>
+    <h2><span class="hl">H-Bridge</span> — 양방향 전류</h2>
+    <div class="grid2">
+      <div class="band">
+        <svg viewBox="0 0 300 220" width="300">
+          <line x1="40" y1="20" x2="260" y2="20" stroke="#ff7a85" stroke-width="2"/><text x="262" y="24" fill="#ff7a85" font-size="11">V+</text>
+          <line x1="40" y1="200" x2="260" y2="200" stroke="#9fb0c7" stroke-width="2"/><text x="258" y="214" fill="#6c7c95" font-size="11">GND</text>
+          <!-- high side switches -->
+          <rect x="50" y="40" width="40" height="30" rx="5" fill="none" stroke="#f5a623" stroke-width="2"/><text x="58" y="60" fill="#f5a623" font-size="11">HS-L</text>
+          <rect x="210" y="40" width="40" height="30" rx="5" fill="none" stroke="#f5a623" stroke-width="2"/><text x="218" y="60" fill="#f5a623" font-size="11">HS-R</text>
+          <line x1="70" y1="20" x2="70" y2="40" stroke="#9fb0c7" stroke-width="2"/>
+          <line x1="230" y1="20" x2="230" y2="40" stroke="#9fb0c7" stroke-width="2"/>
+          <!-- low side switches -->
+          <rect x="50" y="150" width="40" height="30" rx="5" fill="none" stroke="#5ee6a0" stroke-width="2"/><text x="58" y="170" fill="#5ee6a0" font-size="11">LS-L</text>
+          <rect x="210" y="150" width="40" height="30" rx="5" fill="none" stroke="#5ee6a0" stroke-width="2"/><text x="218" y="170" fill="#5ee6a0" font-size="11">LS-R</text>
+          <line x1="70" y1="180" x2="70" y2="200" stroke="#9fb0c7" stroke-width="2"/>
+          <line x1="230" y1="180" x2="230" y2="200" stroke="#9fb0c7" stroke-width="2"/>
+          <!-- motor -->
+          <line x1="70" y1="70" x2="70" y2="110" stroke="#9fb0c7" stroke-width="2"/>
+          <line x1="230" y1="70" x2="230" y2="110" stroke="#9fb0c7" stroke-width="2"/>
+          <line x1="70" y1="110" x2="120" y2="110" stroke="#9fb0c7" stroke-width="2"/>
+          <line x1="180" y1="110" x2="230" y2="110" stroke="#9fb0c7" stroke-width="2"/>
+          <circle cx="150" cy="110" r="30" fill="none" stroke="#5b9cff" stroke-width="2.5"/><text x="140" y="115" fill="#5b9cff" font-size="14">M</text>
+        </svg>
+      </div>
+      <div>
+        <p>로우사이드 + 하이사이드 스위치를 <strong>H자</strong>로 결합. 위쪽 2개 하이사이드, 아래쪽 2개 로우사이드.</p>
+        <ul>
+          <li><strong>정방향:</strong> 좌상(HS-L) + 우하(LS-R) ON → 부하 좌→우</li>
+          <li><strong>역방향:</strong> 우상(HS-R) + 좌하(LS-L) ON → 부하 우→좌</li>
+        </ul>
+        <div class="eqcap">모터·펠티어처럼 <strong>정·역방향 전류</strong>가 필요한 부하에 적합.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20) 요약 -->
+  <section class="slide">
+    <div class="kicker">핵심 요약</div>
+    <h2>이 부록에서 챙긴 것</h2>
+    <ul>
+      <li><strong>트랜지스터 = 가변저항</strong>: 작은 신호로 채널 저항을 바꿔 큰 전류를 ON/OFF/증폭.</li>
+      <li><strong>BJT(전류 구동)</strong> vs <strong>MOSFET(전압 구동)</strong>, <strong>IGBT</strong>=둘의 혼합(대전력).</li>
+      <li><strong>화살표 직관</strong>: NPN=HIGH로 ON·C→E, PNP=LOW로 ON·E→C / NMOS≈NPN, PMOS≈PNP.</li>
+      <li><strong>부하는 C/D 단</strong>에 — 제어는 B–E(G–S) 전압으로 결정되니까.</li>
+      <li><strong>PNP·PMOS는 제어 레벨 = V<span class="sub">CC</span></strong> 주의(아니면 레벨시프트).</li>
+      <li><strong>Low-Side(NPN/NMOS, 액티브H)</strong> · <strong>High-Side(PNP/PMOS, 액티브L)</strong> · <strong>H-Bridge</strong>(양방향).</li>
+    </ul>
+    <div class="takeaway mt">소자물리에서 "왜 켜지나"를 배웠다면, 여기선 "회로에서 어떻게 켜고 배치하나"를 익혔다.</div>
+  </section>
+
+  <!-- 21) Q&A -->
+  <section class="slide">
+    <div class="kicker">이해 점검</div>
+    <h2>스스로 답해보기</h2>
+    <div class="qa">
+      <div class="q">BJT와 MOSFET의 가장 큰 차이 한 줄은?</div>
+      <div class="a">BJT는 베이스 <strong>전류</strong>로, MOSFET은 게이트 <strong>전압</strong>으로 채널 저항을 제어한다(전류 구동 vs 전압 구동).</div>
+    </div>
+    <div class="qa">
+      <div class="q">하이사이드에 PNP/PMOS를 쓸 때 흔한 함정은?</div>
+      <div class="a">제어 전압 레벨이 V<span class="sub">CC</span>와 같아야 한다. V<span class="sub">CC</span>=12V인데 제어가 5V면 항상 ON이 되어 제어 불가 → 레벨시프트 등 추가회로 필요.</div>
+    </div>
+    <div class="qa">
+      <div class="q">부하를 왜 에미터/소스가 아니라 컬렉터/드레인에 다는가?</div>
+      <div class="a">제어가 B–E(G–S) 전압 조건으로 결정되기 때문. 이미터/소스에 부하를 달면 그 전압이 흔들려 제어가 불가해진다.</div>
+    </div>
+    <p class="note mt">다음 → <span class="hl">전체 목차</span>로 돌아가 소자물리 본편(0~5장)과 함께 보면 좋다.</p>
+  </section>
+
+</div>
+<script src="../assets/slides.js"></script>
+</body>
+</html>
